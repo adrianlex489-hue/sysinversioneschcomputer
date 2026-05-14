@@ -1,0 +1,119 @@
+        /* 🎨 PALETA DE COLORES FARMACIA (Basado en el verde y un celeste médico) */
+        :root {
+            --color-principal-verde: rgb(112, 112, 112); /* Verde Marino (Primary/Success) */
+            --color-secundario-celeste: #5047ffff; /* Celeste Claro (Info) */
+            --color-accent-oscuro: #8de2fcff; /* Verde Oscuro (Hover/Active) */
+            --color-alerta-bajo-stock: #FFAB91; /* Naranja Suave (Advertencia/Stock) */
+            --color-texto-claro: #ffffff;
+            --color-texto-oscuro: #212529; /* Negro de Bootstrap */
+            --fuente-principal: 'Inter', sans-serif; /* Tipografía moderna */
+        }
+        
+        /* Tipografía Global */
+        body {
+            font-family: var(--fuente-principal);
+        }
+        .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+            font-family: var(--fuente-principal);
+            font-weight: 600; /* Semi-bold para títulos */
+        }
+        .brand-text {
+            font-weight: 700 !important; /* Bold para el logo */
+        }
+
+        /* Navbar Superior */
+        .main-header.navbar {
+            background-color: var(--color-texto-claro); /* Fondo blanco */
+            border-bottom: 1px solid rgba(0,0,0,.125); /* Un borde sutil */
+        }
+        /* Aseguramos que los links del navbar sean oscuros */
+        .main-header.navbar .nav-link {
+            color: var(--color-texto-oscuro) !important;
+        }
+        /* Color especial para el icono de cerrar sesión */
+        .main-header.navbar .nav-link .fa-sign-out-alt {
+            color: #dc3545 !important; /* Rojo de Bootstrap para peligro */
+        }
+        
+        /* Sidebar: Utilizamos un tema oscuro con el acento en el verde principal */
+        .sidebar-dark-primary {
+            background-color: var(--color-principal-verde);
+        }
+        .main-sidebar .brand-link {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--color-texto-claro);
+            background-color: var(--color-accent-oscuro);
+        }
+        .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link.active,
+        .sidebar-dark-primary .nav-sidebar>.nav-item>.nav-link:hover {
+            background-color: var(--color-accent-oscuro) !important;
+            color: var(--color-texto-claro);
+            border-left: 4px solid var(--color-secundario-celeste); /* Borde de resalte */
+        }
+        .user-panel a {
+            color: var(--color-texto-claro);
+        }
+        /* Links del sidebar (no activos/hover) */
+        .nav-link {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        /* Small-Box (Tarjetas de Métricas) - Estilo Moderno */
+        .small-box { 
+            border-radius: 15px; /* Más redondeado */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Sombra más suave */
+            transition: all 0.4s ease; 
+            color: var(--color-texto-claro) !important; /* Asegura el texto blanco */
+        }
+        .small-box:hover { 
+            transform: translateY(-8px); /* Elevación más notable */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2); 
+            opacity: 0.95;
+        }
+        .small-box h3 {
+            font-size: 2.2rem;
+            font-weight: 700; /* Bold para los números */
+        }
+        .small-box p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        .small-box .icon i {
+            font-size: 70px !important;
+            opacity: 0.5;
+        }
+        
+        /* Asignación de Paleta de Colores mejorada */
+        /* Usuarios (Secundario/Celeste) */
+        .small-box.bg-info { background: linear-gradient(45deg, var(--color-secundario-celeste), #64DFDF) !important; }
+        /* Productos (Principal/Verde) */
+        .small-box.bg-success { background: linear-gradient(45deg, var(--color-principal-verde), #4DBA87) !important; }
+        /* Clientes (Amarillo/Cálido) */
+        .small-box.bg-warning { background: linear-gradient(45deg, #FFD54F, #FFB300) !important; color: var(--color-texto-oscuro) !important; } 
+        /* Total Ventas (Morado/Profundo) */
+        .small-box.bg-primary { background: linear-gradient(45deg, #6F42C1, #8A2BE2) !important; }
+        /* Ingresos Totales (Rojo/Énfasis) */
+        .small-box.bg-danger { background: linear-gradient(45deg, #E57373, #D32F2F) !important; }
+        /* Stock Bajo (Alerta/Naranja Suave) */
+        .small-box.bg-dark { background: linear-gradient(45deg, var(--color-alerta-bajo-stock), #FF8A65) !important; } 
+        
+        /* Estilo para Tarjetas/Gráficos */
+        .card {
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            border: none;
+        }
+        /* Resalta el borde superior de los card-outline */
+        .card-primary.card-outline { border-top: 3px solid var(--color-principal-verde); }
+        .card-info.card-outline { border-top: 3px solid var(--color-secundario-celeste); }
+
+        /* Estilo de Tabla de Últimas Ventas */
+        .table thead th {
+            background-color: var(--color-principal-verde);
+            color: var(--color-texto-claro);
+            border-bottom: 2px solid var(--color-accent-oscuro);
+            font-weight: 600;
+        }
+        .table tbody tr:hover {
+            background-color: #f0f8ff; /* Color muy claro al pasar el ratón */
+        }

@@ -1,0 +1,139 @@
+/* ============================================================
+   proveedores.css — Módulo Gestión de Proveedores | Botica 2026
+   ============================================================ */
+
+:root {
+    --prov-azul:        #1a5276;
+    --prov-azul-claro:  #2980b9;
+    --prov-verde:       #1a7a4a;
+    --prov-rojo:        #e74c3c;
+    --prov-naranja:     #e67e22;
+}
+
+/* ── CABECERA ── */
+.page-header-prov {
+    background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(26,82,118,.25);
+}
+.page-header-prov h4  { margin: 0; font-weight: 700; font-size: 1.2rem; }
+.page-header-prov small { opacity: .85; font-size: .82rem; }
+
+/* ── CARDS ── */
+.card { border: none; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+.card-header-prov {
+    background: linear-gradient(90deg, #1a5276, #2980b9);
+    color: #fff;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px;
+}
+.card-header-prov h6 { margin: 0; font-weight: 700; font-size: .95rem; }
+
+/* ── TABS ── */
+.nav-tabs-prov .nav-link {
+    color: #555;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all .2s;
+}
+.nav-tabs-prov .nav-link:hover  { color: var(--prov-azul); }
+.nav-tabs-prov .nav-link.active {
+    color: var(--prov-azul);
+    border-bottom: 3px solid var(--prov-azul);
+    background: transparent;
+}
+
+/* ── BOTONES ── */
+.btn-prov-primary {
+    background: linear-gradient(135deg, #1a5276, #2980b9);
+    color: #fff; border: none; border-radius: 7px; font-weight: 600; transition: all .2s;
+}
+.btn-prov-primary:hover {
+    background: linear-gradient(135deg, #154360, #1a6fa0);
+    color: #fff; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,82,118,.3);
+}
+.btn-prov-danger {
+    background: linear-gradient(135deg, #922b21, #e74c3c);
+    color: #fff; border: none; border-radius: 7px; font-weight: 600; transition: all .2s;
+}
+.btn-prov-danger:hover {
+    background: linear-gradient(135deg, #7b241c, #c0392b);
+    color: #fff; transform: translateY(-1px);
+}
+
+/* ── TABLA ── */
+.table-proveedores thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 2px solid var(--prov-azul);
+}
+.table-proveedores tbody tr:hover { background: #eaf4fb; }
+.table-proveedores td { vertical-align: middle; font-size: .88rem; }
+
+/* ── BADGE RUC ── */
+.badge-ruc {
+    background: #d6eaf8;
+    color: #1a5276;
+    border: 1px solid #85c1e9;
+    font-size: .78rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-family: monospace;
+}
+
+/* ── MODAL ── */
+.modal-header-prov {
+    background: linear-gradient(135deg, #1a5276, #2980b9);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+}
+.modal-header-prov .close { color: #fff; opacity: .8; }
+.modal-header-prov .close:hover { opacity: 1; }
+.modal-content { border: none; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,.15); }
+
+/* ── CAMPO RUC CON BOTÓN SUNAT ── */
+.input-ruc-group .btn-sunat {
+    background: linear-gradient(135deg, #1a7a4a, #27ae60);
+    color: #fff; border: none; font-weight: 600; font-size: .82rem; white-space: nowrap;
+}
+.input-ruc-group .btn-sunat:hover {
+    background: linear-gradient(135deg, #145a32, #1e8449); color: #fff;
+}
+.input-ruc-group .btn-sunat .spinner-border { width: 14px; height: 14px; border-width: 2px; }
+
+/* ── RESULTADO SUNAT ── */
+.sunat-result {
+    background: #d6eaf8;
+    border: 1px solid #85c1e9;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: .85rem;
+    display: none;
+}
+.sunat-result.show { display: block; }
+.sunat-result .sunat-razon { font-weight: 700; color: #1a5276; font-size: .95rem; }
+.sunat-result .sunat-estado { font-size: .78rem; }
+
+/* ── FORM LABELS ── */
+.form-label-prov { font-weight: 600; color: #495057; font-size: .85rem; margin-bottom: 4px; }
+.form-control:focus { border-color: var(--prov-azul); box-shadow: 0 0 0 .2rem rgba(26,82,118,.2); }
+
+/* ── STATS ── */
+.stat-mini {
+    border-radius: 8px; padding: 14px 18px; color: #fff;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+}
+.stat-mini i { font-size: 1.8rem; opacity: .8; }
+.stat-mini .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.stat-mini .stat-label { font-size: .78rem; opacity: .9; }

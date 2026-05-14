@@ -1,0 +1,123 @@
+﻿/* ============================================================
+   historial_ventas.css — Historial de Ventas | Botica 2026
+   ============================================================ */
+:root {
+    --hist-vta-verde:       #1a7a4a;
+    --hist-vta-verde-claro: #27ae60;
+    --hist-vta-azul:        #1a5276;
+    --hist-vta-naranja:     #e67e22;
+    --hist-vta-rojo:        #e74c3c;
+    --hist-vta-teal:        #0e6655;
+}
+
+/* ── CABECERA ── */
+.page-header-hist-vta {
+    background: linear-gradient(135deg, #1a7a4a 0%, #27ae60 55%, #0e6655 100%);
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(26,122,74,.28);
+}
+.page-header-hist-vta h4    { margin: 0; font-weight: 700; font-size: 1.2rem; }
+.page-header-hist-vta small { opacity: .85; font-size: .82rem; }
+
+/* ── STATS ── */
+.stat-mini-hist-vta {
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.12);
+    transition: transform .2s;
+}
+.stat-mini-hist-vta:hover { transform: translateY(-2px); }
+.stat-mini-hist-vta i           { font-size: 1.9rem; opacity: .8; }
+.stat-mini-hist-vta .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.stat-mini-hist-vta .stat-label { font-size: .78rem; opacity: .9; margin-top: 2px; }
+
+/* ── CARD ── */
+.card { border: none; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+.card-header-hist-vta {
+    background: linear-gradient(90deg, #1a7a4a, #27ae60);
+    color: #fff;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px;
+}
+.card-header-hist-vta h6 { margin: 0; font-weight: 700; font-size: .95rem; }
+
+/* ── FILTROS ── */
+.filtros-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+}
+.filtros-card label { font-weight: 600; font-size: .82rem; color: #495057; }
+
+/* ── TABLA HISTORIAL ── */
+.table-hist-vta thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    border-bottom: 2px solid var(--hist-vta-verde-claro);
+}
+.table-hist-vta tbody tr:hover { background: #f0fff4; }
+.table-hist-vta td { vertical-align: middle; font-size: .87rem; }
+.table-hist-vta tr.anulada { opacity: .6; }
+
+/* ── BADGES ESTADO ── */
+.badge-hist-vta-pagado    { background:#d4edda; color:#155724; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
+.badge-hist-vta-pendiente { background:#fff3cd; color:#856404; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
+.badge-hist-vta-anulado   { background:#f8d7da; color:#721c24; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
+
+/* ── BADGES TIPO PAGO ── */
+.badge-contado-vta { background:#e8f5e9; color:#1a7a4a; padding:3px 10px; border-radius:20px; font-size:.75rem; font-weight:600; border:1px solid #c8e6c9; }
+.badge-credito-vta { background:#fff3e0; color:#e67e22; padding:3px 10px; border-radius:20px; font-size:.75rem; font-weight:600; border:1px solid #ffe0b2; }
+
+/* ── ALERTAS VENCIMIENTO ── */
+.alerta-vence-pronto { background:#fff3cd; color:#856404; border-radius:4px; padding:2px 8px; font-size:.72rem; font-weight:600; }
+.alerta-vencido      { background:#f8d7da; color:#721c24; border-radius:4px; padding:2px 8px; font-size:.72rem; font-weight:600; }
+
+/* ── MODAL ── */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(0,0,0,.2);
+    overflow: hidden;
+}
+
+/* ── BOTONES METODO PAGO MODAL ── */
+.btn-metodo-pago-vta {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    background: #fff;
+    color: #555;
+    margin-bottom: 4px;
+}
+.btn-metodo-pago-vta:hover {
+    border-color: var(--hist-vta-verde);
+    background: var(--hist-vta-verde);
+    color: #fff;
+}
+
+/* ── SALDO PENDIENTE ALERTA ── */
+.saldo-alerta {
+    background: #fff3e0;
+    border-left: 4px solid #e67e22;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: .88rem;
+}

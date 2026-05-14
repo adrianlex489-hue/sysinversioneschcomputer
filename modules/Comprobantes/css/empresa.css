@@ -1,0 +1,462 @@
+/* ============================================================
+   empresa.css — Mi Empresa | Botica 2026
+   ============================================================ */
+
+/* ── CABECERA ── */
+.page-header-emp {
+    background: linear-gradient(135deg, #0d3b26 0%, #1a7a4a 60%, #117a8b 100%);
+    color: #fff;
+    padding: 20px 28px;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    box-shadow: 0 6px 20px rgba(13,59,38,.35);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.page-header-emp h4    { margin: 0; font-weight: 700; font-size: 1.25rem; letter-spacing: .3px; }
+.page-header-emp small { opacity: .8; font-size: .82rem; display: block; margin-top: 2px; }
+
+.badge-emp-activo {
+    background: rgba(255,255,255,.2);
+    color: #fff;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-weight: 700;
+    border: 1px solid rgba(255,255,255,.35);
+    backdrop-filter: blur(4px);
+}
+.badge-emp-pendiente {
+    background: rgba(255,193,7,.2);
+    color: #fff3cd;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-weight: 700;
+    border: 1px solid rgba(255,193,7,.4);
+}
+
+/* ── LAYOUT PRINCIPAL ── */
+.emp-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    align-items: start;
+}
+@media (max-width: 1100px) {
+    .emp-layout { grid-template-columns: 1fr; }
+}
+
+/* ── PANEL FORMULARIO (izquierda) ── */
+.emp-form-panel {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08);
+    overflow: hidden;
+}
+
+/* ── TABS ── */
+.emp-tabs {
+    display: flex;
+    background: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.emp-tabs::-webkit-scrollbar { display: none; }
+.emp-tab {
+    padding: 14px 20px;
+    font-size: .85rem;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    white-space: nowrap;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    user-select: none;
+}
+.emp-tab i { font-size: .9rem; }
+.emp-tab:hover { color: #1a7a4a; background: #f0fff4; }
+.emp-tab.active {
+    color: #1a7a4a;
+    border-bottom-color: #1a7a4a;
+    background: #fff;
+    font-weight: 700;
+}
+
+/* ── CONTENIDO TABS ── */
+.emp-tab-content { display: none; padding: 28px; }
+.emp-tab-content.active { display: block; }
+
+/* ── GRUPOS DE CAMPOS ── */
+.emp-field-group {
+    margin-bottom: 22px;
+}
+.emp-field-group:last-child { margin-bottom: 0; }
+
+.emp-field-row {
+    display: grid;
+    gap: 16px;
+    margin-bottom: 22px;
+}
+.emp-field-row.cols-2 { grid-template-columns: 1fr 1fr; }
+.emp-field-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.emp-field-row.cols-1-2 { grid-template-columns: 2fr 1fr; }
+.emp-field-row.cols-2-1 { grid-template-columns: 2fr 1fr; }
+@media (max-width: 768px) {
+    .emp-field-row.cols-2,
+    .emp-field-row.cols-3,
+    .emp-field-row.cols-1-2,
+    .emp-field-row.cols-2-1 { grid-template-columns: 1fr; }
+}
+
+/* ── CAMPO CON ICONO ── */
+.emp-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.emp-label {
+    font-size: .78rem;
+    font-weight: 700;
+    color: #495057;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.emp-label i { color: #1a7a4a; font-size: .8rem; }
+.emp-label .req { color: #e74c3c; margin-left: 2px; }
+
+.emp-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.emp-input-icon {
+    position: absolute;
+    left: 12px;
+    color: #adb5bd;
+    font-size: .85rem;
+    pointer-events: none;
+    z-index: 2;
+    transition: color .2s;
+}
+.emp-input-wrap:focus-within .emp-input-icon { color: #1a7a4a; }
+
+.emp-input {
+    width: 100%;
+    padding: 9px 12px 9px 36px;
+    border: 1.5px solid #dee2e6;
+    border-radius: 8px;
+    font-size: .88rem;
+    color: #2d3436;
+    background: #fff;
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+}
+.emp-input:focus {
+    border-color: #1a7a4a;
+    box-shadow: 0 0 0 3px rgba(26,122,74,.12);
+}
+.emp-input.no-icon { padding-left: 12px; }
+.emp-input-hint {
+    font-size: .72rem;
+    color: #adb5bd;
+    margin-top: 2px;
+}
+
+/* Input con sufijo (%) */
+.emp-input-suffix {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #dee2e6;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: border-color .2s, box-shadow .2s;
+}
+.emp-input-suffix:focus-within {
+    border-color: #1a7a4a;
+    box-shadow: 0 0 0 3px rgba(26,122,74,.12);
+}
+.emp-input-suffix input {
+    flex: 1;
+    border: none;
+    padding: 9px 12px 9px 36px;
+    font-size: .88rem;
+    outline: none;
+    background: transparent;
+}
+.emp-input-suffix .suffix-label {
+    background: #f8f9fa;
+    padding: 9px 12px;
+    font-size: .82rem;
+    font-weight: 700;
+    color: #6c757d;
+    border-left: 1px solid #dee2e6;
+}
+
+/* ── SECCIÓN SERIES ── */
+.emp-serie-card {
+    background: #f8f9fa;
+    border: 1.5px solid #e9ecef;
+    border-radius: 10px;
+    padding: 16px;
+    transition: border-color .2s;
+}
+.emp-serie-card:focus-within { border-color: #1a7a4a; }
+.emp-serie-title {
+    font-size: .75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    color: #6c757d;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.emp-serie-title i { color: #1a7a4a; }
+.emp-serie-input {
+    width: 100%;
+    border: 1.5px solid #dee2e6;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: monospace;
+    text-align: center;
+    text-transform: uppercase;
+    color: #1a7a4a;
+    background: #fff;
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+}
+.emp-serie-input:focus {
+    border-color: #1a7a4a;
+    box-shadow: 0 0 0 3px rgba(26,122,74,.12);
+}
+.emp-serie-preview {
+    margin-top: 8px;
+    font-size: .75rem;
+    color: #adb5bd;
+    text-align: center;
+}
+.emp-serie-preview strong { color: #1a7a4a; }
+
+/* ── LOGO UPLOAD ── */
+.emp-logo-dropzone {
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
+    padding: 24px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all .2s;
+    background: #fafafa;
+    position: relative;
+}
+.emp-logo-dropzone:hover,
+.emp-logo-dropzone.dragover {
+    border-color: #1a7a4a;
+    background: #f0fff4;
+}
+.emp-logo-dropzone img {
+    max-height: 80px;
+    max-width: 100%;
+    object-fit: contain;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+.emp-logo-dropzone .logo-placeholder i {
+    font-size: 2.5rem;
+    color: #dee2e6;
+    display: block;
+    margin-bottom: 8px;
+}
+.emp-logo-dropzone .logo-placeholder p {
+    font-size: .82rem;
+    color: #adb5bd;
+    margin: 0;
+}
+.emp-logo-change-btn {
+    display: inline-block;
+    margin-top: 10px;
+    background: #fff;
+    border: 1.5px solid #1a7a4a;
+    color: #1a7a4a;
+    border-radius: 6px;
+    padding: 5px 14px;
+    font-size: .8rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+}
+.emp-logo-change-btn:hover { background: #1a7a4a; color: #fff; }
+.emp-logo-filename {
+    font-size: .75rem;
+    color: #1a7a4a;
+    font-weight: 600;
+    margin-top: 6px;
+    background: #e8f5e9;
+    border-radius: 6px;
+    padding: 3px 10px;
+    display: inline-block;
+}
+
+/* ── BOTÓN GUARDAR ── */
+.emp-footer {
+    padding: 20px 28px;
+    background: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+.emp-footer-hint { font-size: .78rem; color: #adb5bd; }
+.emp-footer-hint .req { color: #e74c3c; }
+.btn-emp-save {
+    background: linear-gradient(135deg, #1a7a4a, #27ae60);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 32px;
+    font-weight: 700;
+    font-size: .95rem;
+    cursor: pointer;
+    transition: all .2s;
+    box-shadow: 0 4px 12px rgba(26,122,74,.3);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.btn-emp-save:hover {
+    background: linear-gradient(135deg, #155f3a, #1a7a4a);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(26,122,74,.4);
+}
+.btn-emp-save:disabled { opacity: .65; cursor: not-allowed; transform: none; }
+
+/* ── PANEL DERECHO ── */
+.emp-right-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 80px;
+}
+
+/* ── CARD GENÉRICA DERECHA ── */
+.emp-side-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08);
+    overflow: hidden;
+}
+.emp-side-card-header {
+    background: linear-gradient(90deg, #0d3b26, #1a7a4a);
+    color: #fff;
+    padding: 13px 18px;
+    font-weight: 700;
+    font-size: .88rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.emp-side-card-body { padding: 18px; }
+
+/* ── VISTA PREVIA COMPROBANTE ── */
+.emp-preview-doc {
+    background: #fff;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.emp-preview-doc-header {
+    padding: 14px 16px 12px;
+    text-align: center;
+    border-bottom: 2px solid #1a7a4a;
+    background: #fff;
+}
+.emp-preview-doc-header img {
+    max-height: 40px;
+    max-width: 120px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto 6px;
+}
+.emp-preview-doc-razon {
+    font-weight: 700;
+    font-size: .82rem;
+    color: #1a7a4a;
+    margin-bottom: 2px;
+}
+.emp-preview-doc-dato {
+    font-size: .7rem;
+    color: #636e72;
+    line-height: 1.6;
+}
+.emp-preview-doc-tipo {
+    background: #f8f9fa;
+    padding: 8px 16px;
+    text-align: center;
+    border-bottom: 1px solid #e9ecef;
+}
+.emp-preview-doc-tipo-label {
+    font-weight: 700;
+    font-size: .78rem;
+    color: #1a7a4a;
+}
+.emp-preview-doc-tipo-num {
+    font-size: .7rem;
+    color: #adb5bd;
+    margin-top: 1px;
+}
+.emp-preview-doc-pie {
+    padding: 10px 16px;
+    text-align: center;
+    font-size: .7rem;
+    color: #adb5bd;
+    font-style: italic;
+    background: #fafafa;
+}
+
+/* ── CHECKLIST DATOS ── */
+.emp-checklist { list-style: none; margin: 0; padding: 0; }
+.emp-check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: .83rem;
+}
+.emp-check-item:last-child { border-bottom: none; }
+.emp-check-icon-ok   { color: #27ae60; font-size: .85rem; flex-shrink: 0; }
+.emp-check-icon-warn { color: #f39c12; font-size: .85rem; flex-shrink: 0; }
+.emp-check-label { font-weight: 600; color: #495057; flex-shrink: 0; min-width: 90px; }
+.emp-check-val   { color: #2d3436; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .8rem; }
+.emp-check-empty { color: #adb5bd; font-style: italic; font-size: .8rem; }
+
+/* ── ALERTA ERROR TABLA ── */
+.emp-alert-error {
+    background: #fff5f5;
+    border: 1px solid #fed7d7;
+    border-left: 4px solid #e74c3c;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+    color: #c53030;
+    font-size: .9rem;
+}

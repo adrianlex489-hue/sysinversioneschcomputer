@@ -1,0 +1,171 @@
+/* ============================================================
+   clientes.css — Módulo Gestión de Clientes | Botica 2026
+   ============================================================ */
+
+:root {
+    --botica-verde:       #1a7a4a;
+    --botica-verde-claro: #27ae60;
+    --botica-celeste:     #2980b9;
+    --botica-rojo:        #e74c3c;
+    --botica-naranja:     #e67e22;
+}
+
+/* ── CABECERA DE PÁGINA ── */
+.page-header-botica {
+    background: linear-gradient(135deg, #1a7a4a 0%, #27ae60 100%);
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(26,122,74,.25);
+}
+.page-header-botica h4 { margin: 0; font-weight: 700; font-size: 1.2rem; }
+.page-header-botica small { opacity: .85; font-size: .82rem; }
+
+/* ── TARJETAS ── */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+}
+.card-header-botica {
+    background: linear-gradient(90deg, #1a7a4a, #27ae60);
+    color: #fff;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px;
+}
+.card-header-botica h6 { margin: 0; font-weight: 700; font-size: .95rem; }
+
+/* ── TABS ── */
+.nav-tabs-botica .nav-link {
+    color: #555;
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all .2s;
+}
+.nav-tabs-botica .nav-link:hover { color: var(--botica-verde); }
+.nav-tabs-botica .nav-link.active {
+    color: var(--botica-verde);
+    border-bottom: 3px solid var(--botica-verde);
+    background: transparent;
+}
+
+/* ── BOTONES ── */
+.btn-botica-primary {
+    background: linear-gradient(135deg, #1a7a4a, #27ae60);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-weight: 600;
+    transition: all .2s;
+}
+.btn-botica-primary:hover {
+    background: linear-gradient(135deg, #145a32, #1e8449);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26,122,74,.3);
+}
+.btn-botica-danger {
+    background: linear-gradient(135deg, #922b21, #e74c3c);
+    color: #fff;
+    border: none;
+    border-radius: 7px;
+    font-weight: 600;
+    transition: all .2s;
+}
+.btn-botica-danger:hover {
+    background: linear-gradient(135deg, #7b241c, #c0392b);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* ── TABLA ── */
+.table-clientes thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 2px solid var(--botica-verde);
+}
+.table-clientes tbody tr:hover { background: #f0faf4; }
+.table-clientes td { vertical-align: middle; font-size: .88rem; }
+
+/* ── BADGE DNI ── */
+.badge-dni {
+    background: #e8f5e9;
+    color: #1a7a4a;
+    border: 1px solid #a5d6a7;
+    font-size: .78rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+.badge-activo   { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+.badge-inactivo { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+/* ── MODAL ── */
+.modal-header-botica {
+    background: linear-gradient(135deg, #1a7a4a, #27ae60);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+}
+.modal-header-botica .close { color: #fff; opacity: .8; }
+.modal-header-botica .close:hover { opacity: 1; }
+.modal-content { border: none; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,.15); }
+
+/* ── CAMPO DNI CON BOTÓN RENIEC ── */
+.input-dni-group .btn-reniec {
+    background: linear-gradient(135deg, #1a5276, #2980b9);
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    font-size: .82rem;
+    white-space: nowrap;
+}
+.input-dni-group .btn-reniec:hover {
+    background: linear-gradient(135deg, #154360, #1a6fa0);
+    color: #fff;
+}
+.input-dni-group .btn-reniec .spinner-border { width: 14px; height: 14px; border-width: 2px; }
+
+/* ── RESULTADO RENIEC ── */
+.reniec-result {
+    background: #e8f5e9;
+    border: 1px solid #a5d6a7;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: .85rem;
+    display: none;
+}
+.reniec-result.show { display: block; }
+.reniec-result .reniec-nombre { font-weight: 700; color: #1a7a4a; font-size: .95rem; }
+
+/* ── FORM LABELS ── */
+.form-label-botica {
+    font-weight: 600;
+    color: #495057;
+    font-size: .85rem;
+    margin-bottom: 4px;
+}
+.form-control:focus {
+    border-color: var(--botica-verde);
+    box-shadow: 0 0 0 .2rem rgba(26,122,74,.2);
+}
+
+/* ── STATS CARDS ── */
+.stat-mini {
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+}
+.stat-mini i { font-size: 1.8rem; opacity: .8; }
+.stat-mini .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.stat-mini .stat-label { font-size: .78rem; opacity: .9; }

@@ -1,0 +1,269 @@
+/* ============================================================
+   lotes.css — Módulo Lotes / Vencimientos | Botica 2026
+   ============================================================ */
+
+:root {
+    --lote-azul:        #1a5276;
+    --lote-azul-med:    #2980b9;
+    --lote-verde:       #1a7a4a;
+    --lote-verde-claro: #27ae60;
+    --lote-naranja:     #e67e22;
+    --lote-rojo:        #e74c3c;
+    --lote-teal:        #117a8b;
+    --lote-amarillo:    #f39c12;
+}
+
+/* ── CABECERA ── */
+.page-header-lotes {
+    background: linear-gradient(135deg, #1a5276 0%, #117a8b 55%, #0e6655 100%);
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(26, 82, 118, .28);
+}
+.page-header-lotes h4    { margin: 0; font-weight: 700; font-size: 1.2rem; }
+.page-header-lotes small { opacity: .85; font-size: .82rem; }
+
+/* ── STATS ── */
+.stat-mini-lotes {
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, .12);
+    transition: transform .2s;
+}
+.stat-mini-lotes:hover { transform: translateY(-2px); }
+.stat-mini-lotes i           { font-size: 1.9rem; opacity: .8; }
+.stat-mini-lotes .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.stat-mini-lotes .stat-label { font-size: .78rem; opacity: .9; margin-top: 2px; }
+
+/* ── ALERTAS BANNER ── */
+.alerta-banner {
+    border-radius: 8px;
+    padding: 12px 18px;
+    font-size: .88rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+}
+.alerta-vencidos {
+    background: #f8d7da;
+    color: #721c24;
+    border-left: 5px solid var(--lote-rojo);
+}
+.alerta-pronto {
+    background: #fff3cd;
+    color: #856404;
+    border-left: 5px solid var(--lote-naranja);
+}
+
+/* ── FILTROS ── */
+.filtros-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 12px 18px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+}
+.btn-filtro-lote {
+    border: 2px solid #dee2e6;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    background: #fff;
+    color: #555;
+    transition: all .2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+.btn-filtro-lote:hover,
+.btn-filtro-lote.active {
+    background: var(--lote-azul);
+    border-color: var(--lote-azul);
+    color: #fff;
+}
+.btn-filtro-lote.filtro-pronto:hover,
+.btn-filtro-lote.filtro-pronto.active {
+    background: var(--lote-naranja);
+    border-color: var(--lote-naranja);
+    color: #fff;
+}
+.btn-filtro-lote.filtro-vencido:hover,
+.btn-filtro-lote.filtro-vencido.active {
+    background: var(--lote-rojo);
+    border-color: var(--lote-rojo);
+    color: #fff;
+}
+.btn-filtro-lote.filtro-agotado:hover,
+.btn-filtro-lote.filtro-agotado.active {
+    background: #6c757d;
+    border-color: #6c757d;
+    color: #fff;
+}
+.badge-count {
+    background: rgba(255,255,255,.3);
+    border-radius: 10px;
+    padding: 1px 7px;
+    font-size: .72rem;
+}
+.btn-filtro-lote.active .badge-count { background: rgba(255,255,255,.3); }
+
+/* ── CARD ── */
+.content-wrapper .card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, .07);
+}
+.card-header-lotes {
+    background: linear-gradient(90deg, #1a5276, #117a8b);
+    color: #fff;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px;
+}
+.card-header-lotes h6 { margin: 0; font-weight: 700; font-size: .95rem; }
+
+/* ── TABLA ── */
+.table-lotes thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    border-bottom: 2px solid var(--lote-azul-med);
+    padding: 10px 12px;
+    white-space: nowrap;
+}
+.table-lotes tbody tr { transition: background .15s; }
+.table-lotes tbody tr:hover { background: #f0f8ff !important; }
+.table-lotes td {
+    vertical-align: middle;
+    font-size: .85rem;
+    padding: 9px 12px;
+    border-color: #e9ecef;
+}
+
+/* ── FILAS COLOREADAS POR ESTADO ── */
+.fila-vencida { background: #fff5f5 !important; }
+.fila-vencida:hover { background: #ffe8e8 !important; }
+.fila-critica { background: #fff8f0 !important; }
+.fila-critica:hover { background: #fff0e0 !important; }
+.fila-pronto  { background: #fffef0 !important; }
+.fila-pronto:hover  { background: #fffce0 !important; }
+
+/* ── NÚMERO DE FILA ── */
+.num-fila-lote {
+    width: 28px; height: 28px;
+    background: #e3f2fd;
+    color: var(--lote-azul);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .72rem; font-weight: 700;
+    margin: auto;
+}
+
+/* ── CÓDIGO DE LOTE ── */
+.codigo-lote {
+    background: #e0f7fa;
+    color: var(--lote-teal);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .3px;
+}
+
+/* ── BADGES VENCIMIENTO ── */
+.badge-lote-vigente {
+    background: #d4edda; color: #155724;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: .72rem; font-weight: 700;
+    display: inline-block;
+}
+.badge-lote-pronto {
+    background: #fff3cd; color: #856404;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: .72rem; font-weight: 700;
+    display: inline-block;
+}
+.badge-lote-critico {
+    background: #f8d7da; color: #721c24;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: .72rem; font-weight: 700;
+    display: inline-block;
+}
+.badge-lote-vencido {
+    background: #721c24; color: #fff;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: .72rem; font-weight: 700;
+    display: inline-block;
+}
+
+/* ── BADGES STOCK ── */
+.badge-stock-ok {
+    background: #d4edda; color: #155724;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: .78rem; font-weight: 600;
+    display: inline-block;
+}
+.badge-stock-bajo {
+    background: #fff3cd; color: #856404;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: .78rem; font-weight: 600;
+    display: inline-block;
+}
+.badge-stock-agotado {
+    background: #f8d7da; color: #721c24;
+    padding: 3px 10px; border-radius: 20px;
+    font-size: .78rem; font-weight: 600;
+    display: inline-block;
+}
+
+/* ── BADGE CATEGORÍA ── */
+.badge-categoria-lote {
+    background: #e3f2fd;
+    color: var(--lote-azul);
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: .7rem;
+    font-weight: 600;
+    display: inline-block;
+    margin-top: 3px;
+}
+
+/* ── BARRA DE CONSUMO MINI ── */
+.barra-consumo-mini {
+    background: #e9ecef;
+    border-radius: 6px;
+    height: 8px;
+    overflow: hidden;
+    width: 80px;
+    margin: auto;
+}
+.barra-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width .4s ease;
+}
+
+/* ── MODAL ── */
+#modalVerLote .modal-content {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, .2);
+    overflow: hidden;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+    .page-header-lotes { padding: 14px; }
+    .filtros-card { padding: 10px 12px; }
+    .table-lotes td, .table-lotes thead th { font-size: .78rem; padding: 7px 8px; }
+    .barra-consumo-mini { width: 55px; }
+}

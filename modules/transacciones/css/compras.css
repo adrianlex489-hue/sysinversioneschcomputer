@@ -1,0 +1,465 @@
+/* ============================================================
+   compras.css — Módulo Registro de Compras | Botica 2026
+   ============================================================ */
+
+:root {
+    --comp-azul:        #1a5276;
+    --comp-azul-med:    #2980b9;
+    --comp-verde:       #1a7a4a;
+    --comp-verde-claro: #27ae60;
+    --comp-naranja:     #e67e22;
+    --comp-rojo:        #e74c3c;
+    --comp-morado:      #8e44ad;
+    --comp-teal:        #117a8b;
+}
+
+/* ── CABECERA ── */
+.page-header-comp {
+    background: linear-gradient(135deg, #1a5276 0%, #2980b9 55%, #117a8b 100%);
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(26,82,118,.28);
+}
+.page-header-comp h4  { margin: 0; font-weight: 700; font-size: 1.2rem; }
+.page-header-comp small { opacity: .85; font-size: .82rem; }
+
+/* ── STATS ── */
+.stat-mini-comp {
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.12);
+    transition: transform .2s;
+}
+.stat-mini-comp:hover { transform: translateY(-2px); }
+.stat-mini-comp i { font-size: 1.9rem; opacity: .8; }
+.stat-mini-comp .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.stat-mini-comp .stat-label { font-size: .78rem; opacity: .9; margin-top: 2px; }
+
+/* ── CARD (solo dentro del content-wrapper) ── */
+.content-wrapper .card { border: none; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+.card-header-comp {
+    background: linear-gradient(90deg, #1a5276, #2980b9);
+    color: #fff;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px;
+}
+.card-header-comp h6 { margin: 0; font-weight: 700; font-size: .95rem; }
+
+/* ── FORMULARIO NUEVA COMPRA ── */
+.form-compra-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,.08);
+    overflow: hidden;
+}
+.form-compra-header {
+    background: linear-gradient(135deg, #1a5276, #2980b9);
+    color: #fff;
+    padding: 16px 22px;
+}
+.form-compra-header h5 { margin: 0; font-weight: 700; font-size: 1rem; }
+.form-compra-body { padding: 20px 22px; }
+
+.form-label-comp {
+    font-weight: 600;
+    color: #495057;
+    font-size: .83rem;
+    margin-bottom: 4px;
+    display: block;
+}
+/* Solo afecta inputs dentro del formulario de compras */
+.form-compra-body .form-control:focus,
+.form-compra-body .form-select:focus {
+    border-color: var(--comp-azul-med);
+    box-shadow: 0 0 0 .2rem rgba(41,128,185,.2);
+}
+
+/* ── CAMPO SELECTOR (proveedor, producto) ── */
+.campo-selector {
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: .88rem;
+    transition: border-color .2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 34px;
+}
+.campo-selector:hover { border-color: var(--comp-azul-med); background: #f0f8ff; }
+.campo-selector.seleccionado {
+    border-color: var(--comp-verde);
+    background: #eafaf1;
+    color: #1a7a4a;
+    font-weight: 700;
+}
+.campo-selector .placeholder-text { color: #aaa; font-style: italic; font-size: .83rem; }
+.campo-selector .selected-text { color: #1a7a4a; font-weight: 700; font-size: .88rem; }
+
+/* ── TABLA DE DETALLE ── */
+.tabla-detalle-wrapper {
+    border: 2px solid #e3f2fd;
+    border-radius: 10px;
+    overflow: hidden;
+}
+.tabla-detalle thead th {
+    background: linear-gradient(90deg, #1a5276, #2980b9);
+    color: #fff;
+    font-size: .8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    padding: 10px 12px;
+    border: none;
+}
+.tabla-detalle tbody tr { transition: background .15s; }
+.tabla-detalle tbody tr:hover { background: #f0f8ff; }
+.tabla-detalle td {
+    vertical-align: middle;
+    font-size: .87rem;
+    padding: 8px 12px;
+    border-color: #e9ecef;
+}
+.tabla-detalle tfoot td {
+    background: #f8f9fa;
+    font-weight: 700;
+    font-size: .88rem;
+    padding: 8px 12px;
+    border-top: 2px solid #dee2e6;
+}
+
+/* ── FILA VACÍA ── */
+.fila-vacia td {
+    text-align: center;
+    padding: 30px !important;
+    color: #aaa;
+    font-style: italic;
+}
+.fila-vacia i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: .3; }
+
+/* ── BOTÓN QUITAR FILA ── */
+.btn-quitar-item {
+    background: rgba(231,76,60,.1);
+    color: var(--comp-rojo);
+    border: 1px solid rgba(231,76,60,.3);
+    border-radius: 6px;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: all .2s;
+    font-size: .8rem;
+}
+.btn-quitar-item:hover {
+    background: var(--comp-rojo);
+    color: #fff;
+    border-color: var(--comp-rojo);
+}
+
+/* ── RESUMEN TOTALES ── */
+.resumen-totales {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    padding: 16px 20px;
+    border: 1px solid #dee2e6;
+}
+.resumen-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: .88rem;
+    color: #555;
+}
+.resumen-row.total-final {
+    border-top: 2px solid #dee2e6;
+    margin-top: 8px;
+    padding-top: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--comp-azul);
+}
+.resumen-row .monto {
+    font-weight: 600;
+    color: #2d3436;
+    font-family: monospace;
+    font-size: .92rem;
+}
+.resumen-row.total-final .monto {
+    font-size: 1.2rem;
+    color: var(--comp-verde);
+}
+
+/* ── BADGE ESTADO COMPRA ── */
+.badge-comp-pagado   { background:#d4edda; color:#155724; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
+.badge-comp-pendiente{ background:#fff3cd; color:#856404; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
+.badge-comp-anulado  { background:#f8d7da; color:#721c24; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
+
+/* ── BADGE TIPO PAGO ── */
+.badge-contado { background:#e3f2fd; color:#1a5276; padding:3px 10px; border-radius:20px; font-size:.75rem; font-weight:600; border:1px solid #bbdefb; }
+.badge-credito  { background:#fff3e0; color:#e67e22; padding:3px 10px; border-radius:20px; font-size:.75rem; font-weight:600; border:1px solid #ffe0b2; }
+
+/* ── TABLA HISTORIAL ── */
+.table-compras thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    border-bottom: 2px solid var(--comp-azul-med);
+}
+.table-compras tbody tr:hover { background: #eaf4fb; }
+.table-compras td { vertical-align: middle; font-size: .87rem; }
+
+/* ── MODAL (solo modales de compras) ── */
+#modalSelectorProveedor .modal-content,
+#modalSelectorProducto .modal-content,
+#modalDetalleItem .modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(0,0,0,.2);
+    overflow: hidden;
+}
+
+/* ── ITEMS SELECTOR ── */
+.item-selector {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all .15s;
+    background: #fff;
+}
+.item-selector:hover {
+    background: #e3f2fd;
+    border-color: var(--comp-azul-med);
+    transform: translateX(3px);
+    box-shadow: 0 2px 8px rgba(41,128,185,.15);
+}
+.item-selector .item-nombre { font-weight: 700; font-size: .9rem; color: #2d3436; }
+.item-selector .item-sub    { font-size: .75rem; color: #999; margin-top: 2px; }
+
+/* ── SECCIÓN PAGO ── */
+.seccion-pago {
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border: 1px solid #c8e6c9;
+    border-radius: 10px;
+    padding: 16px 18px;
+}
+.seccion-pago h6 { color: var(--comp-verde); font-weight: 700; margin-bottom: 12px; }
+
+/* ── MÉTODO PAGO BOTONES ── */
+.metodo-pago-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-metodo {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    background: #fff;
+    color: #555;
+}
+.btn-metodo:hover, .btn-metodo.activo {
+    border-color: var(--comp-azul-med);
+    background: var(--comp-azul-med);
+    color: #fff;
+}
+
+/* ── NÚMERO FILA ── */
+.num-fila-comp {
+    width: 26px; height: 26px;
+    background: #e3f2fd;
+    color: #1a5276;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .72rem; font-weight: 700;
+    margin: auto;
+}
+
+/* ── ALERTA VENCIMIENTO ── */
+.alerta-vence-pronto { background: #fff3cd; color: #856404; border-radius: 4px; padding: 2px 8px; font-size: .72rem; font-weight: 600; }
+.alerta-vencido      { background: #f8d7da; color: #721c24; border-radius: 4px; padding: 2px 8px; font-size: .72rem; font-weight: 600; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+    .form-compra-body { padding: 14px; }
+    .resumen-totales  { margin-top: 16px; }
+}
+
+/* ── TIPO PAGO BOTONES ── */
+.btn-tipo-pago {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 8px;
+    font-size: .85rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: #fff;
+    color: #555;
+    transition: all .2s;
+    text-align: center;
+}
+.btn-tipo-pago.activo,
+.btn-tipo-pago:hover {
+    border-color: var(--comp-azul);
+    background: var(--comp-azul);
+    color: #fff;
+}
+
+/* ── BOTONES CUOTA ── */
+.btn-cuota {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: .9rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: #fff;
+    color: #555;
+    transition: all .2s;
+    min-width: 44px;
+}
+.btn-cuota.activo,
+.btn-cuota:hover {
+    border-color: var(--comp-naranja);
+    background: var(--comp-naranja);
+    color: #fff;
+}
+
+/* ── PANEL CREDITO ── */
+#panelCredito {
+    background: #fffbf5;
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid #ffe0b2;
+    margin-top: 4px;
+}
+
+/* ── PREFIJO COMPROBANTE ── */
+#prefijo_comprobante {
+    font-family: monospace;
+    font-weight: 700;
+    color: #1a5276;
+    background: #e3f2fd;
+    border-color: #bbdefb;
+    min-width: 52px;
+    text-align: center;
+}
+#numero_comprobante {
+    background: #f8f9fa !important;
+    font-family: monospace;
+    font-weight: 700;
+    color: #1a5276;
+    cursor: default;
+}
+
+/* ── BOTONES METODO PAGO MODAL ── */
+.btn-metodo-pago {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    background: #fff;
+    color: #555;
+    margin-bottom: 4px;
+}
+.btn-metodo-pago:hover {
+    border-color: var(--comp-verde);
+    background: var(--comp-verde);
+    color: #fff;
+}
+
+/* ── PANEL BÚSQUEDA API RUC ── */
+.panel-buscar-api {
+    background: linear-gradient(135deg, #e3f2fd, #e8eaf6);
+    border: 1px solid #bbdefb;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+.panel-buscar-api-title {
+    font-size: .8rem;
+    font-weight: 700;
+    color: #1a5276;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+.resultado-api-card {
+    background: #fff;
+    border: 1.5px solid #bbdefb;
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+.resultado-api-nombre {
+    font-weight: 700;
+    font-size: .95rem;
+    color: #2d3436;
+    margin-bottom: 4px;
+}
+.resultado-api-dato {
+    font-size: .8rem;
+    color: #636e72;
+    margin-bottom: 2px;
+}
+.resultado-api-dato i { color: #1a5276; width: 14px; }
+.resultado-api-acciones {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+.btn-api-usar {
+    background: linear-gradient(135deg, #1a5276, #2980b9);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: .82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+}
+.btn-api-usar:hover { opacity: .9; transform: translateY(-1px); }
+.btn-api-guardar-usar {
+    background: #fff;
+    color: #1a5276;
+    border: 1.5px solid #1a5276;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-size: .82rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all .2s;
+}
+.btn-api-guardar-usar:hover { background: #1a5276; color: #fff; }
+
+/* ── FORMULARIO BLOQUEADO (sin caja abierta) ── */
+.form-bloqueado input,
+.form-bloqueado select,
+.form-bloqueado textarea,
+.form-bloqueado .campo-selector {
+    pointer-events: none !important;
+    user-select: none !important;
+    cursor: not-allowed !important;
+    background: #f8f9fa !important;
+    color: #adb5bd !important;
+}
+.form-bloqueado button,
+.form-bloqueado .btn {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}

@@ -1,0 +1,218 @@
+/* ============================================================
+   productos.css — Módulo Gestión de Productos | Botica 2026
+   ============================================================ */
+:root {
+    --prod-verde:       #1a7a4a;
+    --prod-verde-claro: #27ae60;
+    --prod-azul:        #2980b9;
+    --prod-rojo:        #e74c3c;
+    --prod-naranja:     #e67e22;
+    --prod-morado:      #8e44ad;
+}
+
+/* ── CABECERA ── */
+.page-header-prod {
+    background: linear-gradient(135deg, #1a5276 0%, #2980b9 60%, #1a7a4a 100%);
+    color: #fff; padding: 18px 24px; border-radius: 10px;
+    margin-bottom: 20px; box-shadow: 0 4px 15px rgba(26,82,118,.25);
+}
+.page-header-prod h4  { margin: 0; font-weight: 700; font-size: 1.2rem; }
+.page-header-prod small { opacity: .85; font-size: .82rem; }
+
+/* ── CARD ── */
+.card { border: none; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+.card-header-prod {
+    background: linear-gradient(90deg, #1a5276, #2980b9);
+    color: #fff; border-radius: 10px 10px 0 0 !important; padding: 12px 18px;
+}
+.card-header-prod h6 { margin: 0; font-weight: 700; font-size: .95rem; }
+
+/* ── STATS ── */
+.stat-mini {
+    border-radius: 8px; padding: 14px 18px; color: #fff;
+    display: flex; align-items: center; gap: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+}
+.stat-mini i { font-size: 1.8rem; opacity: .8; }
+.stat-mini .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.stat-mini .stat-label { font-size: .78rem; opacity: .9; }
+
+/* ── TABLA ── */
+.table-productos thead th {
+    background: #f8f9fa; color: #495057; font-weight: 700;
+    font-size: .82rem; text-transform: uppercase; letter-spacing: .5px;
+    border-bottom: 2px solid var(--prod-azul);
+}
+.table-productos tbody tr:hover { background: #eaf4fb; }
+.table-productos td { vertical-align: middle; font-size: .88rem; }
+
+/* ── VISTA GRID ── */
+.producto-card {
+    border-radius: 12px; overflow: hidden; border: none;
+    box-shadow: 0 3px 15px rgba(0,0,0,.08);
+    transition: transform .2s, box-shadow .2s;
+    height: 100%;
+}
+.producto-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,.15); }
+.producto-card .card-img-top {
+    height: 160px; object-fit: contain; background: #f8f9fa;
+    padding: 8px;
+}
+.producto-card .img-placeholder {
+    height: 160px; background: linear-gradient(135deg,#e8f4fd,#d6eaf8);
+    display: flex; align-items: center; justify-content: center;
+}
+.producto-card .img-placeholder i { font-size: 3rem; color: #aed6f1; }
+.producto-card .card-body { padding: 12px; }
+.producto-card .precio-venta { font-size: 1.2rem; font-weight: 700; color: var(--prod-verde); }
+.producto-card .precio-compra { font-size: .78rem; color: #999; }
+.producto-card .badge-categoria {
+    background: #e8f5e9; color: #1a7a4a; border: 1px solid #a5d6a7;
+    font-size: .72rem; padding: 2px 8px; border-radius: 20px; font-weight: 600;
+}
+.producto-card .badge-receta {
+    background: #fde8e8; color: #c0392b; border: 1px solid #f5b7b1;
+    font-size: .72rem; padding: 2px 8px; border-radius: 20px; font-weight: 600;
+}
+.producto-card .stock-badge {
+    font-size: .78rem; padding: 3px 8px; border-radius: 20px; font-weight: 600;
+}
+.stock-ok      { background: #d4edda; color: #155724; }
+.stock-bajo    { background: #fff3cd; color: #856404; }
+.stock-critico { background: #f8d7da; color: #721c24; }
+
+/* ── TOGGLE VISTA ── */
+.btn-vista { border-radius: 6px; padding: 5px 10px; font-size: .85rem; }
+.btn-vista.active { background: var(--prod-azul); color: #fff; border-color: var(--prod-azul); }
+
+/* ── UPLOAD IMÁGENES ── */
+.upload-area {
+    border: 2px dashed #aed6f1; border-radius: 10px;
+    padding: 20px; text-align: center; cursor: pointer;
+    transition: all .2s; background: #f8fbff;
+}
+.upload-area:hover { border-color: var(--prod-azul); background: #eaf4fb; }
+.upload-area i { font-size: 2rem; color: #aed6f1; display: block; margin-bottom: 8px; }
+.upload-area p { margin: 0; font-size: .85rem; color: #999; }
+.preview-container { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.preview-item {
+    position: relative; width: 80px; height: 80px;
+    border-radius: 8px; overflow: hidden; border: 2px solid #dee2e6;
+    background: #f8f9fa;
+}
+.preview-item img { 
+    width: 100%; height: 100%; 
+    object-fit: contain; 
+    padding: 4px;
+}
+.preview-item .btn-remove-img {
+    position: absolute; top: 2px; right: 2px;
+    background: rgba(231,76,60,.9); color: #fff; border: none;
+    border-radius: 50%; width: 22px; height: 22px;
+    font-size: .7rem; display: flex; align-items: center; justify-content: center;
+    cursor: pointer; line-height: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    transition: all .2s;
+}
+.preview-item .btn-remove-img:hover {
+    background: rgba(231,76,60,1);
+    transform: scale(1.1);
+}
+.preview-item.principal { border-color: var(--prod-verde); border-width: 3px; }
+.preview-item .badge-principal {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: rgba(26,122,74,.9); color: #fff;
+    font-size: .6rem; text-align: center; padding: 3px;
+    font-weight: 600;
+}
+
+/* ── MODAL VER PRODUCTO ── */
+.modal-prod-header {
+    background: linear-gradient(135deg, #1a5276, #2980b9);
+    color: #fff; padding: 0;
+}
+.modal-prod-gallery { display: flex; gap: 8px; flex-wrap: wrap; }
+.modal-prod-gallery .thumb {
+    width: 60px; height: 60px; border-radius: 6px; overflow: hidden;
+    border: 2px solid #dee2e6; cursor: pointer; transition: border-color .2s;
+}
+.modal-prod-gallery .thumb:hover,
+.modal-prod-gallery .thumb.active { border-color: var(--prod-azul); }
+.modal-prod-gallery .thumb img { width: 100%; height: 100%; object-fit: contain; padding: 4px; background: #fff; }
+.modal-prod-main-img {
+    width: 100%; height: 280px; object-fit: contain;
+    border-radius: 10px; background: #f8f9fa; border: 1px solid #dee2e6;
+    padding: 10px;
+    transition: opacity 0.3s ease;
+}
+.info-row {
+    display: flex; align-items: flex-start; gap: 10px; margin-bottom: 14px;
+}
+.info-icon {
+    width: 32px; height: 32px; border-radius: 7px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.info-label { font-size: .7rem; color: #999; text-transform: uppercase; letter-spacing: .5px; font-weight: 600; }
+.info-value { font-size: .9rem; color: #2d3436; font-weight: 500; }
+
+/* ── FORM LABELS ── */
+.form-label-prod { font-weight: 600; color: #495057; font-size: .85rem; margin-bottom: 4px; }
+.form-control:focus { border-color: var(--prod-azul); box-shadow: 0 0 0 .2rem rgba(41,128,185,.2); }
+
+/* ── MODAL ── */
+.modal-content { border: none; border-radius: 12px; box-shadow: 0 15px 50px rgba(0,0,0,.2); overflow: hidden; }
+
+/* ── ITEMS SELECTOR — dentro de modales Bootstrap ── */
+.item-categoria,
+.item-unidad,
+.item-proveedor {
+    transition: all .15s ease;
+    cursor: pointer;
+}
+.item-categoria:hover {
+    background: #e8f5e9 !important;
+    transform: translateX(4px);
+    box-shadow: 0 3px 10px rgba(26,122,74,.12);
+    border-left-color: #1a7a4a !important;
+}
+.item-unidad:hover {
+    background: #e0f7fa !important;
+    transform: translateX(4px);
+    box-shadow: 0 3px 10px rgba(17,122,139,.12);
+    border-left-color: #117a8b !important;
+}
+.item-proveedor:hover {
+    background: #e3f2fd !important;
+    transform: translateX(4px);
+    box-shadow: 0 3px 10px rgba(26,82,118,.12);
+    border-left-color: #1a5276 !important;
+}
+
+/* ── CAMPO VERDE PERMANENTE AL SELECCIONAR ── */
+.form-control.campo-ok,
+input.campo-seleccionado {
+    border-color    : #27ae60 !important;
+    background      : #eafaf1 !important;
+    color           : #1a7a4a !important;
+    font-weight     : 700     !important;
+    box-shadow      : 0 0 0 .2rem rgba(39,174,96,.2) !important;
+    transition      : all .3s ease;
+}
+
+/* ── MODALES SELECTORES — tamaño grande y centrado ── */
+#modalSelectorCategoria .modal-dialog,
+#modalSelectorUnidad    .modal-dialog,
+#modalSelectorProveedor .modal-dialog {
+    max-width : 600px;
+    width     : 95%;
+    margin    : 1.75rem auto;
+}
+#modalSelectorCategoria .modal-body,
+#modalSelectorUnidad    .modal-body,
+#modalSelectorProveedor .modal-body {
+    padding: 1rem 1.2rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+

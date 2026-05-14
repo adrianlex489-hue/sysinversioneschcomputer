@@ -1,0 +1,133 @@
+/* ============================================================
+   categorias.css — Módulo Gestión de Categorías | Botica 2026
+   ============================================================ */
+:root {
+    --cat-verde:       #1a7a4a;
+    --cat-verde-claro: #27ae60;
+    --cat-azul:        #2980b9;
+    --cat-azul-oscuro: #1a5276;
+    --cat-rojo:        #e74c3c;
+    --cat-naranja:     #e67e22;
+}
+
+/* ── CABECERA ── */
+.page-header-cat {
+    background: linear-gradient(135deg, #1a5276 0%, #2980b9 60%, #1a7a4a 100%);
+    color: #fff;
+    padding: 18px 24px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 15px rgba(26,82,118,.25);
+}
+.page-header-cat h4  { margin: 0; font-weight: 700; font-size: 1.2rem; }
+.page-header-cat small { opacity: .85; font-size: .82rem; }
+
+/* ── CARD ── */
+.card { border: none; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+.card-header-cat {
+    background: linear-gradient(90deg, #1a5276, #2980b9);
+    color: #fff;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px;
+}
+.card-header-cat h6 { margin: 0; font-weight: 700; font-size: .95rem; }
+
+/* ── STATS ── */
+.stat-mini-cat {
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+}
+.stat-mini-cat i { font-size: 1.8rem; opacity: .8; }
+.stat-mini-cat .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.stat-mini-cat .stat-label { font-size: .78rem; opacity: .9; }
+
+/* ── TABLA ── */
+.table-categorias thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    font-size: .82rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 2px solid var(--cat-azul);
+}
+.table-categorias tbody tr:hover { background: #eaf4fb; }
+.table-categorias td { vertical-align: middle; font-size: .88rem; }
+
+/* ── BADGE ESTADO ── */
+.badge-activo {
+    background: #d4edda; color: #155724;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: .78rem; font-weight: 600;
+}
+.badge-inactivo {
+    background: #f8d7da; color: #721c24;
+    padding: 4px 12px; border-radius: 20px;
+    font-size: .78rem; font-weight: 600;
+}
+
+/* ── BADGE PRODUCTOS ── */
+.badge-productos {
+    background: #e3f2fd; color: #1a5276;
+    padding: 4px 10px; border-radius: 20px;
+    font-size: .78rem; font-weight: 600;
+    border: 1px solid #bbdefb;
+}
+
+/* ── MODAL ── */
+.modal-content {
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 15px 50px rgba(0,0,0,.2);
+    overflow: hidden;
+}
+
+/* ── FORM LABELS ── */
+.form-label-cat {
+    font-weight: 600;
+    color: #495057;
+    font-size: .85rem;
+    margin-bottom: 4px;
+}
+.form-control:focus {
+    border-color: var(--cat-azul);
+    box-shadow: 0 0 0 .2rem rgba(41,128,185,.2);
+}
+
+/* ── ICONO CATEGORÍA EN TABLA ── */
+.cat-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, #e8f5e9, #d4edda);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.cat-icon i { color: var(--cat-verde); font-size: .9rem; }
+
+/* ── NOMBRE CATEGORÍA ── */
+.cat-nombre {
+    font-weight: 700;
+    color: #2d3436;
+    font-size: .9rem;
+}
+.cat-descripcion {
+    font-size: .75rem;
+    color: #999;
+    margin-top: 2px;
+}
+
+/* ── NÚMERO DE FILA ── */
+.num-fila {
+    width: 28px; height: 28px;
+    background: #e3f2fd;
+    color: #1a5276;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .75rem; font-weight: 700;
+    margin: auto;
+}
