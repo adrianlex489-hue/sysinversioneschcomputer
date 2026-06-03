@@ -1,0 +1,174 @@
+/* ============================================================
+   cierre_caja.css — Cierre de Caja | SysInversiones CH Computer 2026
+   Estilos exclusivos de la pantalla de cierre y cuadre.
+   Requiere caja.css cargado primero (variables y base).
+   ============================================================ */
+
+/* ── HEADER CIERRE ── */
+.cx-cierre-hdr {
+    background: linear-gradient(135deg, #0c1a3a 0%, #0f3460 60%, #0ea5e9 100%);
+    color: #fff; padding: 16px 22px; border-radius: var(--cx-radius);
+    margin-bottom: 22px; box-shadow: 0 4px 20px rgba(14,165,233,.22);
+    position: relative; overflow: hidden;
+}
+.cx-cierre-hdr::before {
+    content: ''; position: absolute; top: -40px; right: -40px;
+    width: 140px; height: 140px; border-radius: 50%;
+    background: rgba(255,255,255,.04);
+}
+.cx-cierre-hdr h4    { margin: 0; font-weight: 800; font-size: 1.2rem; color: #fff; }
+.cx-cierre-hdr small { opacity: .8; font-size: .8rem; }
+
+/* ── BARRA DE INFORMACIÓN ── */
+.cx-info-bar {
+    display: flex; flex-wrap: wrap; background: #fff;
+    border-radius: var(--cx-radius); box-shadow: var(--cx-shadow);
+    border: 1px solid #bae6fd; overflow: hidden; margin-bottom: 22px;
+}
+.cx-info-item {
+    display: flex; flex-direction: column;
+    padding: 13px 18px; flex: 1; min-width: 110px;
+}
+.cx-info-lbl {
+    font-size: .65rem; font-weight: 700; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: .6px; margin-bottom: 3px;
+}
+.cx-info-val { font-size: .88rem; font-weight: 700; color: #1e293b; }
+.cx-info-sep { width: 1px; background: #e2e8f0; margin: 8px 0; }
+
+/* ── CARD FORMULARIO DE CUADRE ── */
+.cx-cierre-form-card {
+    background: #fff; border-radius: var(--cx-radius);
+    overflow: hidden; box-shadow: var(--cx-shadow); border: 1px solid #bae6fd;
+}
+.cx-cierre-form-hdr {
+    background: linear-gradient(90deg, #0c1a3a, #0f3460);
+    color: #fff; padding: 13px 20px; font-size: .88rem; font-weight: 700;
+    display: flex; flex-direction: column; gap: 2px;
+}
+.cx-cierre-form-sub { font-size: .73rem; opacity: .75; font-weight: 400; }
+
+/* ── CABECERA DE COLUMNAS ── */
+.cx-cols-hdr {
+    display: grid; grid-template-columns: 2fr 1.5fr 1.5fr 1.2fr;
+    background: #f8fafc; border-bottom: 2px solid #0ea5e9;
+    padding: 7px 20px; font-size: .7rem; font-weight: 700;
+    color: #64748b; text-transform: uppercase; letter-spacing: .5px;
+}
+
+/* ── FILA POR MÉTODO ── */
+.cx-metodo-row {
+    display: grid; grid-template-columns: 2fr 1.5fr 1.5fr 1.2fr;
+    align-items: center; padding: 13px 20px;
+    border-bottom: 1px solid #f1f5f9; transition: background .15s;
+}
+.cx-metodo-row:hover { background: #f0f9ff; }
+.cx-col-metodo { display: flex; align-items: center; gap: 10px; }
+.cx-col-esp    { font-size: .9rem; font-weight: 700; color: #0369a1; font-family: monospace; }
+.cx-col-dif    { font-size: .9rem; font-weight: 700; font-family: monospace; }
+
+.cx-metodo-icon-sm {
+    width: 34px; height: 34px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; flex-shrink: 0;
+}
+.cx-metodo-name { font-size: .85rem; font-weight: 700; color: #1e293b; }
+
+/* ── INPUT CONTADO ── */
+.cx-cnt-wrap {
+    display: flex; align-items: stretch;
+    border: 1.5px solid #d1d5db; border-radius: 8px;
+    overflow: hidden; max-width: 140px;
+}
+.cx-cnt-pre {
+    background: linear-gradient(135deg, #0c1a3a, #0ea5e9);
+    color: #fff; padding: 0 9px; display: flex;
+    align-items: center; font-size: .78rem; font-weight: 700;
+}
+.cx-cnt-input {
+    border: none; padding: 6px 8px; font-size: .9rem;
+    font-weight: 700; text-align: right; width: 100%; outline: none;
+}
+.cx-cnt-wrap:focus-within {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 .15rem rgba(14,165,233,.2);
+}
+
+/* ── FILA TOTAL ── */
+.cx-total-row {
+    display: grid; grid-template-columns: 2fr 1.5fr 1.5fr 1.2fr;
+    align-items: center; padding: 13px 20px;
+    background: linear-gradient(90deg, #f0f9ff, #e0f2fe);
+    border-top: 2px solid #0ea5e9; font-size: .92rem;
+}
+
+/* ── CAJA DIFERENCIA GLOBAL ── */
+.cx-dif-global {
+    border-radius: 10px; padding: 13px 16px;
+    display: flex; align-items: center; gap: 11px;
+    font-size: .88rem; font-weight: 700;
+}
+.cx-dif-global.ok  { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+.cx-dif-global.pos { background: #dcfce7; border: 1px solid #86efac; color: #166534; }
+.cx-dif-global.neg { background: #fee2e2; border: 1px solid #fca5a5; color: #991b1b; }
+
+/* ── BOTÓN CONFIRMAR CIERRE ── */
+.cx-btn-cerrar {
+    background: linear-gradient(135deg, #0c1a3a, #0ea5e9);
+    color: #fff; border: none; border-radius: 10px;
+    padding: 12px 24px; font-size: .92rem; font-weight: 700;
+    cursor: pointer; transition: all .2s; text-align: center;
+    box-shadow: 0 4px 16px rgba(14,165,233,.3);
+}
+.cx-btn-cerrar:hover {
+    background: linear-gradient(135deg, #0f3460, #0284c7);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(14,165,233,.4);
+}
+
+/* ── CARD RESUMEN LATERAL ── */
+.cx-resumen-card {
+    background: #fff; border-radius: var(--cx-radius);
+    overflow: hidden; box-shadow: var(--cx-shadow);
+    border: 1px solid #bae6fd; height: 100%;
+}
+.cx-resumen-hdr {
+    background: linear-gradient(90deg, #0c1a3a, #0f3460);
+    color: #fff; padding: 12px 18px; font-size: .85rem; font-weight: 700;
+}
+.cx-resumen-body { padding: 16px; }
+.cx-res-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 0; border-bottom: 1px solid #f1f5f9; font-size: .85rem;
+}
+.cx-res-row:last-child { border-bottom: none; }
+.cx-res-total {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 11px 13px;
+    background: linear-gradient(135deg, #0c1a3a, #0ea5e9);
+    border-radius: 9px; color: #fff; font-size: .95rem;
+    font-weight: 700; margin-top: 10px;
+}
+
+/* ── INDICADORES DE DIFERENCIA POR CANAL ── */
+.cx-dif-exacto  { color: #059669; font-weight: 700; }
+.cx-dif-sobrante{ color: #059669; font-weight: 700; }
+.cx-dif-faltante{ color: #dc2626; font-weight: 700; }
+
+/* ── RESPONSIVE: colapsar grid en móvil ── */
+@media (max-width: 640px) {
+    .cx-cols-hdr,
+    .cx-metodo-row,
+    .cx-total-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+    }
+    .cx-cols-hdr > div:nth-child(3),
+    .cx-cols-hdr > div:nth-child(4),
+    .cx-metodo-row > div:nth-child(3),
+    .cx-metodo-row > div:nth-child(4),
+    .cx-total-row  > div:nth-child(3),
+    .cx-total-row  > div:nth-child(4) {
+        display: none;
+    }
+}

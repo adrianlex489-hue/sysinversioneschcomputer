@@ -1,31 +1,37 @@
 /* ============================================================
-   ventas.css — Módulo Registro de Ventas | Botica 2026
+   ventas.css — Módulo Registro de Ventas | SysInversiones 2026
    ============================================================ */
 
 :root {
-    --vta-verde:        #1a7a4a;
-    --vta-verde-claro:  #27ae60;
-    --vta-azul:         #1a5276;
-    --vta-azul-med:     #2980b9;
-    --vta-naranja:      #e67e22;
-    --vta-rojo:         #e74c3c;
-    --vta-morado:       #8e44ad;
-    --vta-teal:         #117a8b;
+    --vta-azul:        #1a5276;
+    --vta-azul-med:    #2980b9;
+    --vta-azul-claro:  #e3f2fd;
+    --vta-verde:       #1a7a4a;
+    --vta-verde-claro: #27ae60;
+    --vta-naranja:     #e67e22;
+    --vta-rojo:        #e74c3c;
+    --vta-teal:        #117a8b;
+    --vta-gris:        #f8f9fa;
+    --vta-borde:       #dee2e6;
 }
 
-/* ── CABECERA ── */
+/* ══════════════════════════════════════════════
+   CABECERA DE PÁGINA
+══════════════════════════════════════════════ */
 .page-header-vta {
-    background: linear-gradient(135deg, #1a7a4a 0%, #27ae60 55%, #117a8b 100%);
+    background: linear-gradient(135deg, #1a5276 0%, #2980b9 60%, #117a8b 100%);
     color: #fff;
     padding: 18px 24px;
     border-radius: 10px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(26,122,74,.28);
+    box-shadow: 0 4px 15px rgba(26,82,118,.28);
 }
 .page-header-vta h4    { margin: 0; font-weight: 700; font-size: 1.2rem; }
 .page-header-vta small { opacity: .85; font-size: .82rem; }
 
-/* ── STATS ── */
+/* ══════════════════════════════════════════════
+   TARJETAS DE ESTADÍSTICAS
+══════════════════════════════════════════════ */
 .stat-mini-vta {
     border-radius: 10px;
     padding: 14px 18px;
@@ -34,24 +40,16 @@
     align-items: center;
     gap: 14px;
     box-shadow: 0 3px 12px rgba(0,0,0,.12);
-    transition: transform .2s;
+    transition: transform .2s, box-shadow .2s;
 }
-.stat-mini-vta:hover { transform: translateY(-2px); }
+.stat-mini-vta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,.18); }
 .stat-mini-vta i           { font-size: 1.9rem; opacity: .8; }
 .stat-mini-vta .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
 .stat-mini-vta .stat-label { font-size: .78rem; opacity: .9; margin-top: 2px; }
 
-/* ── CARD ── */
-.content-wrapper .card { border: none; border-radius: 10px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
-.card-header-vta {
-    background: linear-gradient(90deg, #1a7a4a, #27ae60);
-    color: #fff;
-    border-radius: 10px 10px 0 0 !important;
-    padding: 12px 18px;
-}
-.card-header-vta h6 { margin: 0; font-weight: 700; font-size: .95rem; }
-
-/* ── FORMULARIO NUEVA VENTA ── */
+/* ══════════════════════════════════════════════
+   FORMULARIO NUEVA VENTA
+══════════════════════════════════════════════ */
 .form-venta-card {
     background: #fff;
     border-radius: 12px;
@@ -59,12 +57,12 @@
     overflow: hidden;
 }
 .form-venta-header {
-    background: linear-gradient(135deg, #1a7a4a, #27ae60);
+    background: linear-gradient(135deg, #1a5276, #2980b9);
     color: #fff;
     padding: 16px 22px;
 }
 .form-venta-header h5 { margin: 0; font-weight: 700; font-size: 1rem; }
-.form-venta-body { padding: 20px 22px; }
+.form-venta-body      { padding: 20px 22px; }
 
 .form-label-vta {
     font-weight: 600;
@@ -74,11 +72,13 @@
     display: block;
 }
 .form-venta-body .form-control:focus {
-    border-color: var(--vta-verde-claro);
-    box-shadow: 0 0 0 .2rem rgba(39,174,96,.2);
+    border-color: var(--vta-azul-med);
+    box-shadow: 0 0 0 .2rem rgba(41,128,185,.2);
 }
 
-/* ── CAMPO SELECTOR ── */
+/* ══════════════════════════════════════════════
+   CAMPO SELECTOR (cliente / producto)
+══════════════════════════════════════════════ */
 .campo-selector-vta {
     background: #fff;
     cursor: pointer;
@@ -86,30 +86,27 @@
     border-radius: 6px;
     padding: 6px 10px;
     font-size: .88rem;
-    transition: border-color .2s;
+    transition: border-color .2s, background .2s;
     display: flex;
     align-items: center;
     justify-content: space-between;
     min-height: 34px;
 }
-.campo-selector-vta:hover { border-color: var(--vta-verde-claro); background: #f0fff4; }
-.campo-selector-vta.seleccionado {
-    border-color: var(--vta-verde);
-    background: #eafaf1;
-    color: #1a7a4a;
-    font-weight: 700;
-}
+.campo-selector-vta:hover { border-color: var(--vta-azul-med); background: #f0f8ff; }
+.campo-selector-vta.seleccionado { border-color: var(--vta-verde); background: #eafaf1; }
 .campo-selector-vta .placeholder-text { color: #aaa; font-style: italic; font-size: .83rem; }
-.campo-selector-vta .selected-text    { color: #1a7a4a; font-weight: 700; font-size: .88rem; }
+.campo-selector-vta .selected-text    { color: var(--vta-verde); font-weight: 700; font-size: .88rem; }
 
-/* ── TABLA DETALLE ── */
+/* ══════════════════════════════════════════════
+   TABLA DE DETALLE
+══════════════════════════════════════════════ */
 .tabla-detalle-vta-wrapper {
-    border: 2px solid #d4edda;
+    border: 2px solid var(--vta-azul-claro);
     border-radius: 10px;
     overflow: hidden;
 }
 .tabla-detalle-vta thead th {
-    background: linear-gradient(90deg, #1a7a4a, #27ae60);
+    background: linear-gradient(90deg, #1a5276, #2980b9);
     color: #fff;
     font-size: .8rem;
     font-weight: 700;
@@ -118,29 +115,26 @@
     padding: 10px 12px;
     border: none;
 }
-.tabla-detalle-vta tbody tr { transition: background .15s; }
-.tabla-detalle-vta tbody tr:hover { background: #f0fff4; }
+.tabla-detalle-vta tbody tr  { transition: background .15s; }
+.tabla-detalle-vta tbody tr:hover { background: #f0f8ff; }
 .tabla-detalle-vta td {
     vertical-align: middle;
     font-size: .87rem;
     padding: 8px 12px;
     border-color: #e9ecef;
 }
-
-/* ── FILA VACÍA ── */
 .fila-vacia-vta td {
     text-align: center;
-    padding: 30px !important;
-    color: #aaa;
+    padding: 36px !important;
+    color: #bbb;
     font-style: italic;
 }
-.fila-vacia-vta i { font-size: 2rem; display: block; margin-bottom: 8px; opacity: .3; }
+.fila-vacia-vta i { font-size: 2.2rem; display: block; margin-bottom: 10px; opacity: .25; }
 
-/* ── BOTÓN QUITAR ── */
-.btn-quitar-vta {
-    background: rgba(231,76,60,.1);
+.btn-quitar-item-vta {
+    background: rgba(231,76,60,.08);
     color: var(--vta-rojo);
-    border: 1px solid rgba(231,76,60,.3);
+    border: 1px solid rgba(231,76,60,.25);
     border-radius: 6px;
     width: 28px; height: 28px;
     display: flex; align-items: center; justify-content: center;
@@ -148,57 +142,21 @@
     transition: all .2s;
     font-size: .8rem;
 }
-.btn-quitar-vta:hover { background: var(--vta-rojo); color: #fff; border-color: var(--vta-rojo); }
+.btn-quitar-item-vta:hover { background: var(--vta-rojo); color: #fff; border-color: var(--vta-rojo); }
 
-/* ── RESUMEN TOTALES ── */
-.resumen-totales-vta {
-    background: linear-gradient(135deg, #f0fff4, #e8f5e9);
-    border-radius: 10px;
-    padding: 16px 20px;
-    border: 1px solid #c8e6c9;
+.num-fila-vta {
+    width: 26px; height: 26px;
+    background: var(--vta-azul-claro);
+    color: var(--vta-azul);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .72rem; font-weight: 700;
+    margin: auto;
 }
-.resumen-row-vta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 0;
-    font-size: .88rem;
-    color: #555;
-}
-.resumen-row-vta.total-final {
-    border-top: 2px solid #c8e6c9;
-    margin-top: 8px;
-    padding-top: 10px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--vta-verde);
-}
-.resumen-row-vta .monto { font-weight: 600; color: #2d3436; font-family: monospace; font-size: .92rem; }
-.resumen-row-vta.total-final .monto { font-size: 1.2rem; color: var(--vta-verde); }
 
-/* ── BADGES ESTADO ── */
-.badge-vta-pagado    { background:#d4edda; color:#155724; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
-.badge-vta-pendiente { background:#fff3cd; color:#856404; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
-.badge-vta-anulado   { background:#f8d7da; color:#721c24; padding:4px 12px; border-radius:20px; font-size:.78rem; font-weight:600; }
-
-/* ── BADGES TIPO PAGO ── */
-.badge-contado-vta { background:#e8f5e9; color:#1a7a4a; padding:3px 10px; border-radius:20px; font-size:.75rem; font-weight:600; border:1px solid #c8e6c9; }
-.badge-credito-vta { background:#fff3e0; color:#e67e22; padding:3px 10px; border-radius:20px; font-size:.75rem; font-weight:600; border:1px solid #ffe0b2; }
-
-/* ── TABLA HISTORIAL ── */
-.table-ventas thead th {
-    background: #f8f9fa;
-    color: #495057;
-    font-weight: 700;
-    font-size: .8rem;
-    text-transform: uppercase;
-    letter-spacing: .4px;
-    border-bottom: 2px solid var(--vta-verde-claro);
-}
-.table-ventas tbody tr:hover { background: #f0fff4; }
-.table-ventas td { vertical-align: middle; font-size: .87rem; }
-
-/* ── SECCIÓN PAGO ── */
+/* ══════════════════════════════════════════════
+   SECCIÓN DE PAGO
+══════════════════════════════════════════════ */
 .seccion-pago-vta {
     background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
     border: 1px solid #c8e6c9;
@@ -207,29 +165,9 @@
 }
 .seccion-pago-vta h6 { color: var(--vta-verde); font-weight: 700; margin-bottom: 12px; }
 
-/* ── MÉTODO PAGO BOTONES ── */
-.metodo-pago-vta-group { display: flex; gap: 8px; flex-wrap: wrap; }
-.btn-metodo-vta {
-    border: 2px solid #dee2e6;
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: .82rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all .2s;
-    background: #fff;
-    color: #555;
-}
-.btn-metodo-vta:hover,
-.btn-metodo-vta.activo {
-    border-color: var(--vta-verde-claro);
-    background: var(--vta-verde-claro);
-    color: #fff;
-}
-
-/* ── TIPO PAGO BOTONES ── */
+.tipo-pago-group-vta { display: flex; gap: 8px; }
 .btn-tipo-pago-vta {
-    border: 2px solid #dee2e6;
+    border: 2px solid var(--vta-borde);
     border-radius: 8px;
     padding: 8px;
     font-size: .85rem;
@@ -241,15 +179,25 @@
     text-align: center;
 }
 .btn-tipo-pago-vta.activo,
-.btn-tipo-pago-vta:hover {
-    border-color: var(--vta-verde);
-    background: var(--vta-verde);
-    color: #fff;
-}
+.btn-tipo-pago-vta:hover { border-color: var(--vta-azul); background: var(--vta-azul); color: #fff; }
 
-/* ── BOTONES CUOTA ── */
+.metodo-pago-group-vta { display: flex; gap: 8px; flex-wrap: wrap; }
+.btn-metodo-vta {
+    border: 2px solid var(--vta-borde);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    background: #fff;
+    color: #555;
+}
+.btn-metodo-vta:hover,
+.btn-metodo-vta.activo { border-color: var(--vta-azul-med); background: var(--vta-azul-med); color: #fff; }
+
 .btn-cuota-vta {
-    border: 2px solid #dee2e6;
+    border: 2px solid var(--vta-borde);
     border-radius: 8px;
     padding: 8px 16px;
     font-size: .9rem;
@@ -261,13 +209,8 @@
     min-width: 44px;
 }
 .btn-cuota-vta.activo,
-.btn-cuota-vta:hover {
-    border-color: var(--vta-naranja);
-    background: var(--vta-naranja);
-    color: #fff;
-}
+.btn-cuota-vta:hover { border-color: var(--vta-naranja); background: var(--vta-naranja); color: #fff; }
 
-/* ── PANEL CRÉDITO ── */
 #panelCreditoVta {
     background: #fffbf5;
     border-radius: 8px;
@@ -276,59 +219,78 @@
     margin-top: 4px;
 }
 
-/* ── NÚMERO FILA ── */
-.num-fila-vta {
-    width: 26px; height: 26px;
-    background: #d4edda;
-    color: #1a7a4a;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: .72rem; font-weight: 700;
-    margin: auto;
+/* ══════════════════════════════════════════════
+   RESUMEN DE TOTALES
+══════════════════════════════════════════════ */
+.resumen-totales-vta {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 10px;
+    padding: 16px 20px;
+    border: 1px solid var(--vta-borde);
 }
-
-/* ── ALERTAS STOCK ── */
-.alerta-sin-stock { background: #f8d7da; color: #721c24; border-radius: 4px; padding: 2px 8px; font-size: .72rem; font-weight: 600; }
-.alerta-stock-bajo { background: #fff3cd; color: #856404; border-radius: 4px; padding: 2px 8px; font-size: .72rem; font-weight: 600; }
-
-/* ── MODAL BOTONES MÉTODO PAGO ── */
-.btn-metodo-pago-vta {
-    border: 2px solid #dee2e6;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: .82rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all .2s;
-    background: #fff;
+.resumen-row-vta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: .88rem;
     color: #555;
-    margin-bottom: 4px;
 }
-.btn-metodo-pago-vta:hover {
-    border-color: var(--vta-verde);
-    background: var(--vta-verde);
-    color: #fff;
+.resumen-row-vta.total-final {
+    border-top: 2px solid var(--vta-borde);
+    margin-top: 8px;
+    padding-top: 10px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--vta-azul);
 }
+.resumen-row-vta .monto { font-weight: 600; color: #2d3436; font-family: monospace; font-size: .92rem; }
+.resumen-row-vta.total-final .monto { font-size: 1.2rem; color: var(--vta-verde); }
 
-/* ── PREFIJO COMPROBANTE ── */
+/* ══════════════════════════════════════════════
+   COMPROBANTE
+══════════════════════════════════════════════ */
 #prefijo_comprobante_vta {
     font-family: monospace;
     font-weight: 700;
-    color: #1a7a4a;
-    background: #d4edda;
-    border-color: #c8e6c9;
-    min-width: 52px;
+    color: var(--vta-azul);
+    background: var(--vta-azul-claro);
+    border-color: #bbdefb;
+    min-width: 60px;
     text-align: center;
 }
 #numero_comprobante_vta {
     background: #f8f9fa !important;
     font-family: monospace;
     font-weight: 700;
-    color: #1a7a4a;
+    color: var(--vta-azul);
     cursor: default;
 }
 
-/* ── ITEM SELECTOR ── */
+/* ══════════════════════════════════════════════
+   BADGES
+══════════════════════════════════════════════ */
+.badge-vta-pagado    { background: #d4edda; color: #155724; padding: 4px 12px; border-radius: 20px; font-size: .78rem; font-weight: 600; }
+.badge-vta-pendiente { background: #fff3cd; color: #856404; padding: 4px 12px; border-radius: 20px; font-size: .78rem; font-weight: 600; }
+.badge-vta-anulado   { background: #f8d7da; color: #721c24; padding: 4px 12px; border-radius: 20px; font-size: .78rem; font-weight: 600; }
+.badge-contado-vta   { background: var(--vta-azul-claro); color: var(--vta-azul); padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 600; border: 1px solid #bbdefb; }
+.badge-credito-vta   { background: #fff3e0; color: var(--vta-naranja); padding: 3px 10px; border-radius: 20px; font-size: .75rem; font-weight: 600; border: 1px solid #ffe0b2; }
+
+/* ══════════════════════════════════════════════
+   MODALES
+══════════════════════════════════════════════ */
+#modalSelectorClienteVta .modal-content,
+#modalSelectorProductoVta .modal-content,
+#modalDetalleItemVta .modal-content,
+#modalVerVenta .modal-content,
+#modalPagarVenta .modal-content,
+#modalNuevoClienteDni .modal-content {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 15px 50px rgba(0,0,0,.2);
+    overflow: hidden;
+}
+
 .item-selector-vta {
     border: 1px solid #e9ecef;
     border-radius: 8px;
@@ -339,100 +301,249 @@
     background: #fff;
 }
 .item-selector-vta:hover {
-    background: #f0fff4;
-    border-color: var(--vta-verde-claro);
+    background: var(--vta-azul-claro);
+    border-color: var(--vta-azul-med);
     transform: translateX(3px);
-    box-shadow: 0 2px 8px rgba(39,174,96,.15);
+    box-shadow: 0 2px 8px rgba(41,128,185,.15);
 }
 .item-selector-vta .item-nombre { font-weight: 700; font-size: .9rem; color: #2d3436; }
 .item-selector-vta .item-sub    { font-size: .75rem; color: #999; margin-top: 2px; }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 768px) {
-    .form-venta-body { padding: 14px; }
-    .resumen-totales-vta { margin-top: 16px; }
+.btn-metodo-pago-vta {
+    border: 2px solid var(--vta-borde);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s;
+    background: #fff;
+    color: #555;
+    margin-bottom: 4px;
 }
+.btn-metodo-pago-vta:hover { border-color: var(--vta-verde); background: var(--vta-verde); color: #fff; }
 
-/* ── PANEL BÚSQUEDA API (DNI / RUC) ── */
-.panel-buscar-api {
-    background: linear-gradient(135deg, #f0fff4, #e8f5e9);
-    border: 1px solid #c8e6c9;
+/* ══════════════════════════════════════════════
+   PANEL API DNI
+══════════════════════════════════════════════ */
+.panel-buscar-api-vta {
+    background: linear-gradient(135deg, var(--vta-azul-claro), #e8eaf6);
+    border: 1px solid #bbdefb;
     border-radius: 10px;
     padding: 12px 14px;
 }
-.panel-buscar-api-title {
-    font-size: .8rem;
+.resultado-api-card-vta { background: #fff; border: 1.5px solid #bbdefb; border-radius: 8px; padding: 12px 14px; }
+.resultado-api-nombre-vta { font-weight: 700; font-size: .95rem; color: #2d3436; margin-bottom: 4px; }
+.resultado-api-dato-vta   { font-size: .8rem; color: #636e72; margin-bottom: 2px; }
+.resultado-api-dato-vta i { color: var(--vta-azul); width: 14px; }
+
+@media (max-width: 768px) {
+    .form-venta-body { padding: 14px; }
+    .resumen-totales-vta { margin-top: 16px; }
+    .metodo-pago-group-vta { gap: 6px; }
+    .btn-metodo-vta { padding: 5px 10px; font-size: .78rem; }
+}
+
+/* ── Modal Caja no aperturada ──────────────────────────────────────────────── */
+.swal-caja-popup {
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+}
+.swal2-container.swal2-center { backdrop-filter: blur(4px); }
+
+.swal-caja-wrap {
+    font-family: 'Segoe UI', sans-serif;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 25px 60px rgba(0,0,0,.55);
+}
+
+/* Cabecera oscura con grid */
+.swal-caja-header {
+    position: relative;
+    background: linear-gradient(160deg, #1a0a00 0%, #3d1a00 60%, #1a0a00 100%);
+    padding: 36px 28px 28px;
+    text-align: center;
+    overflow: hidden;
+}
+.swal-caja-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(230,126,34,.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(230,126,34,.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+    pointer-events: none;
+}
+
+/* Ícono circular animado */
+.swal-caja-icon-ring {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 2px solid rgba(230,126,34,.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    animation: cajaPulse 2s ease-in-out infinite;
+}
+.swal-caja-icon-inner {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: rgba(230,126,34,.15);
+    border: 1.5px solid rgba(230,126,34,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: #e67e22;
+}
+@keyframes cajaPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(230,126,34,.3); }
+    50%       { box-shadow: 0 0 0 10px rgba(230,126,34,.0); }
+}
+
+.swal-caja-sup {
+    font-size: .68rem;
     font-weight: 700;
-    color: #1a7a4a;
-    margin-bottom: 8px;
+    letter-spacing: 2.5px;
+    color: #e67e22;
     text-transform: uppercase;
-    letter-spacing: .4px;
+    margin-bottom: 6px;
 }
-.resultado-api-card {
-    background: #fff;
-    border: 1.5px solid #c8e6c9;
+.swal-caja-title {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 12px;
+    letter-spacing: -.3px;
+}
+.swal-caja-badge {
+    display: inline-block;
+    background: rgba(230,126,34,.18);
+    border: 1px solid rgba(230,126,34,.35);
+    color: #f0a050;
+    font-size: .78rem;
+    font-weight: 600;
+    padding: 4px 14px;
+    border-radius: 20px;
+}
+
+/* Cuerpo */
+.swal-caja-body {
+    background: #111827;
+    padding: 20px 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Caja de info (naranja) */
+.swal-caja-info-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: rgba(230,126,34,.08);
+    border: 1px solid rgba(230,126,34,.3);
+    border-left: 4px solid #e67e22;
+    border-radius: 10px;
+    padding: 14px;
+}
+.swal-caja-info-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
     border-radius: 8px;
-    padding: 12px 14px;
+    background: rgba(230,126,34,.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #e67e22;
+    font-size: 1rem;
 }
-.resultado-api-nombre {
+.swal-caja-info-title {
+    font-size: .7rem;
     font-weight: 700;
-    font-size: .95rem;
-    color: #2d3436;
+    letter-spacing: 1.5px;
+    color: #e67e22;
+    text-transform: uppercase;
     margin-bottom: 4px;
 }
-.resultado-api-dato {
-    font-size: .8rem;
-    color: #636e72;
-    margin-bottom: 2px;
+.swal-caja-info-text {
+    font-size: .84rem;
+    color: #ccc;
+    line-height: 1.5;
 }
-.resultado-api-dato i { color: #1a7a4a; width: 14px; }
-.resultado-api-acciones {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    flex-wrap: wrap;
-}
-.btn-api-usar {
-    background: linear-gradient(135deg, #1a7a4a, #27ae60);
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 14px;
-    font-size: .82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all .2s;
-}
-.btn-api-usar:hover { opacity: .9; transform: translateY(-1px); }
-.btn-api-guardar-usar {
-    background: #fff;
-    color: #1a7a4a;
-    border: 1.5px solid #1a7a4a;
-    border-radius: 6px;
-    padding: 6px 14px;
-    font-size: .82rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: all .2s;
-}
-.btn-api-guardar-usar:hover { background: #1a7a4a; color: #fff; }
 
-/* ── FORMULARIO BLOQUEADO (sin caja abierta) ── */
-/* Bloquea inputs y selects pero deja los botones clicables para mostrar alerta */
-.form-bloqueado input,
-.form-bloqueado select,
-.form-bloqueado textarea,
-.form-bloqueado .campo-selector-vta,
-.form-bloqueado .campo-selector {
-    pointer-events: none !important;
-    user-select: none !important;
-    cursor: not-allowed !important;
-    background: #f8f9fa !important;
-    color: #adb5bd !important;
+/* Caja de detalle (azul) */
+.swal-caja-detail-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(26,82,118,.2);
+    border: 1px solid rgba(26,82,118,.4);
+    border-radius: 10px;
+    padding: 12px 14px;
 }
-/* Los botones sí reciben clic para mostrar la alerta */
-.form-bloqueado button,
-.form-bloqueado .btn {
-    pointer-events: auto !important;
-    cursor: pointer !important;
+.swal-caja-detail-icon {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    border-radius: 8px;
+    background: rgba(26,82,118,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #7fb3d3;
+    font-size: 1rem;
+}
+.swal-caja-detail-text {
+    font-size: .82rem;
+    color: #aaa;
+    line-height: 1.4;
+}
+.swal-caja-detail-text strong { color: #e0e0e0; }
+
+/* Botón principal */
+.swal-caja-btn {
+    display: block;
+    text-align: center;
+    background: linear-gradient(135deg, #1a5276, #2980b9);
+    color: #fff !important;
+    font-weight: 700;
+    font-size: .95rem;
+    padding: 13px;
+    border-radius: 10px;
+    text-decoration: none !important;
+    transition: opacity .2s;
+    margin-top: 4px;
+}
+.swal-caja-btn:hover { opacity: .88; color: #fff !important; }
+
+/* ── Modal autorización administrador ─────────────────────────────────────── */
+.swal-admin-popup {
+    padding: 0 !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+    max-width: 420px !important;
+}
+.swal-admin-popup .swal2-html-container {
+    margin: 0 !important;
+    padding: 0 1.4em 1em !important;
+    overflow: visible !important;
+}
+.swal-admin-popup .swal2-actions {
+    padding: 0 1.4em 1.2em !important;
+    gap: 10px;
+}
+.swal-admin-popup .swal2-confirm,
+.swal-admin-popup .swal2-cancel {
+    border-radius: 8px !important;
+    font-weight: 700 !important;
+    padding: 10px 24px !important;
+    font-size: .9rem !important;
 }

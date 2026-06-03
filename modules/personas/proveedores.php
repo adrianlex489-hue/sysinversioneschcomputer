@@ -1,6 +1,6 @@
 ﻿<?php
 // ============================================================
-// modules/personas/proveedores.php | Botica 2026
+// modules/personas/proveedores.php | SysInversiones CH Computer
 // Campos BD: id_proveedor, razon_social, ruc, telefono,
 //            email, direccion, contacto, estado, fecha_registro
 // ============================================================
@@ -12,9 +12,9 @@ require_once $ruta_base . 'conf/permisos.php';
 
 if (!isset($pdo) || !($pdo instanceof PDO)) die('Error: Conexión BD no disponible.');
 if (!defined('ROL_ADMINISTRADOR')) define('ROL_ADMINISTRADOR', 1);
-if (!defined('ROL_CAJERO'))        define('ROL_CAJERO', 2);
-if (!defined('ROL_TRABAJADOR'))    define('ROL_TRABAJADOR', 3);
-verificar_acceso([ROL_ADMINISTRADOR, ROL_CAJERO, ROL_TRABAJADOR]);
+if (!defined('ROL_ASESOR_COMERCIAL'))        define('ROL_ASESOR_COMERCIAL', 2);
+if (!defined('ROL_TECNICO'))    define('ROL_TECNICO', 3);
+verificar_acceso([ROL_ADMINISTRADOR, ROL_ASESOR_COMERCIAL, ROL_TECNICO]);
 verificarPermiso($pdo, 'proveedores');
 
 // ── Patrón PRG: leer alertas de sesión ───────────────────────────────────────
@@ -50,10 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 redirigirProv('warning', 'Campos incompletos', 'Razón social y RUC son obligatorios.');
             }
             $sql = "INSERT INTO proveedores
-                        (razon_social, ruc, telefono, email, direccion, contacto, estado)
-                    VALUES (?,?,?,?,?,?,1)";
+                        (razon_social, ruc, telefono, email, direccion, contacto, estado, fecha_registro)
+                    VALUES (?,?,?,?,?,?,?,NOW())";
             $pdo->prepare($sql)->execute([
-                $razon_social, $ruc, $telefono, $email, $direccion, $contacto
+                $razon_social, $ruc, $telefono, $email, $direccion, $contacto, $estado
             ]);
             redirigirProv('success', '¡Registrado!', "El proveedor $razon_social fue registrado correctamente.");
 
@@ -116,7 +116,7 @@ include $ruta_base . 'includes/sidebar.php';
 ?>
 
 <!-- CSS del módulo -->
-<link rel="stylesheet" href="css/proveedores.css">
+<link rel="stylesheet" href="css/proveedores.css?v=<?= time() ?>">
 
 <div class="content-wrapper">
 
@@ -126,11 +126,45 @@ include $ruta_base . 'includes/sidebar.php';
             <div class="page-header-prov d-flex justify-content-between align-items-center flex-wrap">
                 <div>
                     <h4><i class="fas fa-truck mr-2"></i>Gestión de Proveedores</h4>
-                    <small><i class="fas fa-map-marker-alt mr-1"></i>Botica 2026 &rsaquo; Personas &rsaquo; Proveedores</small>
+                    <small><i class="fas fa-map-marker-alt mr-1"></i>SysInversiones CH Computer &rsaquo; Personas &rsaquo; Proveedores</small>
                 </div>
-                <button class="btn btn-light font-weight-bold" data-toggle="modal" data-target="#modalCrearProveedor">
-                    <i class="fas fa-plus-circle mr-1"></i> Nuevo Proveedor
-                </button>
+                <div class="d-flex align-items-center flex-wrap" style="gap:8px;">
+                    <!-- Botones de exportación -->
+                    <div class="prov-export-group">
+                        <button id="btn-exportar-csv-prov" class="prov-export-btn prov-export-csv" title="Exportar a CSV">
+                            <i class="fas fa-file-csv"></i>
+                            <span>CSV</span>
+                        </button>
+                        <button id="btn-exportar-excel-prov" class="prov-export-btn prov-export-excel" title="Exportar a Excel">
+                            <i class="fas fa-file-excel"></i>
+                            <span>Excel</span>
+                        </button>
+                        <button id="btn-exportar-pdf-prov" class="prov-export-btn prov-export-pdf" title="Exportar a PDF">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF</span>
+                        </button>
+                    </div>
+                    <!-- Importar -->
+                    <div class="dropdown">
+                        <button class="btn btn-light font-weight-bold dropdown-toggle" type="button" id="dropImportarProv" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-file-import mr-1"></i> Importar Excel
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-right shadow-sm" aria-labelledby="dropImportarProv" style="min-width:220px;">
+                            <h6 class="dropdown-header"><i class="fas fa-upload mr-1"></i>Importar proveedores</h6>
+                            <a class="dropdown-item" href="#" id="btnImportarProveedores">
+                                <i class="fas fa-truck text-primary mr-2"></i>Desde Excel / CSV
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <h6 class="dropdown-header"><i class="fas fa-download mr-1"></i>Descargar plantilla</h6>
+                            <a class="dropdown-item" href="ajax_proveedores_plantilla.php" target="_blank">
+                                <i class="fas fa-file-excel text-success mr-2"></i>Plantilla Proveedores
+                            </a>
+                        </div>
+                    </div>
+                    <button class="btn btn-light font-weight-bold" data-toggle="modal" data-target="#modalCrearProveedor">
+                        <i class="fas fa-plus-circle mr-1"></i> Nuevo Proveedor
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -291,7 +325,7 @@ include $ruta_base . 'includes/sidebar.php';
                                     </thead>
                                     <tbody>
                                     <?php foreach ($proveedores_inactivos as $p): ?>
-                                        <tr class="table-light">
+                                        <tr class="row-inactivo">
                                             <td><?= $p['id_proveedor'] ?></td>
                                             <td class="text-muted"><?= htmlspecialchars($p['razon_social']) ?></td>
                                             <td><span class="badge-ruc"><?= htmlspecialchars($p['ruc']) ?></span></td>
@@ -515,6 +549,17 @@ include $ruta_base . 'includes/sidebar.php';
                         </div>
                     </div>
 
+                    <div class="form-group">
+                        <label class="form-label-prov"><i class="fas fa-toggle-on mr-1 text-muted"></i>Estado</label>
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-circle"></i></span></div>
+                            <select class="form-control" name="estado">
+                                <option value="1">✅ Activo</option>
+                                <option value="0">❌ Inactivo</option>
+                            </select>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
@@ -634,7 +679,97 @@ include $ruta_base . 'includes/sidebar.php';
     </div>
 </div>
 
-<?php include $ruta_base . 'includes/footer.php'; ?>
+<!-- ══════════════════════════════════════════════════════════
+     MODAL IMPORTAR PROVEEDORES
+══════════════════════════════════════════════════════════ -->
+<div class="modal fade" id="modalImportarProveedores" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="border-radius:12px;overflow:hidden;border:none;box-shadow:0 20px 60px rgba(0,0,0,.2);">
 
-<!-- JS del módulo -->
-<script src="js/proveedores.js"></script>
+            <div class="modal-header" style="background:linear-gradient(135deg,#1a5276,#2980b9);border-bottom:none;padding:18px 24px;">
+                <h5 class="modal-title font-weight-bold" style="color:#fff;">
+                    <i class="fas fa-file-import mr-2"></i>Importar Proveedores
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" style="color:#fff;opacity:.8;text-shadow:none;">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="padding:24px;">
+
+                <!-- Paso 1: Selección -->
+                <div id="provImportStep1">
+                    <div class="alert alert-info border-0 mb-3" style="border-radius:8px;font-size:.88rem;">
+                        <i class="fas fa-info-circle mr-2"></i>
+                        <strong>Formatos aceptados:</strong> .xlsx, .xls, .csv &nbsp;|&nbsp;
+                        <strong>Tamaño máximo:</strong> 5 MB &nbsp;|&nbsp;
+                        Los RUC duplicados serán omitidos automáticamente.
+                    </div>
+                    <div id="provImportDropZone" style="border:2px dashed #cbd5e1;border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:all .25s;background:#f8fafc;">
+                        <i class="fas fa-cloud-upload-alt fa-3x mb-3" id="provImportDropIcon" style="color:#94a3b8;"></i>
+                        <p class="mb-1 font-weight-bold" style="color:#475569;">Arrastra tu archivo aquí</p>
+                        <p class="mb-3" style="color:#94a3b8;font-size:.85rem;">o haz clic para seleccionar</p>
+                        <button type="button" class="btn btn-outline-secondary btn-sm" id="provImportBtnSeleccionar">
+                            <i class="fas fa-folder-open mr-1"></i>Seleccionar archivo
+                        </button>
+                    </div>
+                    <div id="provImportFileInfo" class="mt-3" style="display:none;">
+                        <div class="d-flex align-items-center p-3" style="background:#f0fdf4;border-radius:8px;border:1px solid #bbf7d0;">
+                            <i class="fas fa-file-excel fa-2x text-success mr-3"></i>
+                            <div class="flex-grow-1">
+                                <div class="font-weight-bold" id="provImportFileName" style="color:#166534;"></div>
+                                <small class="text-muted" id="provImportFileSize"></small>
+                            </div>
+                            <button type="button" class="btn btn-sm btn-outline-danger" id="provImportBtnQuitar">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-3 text-center">
+                        <small class="text-muted">
+                            <i class="fas fa-question-circle mr-1"></i>
+                            ¿No tienes el formato correcto?
+                            <a href="ajax_proveedores_plantilla.php" class="font-weight-bold" target="_blank">
+                                <i class="fas fa-download mr-1"></i>Descargar plantilla Excel
+                            </a>
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Paso 2: Progreso -->
+                <div id="provImportStep2" style="display:none;text-align:center;padding:20px 0;">
+                    <div class="spinner-border text-primary mb-3" style="width:3rem;height:3rem;" role="status"></div>
+                    <p class="font-weight-bold mb-1">Procesando archivo...</p>
+                    <p class="text-muted" style="font-size:.85rem;">Por favor espera mientras se importan los registros.</p>
+                </div>
+
+                <!-- Paso 3: Resultado -->
+                <div id="provImportStep3" style="display:none;">
+                    <div id="provImportResultado"></div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer" style="border-top:1px solid #e2e8f0;padding:14px 24px;">
+                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal" id="provImportBtnCerrar">
+                    <i class="fas fa-times mr-1"></i>Cerrar
+                </button>
+                <button type="button" class="btn btn-sm btn-primary" id="provImportBtnProcesar" style="display:none;">
+                    <i class="fas fa-upload mr-1"></i>Importar ahora
+                </button>
+                <button type="button" class="btn btn-sm btn-success" id="provImportBtnRecargar" style="display:none;">
+                    <i class="fas fa-sync mr-1"></i>Recargar página
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Input file fuera del modal (evita bloqueo Bootstrap enforceFocus) -->
+<input type="file" id="provImportFileInput" accept=".xlsx,.xls,.csv" style="display:none;position:fixed;top:-9999px;left:-9999px;">
+
+<?php
+$extra_js = '<script src="js/proveedores.js?v=' . time() . '"></script>';
+include $ruta_base . 'includes/footer.php';
+?>

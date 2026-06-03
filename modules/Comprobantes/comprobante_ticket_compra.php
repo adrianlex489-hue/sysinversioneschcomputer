@@ -1,8 +1,8 @@
-<?php
+﻿<?php
 // ============================================================
-// comprobante_ticket_compra.php | Botica 2026
-// Ticket de compra formato impresora térmica 80mm
-// Uso: ?id_compra=3
+// comprobante_ticket_compra.php | SysInversiones 2026
+// Ticket de compra formato 80mm — sin lotes
+// Uso: ?id_compra=3  |  ?id_compra=3&download=1 (fuerza descarga)
 // ============================================================
 ob_start();
 
@@ -10,49 +10,65 @@ $ruta_base = '../../';
 require_once $ruta_base . 'conf/database.php';
 require_once $ruta_base . 'conf/verificar_acceso.php';
 require_once $ruta_base . 'libs/fpdf.php';
-require_once __DIR__ . '/empresa_helper.php';
+require_once __DIR__ . '/../configuracion_empresa/empresa_helper.php';
 
 if (!defined('ROL_ADMINISTRADOR')) define('ROL_ADMINISTRADOR', 1);
-if (!defined('ROL_CAJERO'))        define('ROL_CAJERO', 2);
-if (!defined('ROL_TRABAJADOR'))    define('ROL_TRABAJADOR', 3);
-verificar_acceso([ROL_ADMINISTRADOR, ROL_CAJERO, ROL_TRABAJADOR]);
+if (!defined('ROL_ASESOR_COMERCIAL'))        define('ROL_ASESOR_COMERCIAL', 2);
+if (!defined('ROL_TECNICO'))    define('ROL_TECNICO', 3);
+verificar_acceso([ROL_ADMINISTRADOR, ROL_ASESOR_COMERCIAL, ROL_TECNICO]);
 
 $id_compra = (int)($_GET['id_compra'] ?? 0);
+$download  = isset($_GET['download']) && $_GET['download'] == '1';
 if (!$id_compra) { ob_end_clean(); die('ID de compra no especificado.'); }
 
+// ── Conversión UTF-8 → ISO-8859-1 para FPDF ──────────────────────────────────
 if (!function_exists('pdf_txt')) {
     function pdf_txt(string $t): string {
-        $r = iconv('UTF-8', 'ISO-8859-1//TRANSLIT//IGNORE', $t);
+        $buscar     = ["\u{2014}","\u{2013}","\u{00B0}","\u{00BA}","\u{00AA}",
+                       "\u{00E9}","\u{00F3}","\u{00FA}","\u{00ED}","\u{00E1}",
+                       "\u{00F1}","\u{00C1}","\u{00C9}","\u{00CD}","\u{00D3}",
+                       "\u{00DA}","\u{00D1}","\u{00FC}","\u{00DC}"];
+        $reemplazar = ['--','-',chr(176),chr(186),chr(170),
+                       chr(233),chr(243),chr(250),chr(237),chr(225),
+                       chr(241),chr(193),chr(201),chr(205),chr(211),
+                       chr(218),chr(209),chr(252),chr(220)];
+        $t = str_replace($buscar, $reemplazar, $t);
+        $r = iconv('UTF-8','ISO-8859-1//TRANSLIT//IGNORE', $t);
         return $r !== false ? $r : $t;
     }
 }
 
 $empresa = getEmpresa($pdo);
 
+// ── Datos de la compra ────────────────────────────────────────────────────────
 $stC = $pdo->prepare(
-    "SELECT c.*, p.razon_social AS proveedor, p.ruc AS ruc_prov,
+    "SELECT c.*,
+            p.razon_social  AS proveedor,
+            p.ruc           AS ruc_prov,
+            p.telefono      AS tel_prov,
             u.nombre_completo AS registrado_por
      FROM compras c
      JOIN proveedores p ON c.id_proveedor = p.id_proveedor
-     JOIN usuarios u    ON c.id_usuario   = u.id_usuario
+     JOIN usuarios    u ON c.id_usuario   = u.id_usuario
      WHERE c.id_compra = ?"
 );
 $stC->execute([$id_compra]);
 $compra = $stC->fetch();
 if (!$compra) { ob_end_clean(); die('Compra no encontrada.'); }
 
+// ── Detalle de productos (sin lotes) ─────────────────────────────────────────
 $stD = $pdo->prepare(
     "SELECT dc.cantidad, dc.precio_compra, dc.descuento, dc.subtotal,
-            p.nombre_producto, l.codigo_lote
+            pr.nombre_producto, pr.codigo
      FROM detalle_compra dc
-     JOIN productos p ON dc.id_producto = p.id_producto
-     JOIN lotes l     ON dc.id_lote     = l.id_lote
-     WHERE dc.id_compra = ?"
+     JOIN productos pr ON dc.id_producto = pr.id_producto
+     WHERE dc.id_compra = ?
+     ORDER BY dc.id_detalle"
 );
 $stD->execute([$id_compra]);
 $detalle = $stD->fetchAll();
 
-// ── Clase Ticket ──────────────────────────────────────────────────────────────
+// ── Clase Ticket 80mm ─────────────────────────────────────────────────────────
 class TicketCompraPDF extends FPDF
 {
     public float $W = 74; // ancho útil (80mm - 3mm margen c/lado)
@@ -86,74 +102,61 @@ class TicketCompraPDF extends FPDF
 }
 
 // ── Alto dinámico ─────────────────────────────────────────────────────────────
-// Cabecera empresa: ~50mm (logo + datos)
-// Tipo comprobante: ~18mm
-// Datos proveedor:  ~28mm (5 líneas)
-// Tabla header:     ~8mm
-// Productos:        ~12mm por item
-// Totales:          ~35mm (subtotal + igv + total + saldo)
-// Pie + barras:     ~25mm
-$alto_base   = 50 + 18 + 28 + 8 + 35 + 15;
-$alto_prods  = count($detalle) * 14;
-$alto        = $alto_base + $alto_prods;
-$alto        = max($alto, 130);
+$alto_base  = 50 + 18 + 30 + 8 + 35 + 15;
+$alto_prods = 0;
+foreach ($detalle as $d) {
+    $nombre_txt = pdf_txt($d['nombre_producto']);
+    // Estimación: ~10 caracteres por línea en 74mm a 7pt
+    $lineas = max(1, ceil(strlen($nombre_txt) / 38));
+    $alto_prods += ($lineas * 4) + 4; // nombre + código/descuento
+}
+$alto = max($alto_base + $alto_prods, 130);
 
 $pdf = new TicketCompraPDF('P', 'mm', [80, $alto]);
 $pdf->SetMargins(3, 4, 3);
-$pdf->SetAutoPageBreak(true, 8); // margen inferior 8mm para no cortar contenido
+$pdf->SetAutoPageBreak(true, 8);
 $pdf->AddPage();
 $pdf->SetTextColor(20, 20, 20);
 
-// ── LOGO (solo si existe, centrado, tamaño controlado) ────────────────────────
+// ── LOGO ──────────────────────────────────────────────────────────────────────
 $logo_path = $_SERVER['DOCUMENT_ROOT'] . ($empresa['logo'] ?? '');
 if (!empty($empresa['logo']) && file_exists($logo_path)) {
-    // Obtener dimensiones reales para escalar proporcionalmente
-    $info = getimagesize($logo_path);
+    $info = @getimagesize($logo_path);
     if ($info) {
-        $img_w = $info[0]; $img_h = $info[1];
-        // Limitar a 28mm de ancho máximo
-        $max_w = 28;
-        $ratio = $img_h / $img_w;
+        $max_w  = 28;
         $draw_w = $max_w;
-        $draw_h = $max_w * $ratio;
-        // Centrar horizontalmente en 80mm
+        $draw_h = $max_w * ($info[1] / $info[0]);
         $x_logo = (80 - $draw_w) / 2;
         $pdf->Image($logo_path, $x_logo, $pdf->GetY(), $draw_w, $draw_h);
         $pdf->Ln($draw_h + 2);
     }
 }
 
-// ── Nombre empresa (solo razón social, sin duplicar si el logo ya tiene texto) ─
-$pdf->centrar($empresa['razon_social'] ?? '', 9, 'B', 5);
+// ── Datos empresa ─────────────────────────────────────────────────────────────
+$pdf->centrar($empresa['razon_social'] ?? 'SYSINVERSIONES CH COMPUTER', 9, 'B', 5);
 $pdf->centrar('RUC: ' . ($empresa['ruc'] ?? ''), 8, 'B', 4);
 $pdf->centrar($empresa['direccion'] ?? '', 7, '', 4);
-
 $ubigeo = trim(($empresa['distrito'] ?? '') . ' - ' . ($empresa['departamento'] ?? ''), ' -');
-if ($ubigeo !== '' && $ubigeo !== '-') {
-    $pdf->centrar($ubigeo, 7, '', 4);
-}
-if (!empty($empresa['telefono'])) {
-    $pdf->centrar('Tel: ' . $empresa['telefono'], 7, '', 4);
-}
+if ($ubigeo && $ubigeo !== '-') $pdf->centrar($ubigeo, 7, '', 4);
+if (!empty($empresa['telefono']))  $pdf->centrar('Tel: ' . $empresa['telefono'], 7, '', 4);
 
 $pdf->Ln(1);
 $pdf->linea(true);
 
 // ── Tipo comprobante ──────────────────────────────────────────────────────────
-$pdf->centrar('TICKET DE COMPRA', 11, 'B', 6);
+$tipoLabel = ['ticket' => 'TICKET DE COMPRA', 'nota' => 'NOTA DE COMPRA'];
+$pdf->centrar($tipoLabel[$compra['tipo_comprobante']] ?? 'COMPROBANTE DE COMPRA', 11, 'B', 6);
 $num = $compra['numero_comprobante'] ?? ('C-' . str_pad($id_compra, 6, '0', STR_PAD_LEFT));
 $pdf->centrar($num, 9, 'B', 5);
-
 $pdf->linea();
 
 // ── Datos proveedor ───────────────────────────────────────────────────────────
-$pdf->SetFont('Arial', '', 7);
 $lineas_info = [
     'Proveedor' => $compra['proveedor'],
-    'RUC'       => $compra['ruc_prov'] ?? '—',
+    'RUC'       => $compra['ruc_prov'] ?? '---',
     'Fecha'     => date('d/m/Y H:i', strtotime($compra['fecha'])),
     'Cajero'    => $compra['registrado_por'],
-    'Pago'      => strtoupper($compra['tipo_pago']) === 'CREDITO'
+    'Pago'      => strtolower($compra['tipo_pago']) === 'credito'
                     ? 'CREDITO'
                     : strtoupper($compra['metodo_pago']),
 ];
@@ -163,11 +166,10 @@ foreach ($lineas_info as $lbl => $val) {
     $pdf->SetFont('Arial', '', 7);
     $pdf->Cell($pdf->W - 18, 4, pdf_txt($val), 0, 1, 'L');
 }
-
 $pdf->linea();
 
 // ── Cabecera tabla ────────────────────────────────────────────────────────────
-$pdf->SetFillColor(25, 25, 25);
+$pdf->SetFillColor(26, 82, 118);
 $pdf->SetTextColor(255, 255, 255);
 $pdf->SetFont('Arial', 'B', 7);
 $pdf->Cell(36, 5, 'PRODUCTO',  0, 0, 'L', true);
@@ -180,28 +182,45 @@ $pdf->Ln(1);
 // ── Filas de productos ────────────────────────────────────────────────────────
 foreach ($detalle as $idx => $d) {
     $nombre = pdf_txt($d['nombre_producto']);
-    $bg = ($idx % 2 === 0);
+    $bg     = ($idx % 2 === 0);
     $pdf->SetFillColor(248, 248, 248);
 
-    // Nombre del producto
-    $pdf->SetFont('Arial', 'B', 7);
-    if (strlen($nombre) > 19) {
-        $pdf->Cell(74, 4, $nombre, 0, 1, 'L', $bg);
-        $pdf->SetFont('Arial', '', 7);
-        $pdf->Cell(36, 5, '', 0, 0, 'L', $bg);
-    } else {
-        $pdf->Cell(36, 5, $nombre, 0, 0, 'L', $bg);
-        $pdf->SetFont('Arial', '', 7);
-    }
-    $pdf->Cell(8,  5, $d['cantidad'], 0, 0, 'C', $bg);
-    $pdf->Cell(15, 5, 'S/.' . number_format($d['precio_compra'], 2), 0, 0, 'R', $bg);
-    $pdf->Cell(15, 5, 'S/.' . number_format($d['subtotal'], 2), 0, 1, 'R', $bg);
+    // Anchos de columnas (deben sumar 74mm = ancho útil del ticket)
+    $wNombre = 36; // columna PRODUCTO
+    $wCant   = 8;
+    $wPcomp  = 15;
+    $wTotal  = 15;
 
-    // Lote en gris pequeño
-    if (!empty($d['codigo_lote'])) {
+    // Calcular cuántas líneas ocupa el nombre dentro de los 36mm
+    $pdf->SetFont('Arial', 'B', 7);
+    $ancho_char = $pdf->GetStringWidth('A'); // ancho aprox de 1 carácter
+    $chars_por_linea = max(1, floor($wNombre / ($ancho_char > 0 ? $ancho_char : 2)));
+    $lineas_nombre = max(1, ceil(strlen($nombre) / $chars_por_linea));
+    $alto_fila = $lineas_nombre * 4;
+
+    $y_ini = $pdf->GetY();
+
+    // ── Nombre: MultiCell en 36mm — se parte en varias líneas si es largo ──
+    $pdf->SetFont('Arial', 'B', 7);
+    $pdf->MultiCell($wNombre, 4, $nombre, 0, 'L', $bg);
+    $y_tras_nombre = $pdf->GetY();
+
+    // ── Columnas numéricas: volver a Y inicial, posición X = 3 + 36 ──
+    $pdf->SetXY(3 + $wNombre, $y_ini);
+    $pdf->SetFont('Arial', '', 7);
+    $pdf->Cell($wCant,  $alto_fila, $d['cantidad'],                                0, 0, 'C', $bg);
+    $pdf->Cell($wPcomp, $alto_fila, 'S/.' . number_format($d['precio_compra'], 2), 0, 0, 'R', $bg);
+    $pdf->Cell($wTotal, $alto_fila, 'S/.' . number_format($d['subtotal'], 2),      0, 1, 'R', $bg);
+
+    // Continuar desde debajo del bloque más alto (nombre o celdas numéricas)
+    $y_fin = max($pdf->GetY(), $y_tras_nombre);
+    $pdf->SetY($y_fin);
+
+    // Código del producto en gris pequeño
+    if (!empty($d['codigo'])) {
         $pdf->SetFont('Arial', 'I', 6);
         $pdf->SetTextColor(110, 110, 110);
-        $pdf->Cell(74, 3, pdf_txt('  Lote: ' . $d['codigo_lote']), 0, 1, 'L');
+        $pdf->Cell(74, 3, pdf_txt('  Cod: ' . $d['codigo']), 0, 1, 'L');
         $pdf->SetTextColor(20, 20, 20);
     }
     // Descuento si aplica
@@ -238,7 +257,8 @@ $pdf->SetTextColor(26, 82, 118);
 $pdf->par('TOTAL:', 'S/. ' . number_format($compra['total'], 2), 12, 38, 'B', 'B');
 $pdf->SetTextColor(20, 20, 20);
 
-if ((float)$compra['saldo_pendiente'] > 0) {
+// Saldo pendiente (crédito)
+if (isset($compra['saldo_pendiente']) && (float)$compra['saldo_pendiente'] > 0) {
     $pdf->Ln(1);
     $pdf->SetFont('Arial', 'B', 8);
     $pdf->SetTextColor(200, 100, 0);
@@ -254,8 +274,11 @@ $pie = $empresa['pie_comprobante'] ?? 'Gracias por su preferencia';
 $pdf->SetFont('Arial', 'I', 7);
 $pdf->SetTextColor(110, 110, 110);
 $pdf->centrar($pie, 7, 'I', 4);
+$pdf->centrar('SysInversiones CH Computer', 7, '', 4);
 $pdf->centrar(date('d/m/Y H:i'), 7, '', 4);
 
+// ── Salida ────────────────────────────────────────────────────────────────────
 ob_end_clean();
 $nombre_archivo = 'ticket_compra_' . str_pad($id_compra, 6, '0', STR_PAD_LEFT) . '.pdf';
-$pdf->Output('I', $nombre_archivo);
+$modo = $download ? 'D' : 'I';
+$pdf->Output($modo, $nombre_archivo);

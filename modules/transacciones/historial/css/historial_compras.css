@@ -136,3 +136,9 @@
     padding: 10px 14px;
     font-size: .88rem;
 }
+
+/* ── BOTÓN EXPORTAR ── */
+#btnExportarHCmp:hover {
+    background: rgba(255,255,255,.28) !important;
+    transform: translateY(-1px);
+}

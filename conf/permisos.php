@@ -1,6 +1,6 @@
 <?php
 // ============================================================
-// conf/permisos.php | Botica 2026
+// conf/permisos.php | SysInversiones CH Computer
 // Helper para verificar permisos granulares por usuario.
 // Incluir DESPUÉS de database.php y verificar_acceso.php.
 // ============================================================
@@ -11,26 +11,32 @@
  */
 function catalogoModulos(): array {
     return [
-        // Transacciones
-        'ventas'             => ['label' => 'Nueva Venta',          'icon' => 'fas fa-cash-register',   'grupo' => 'Transacciones'],
-        'compras'            => ['label' => 'Nueva Compra',         'icon' => 'fas fa-truck-loading',   'grupo' => 'Transacciones'],
-        'historial_ventas'   => ['label' => 'Historial de Ventas',  'icon' => 'fas fa-history',         'grupo' => 'Transacciones'],
-        'historial_compras'  => ['label' => 'Historial de Compras', 'icon' => 'fas fa-history',         'grupo' => 'Transacciones'],
+        // Servicio Técnico
+        'servicios'          => ['label' => 'Recepción de Equipos',  'icon' => 'fas fa-plus-circle',     'grupo' => 'Servicio Técnico'],
+        'taller'             => ['label' => 'Taller Técnico',        'icon' => 'fas fa-tools',           'grupo' => 'Servicio Técnico'],
+        'cobro_servicio'     => ['label' => 'Cobro de Servicios',    'icon' => 'fas fa-hand-holding-usd','grupo' => 'Servicio Técnico'],
         // Caja
-        'caja'               => ['label' => 'Gestión de Caja',      'icon' => 'fas fa-cash-register',   'grupo' => 'Caja'],
-        'historial_caja'     => ['label' => 'Historial de Caja',    'icon' => 'fas fa-history',         'grupo' => 'Caja'],
+        'caja'               => ['label' => 'Gestión de Caja',       'icon' => 'fas fa-cash-register',   'grupo' => 'Caja'],
+        'historial_caja'     => ['label' => 'Historial de Caja',     'icon' => 'fas fa-history',         'grupo' => 'Caja'],
+        // Ventas
+        'ventas'             => ['label' => 'Nueva Venta',           'icon' => 'fas fa-shopping-cart',   'grupo' => 'Ventas'],
+        'cobro_ventas'       => ['label' => 'Cobro de Créditos',     'icon' => 'fas fa-file-invoice-dollar','grupo' => 'Ventas'],
+        'historial_ventas'   => ['label' => 'Historial de Ventas',   'icon' => 'fas fa-history',         'grupo' => 'Ventas'],
+        // Compras
+        'compras'            => ['label' => 'Nueva Compra',          'icon' => 'fas fa-truck-loading',   'grupo' => 'Compras'],
+        'cobro_compras'      => ['label' => 'Pago de Créditos',      'icon' => 'fas fa-file-invoice',    'grupo' => 'Compras'],
+        'historial_compras'  => ['label' => 'Historial de Compras',  'icon' => 'fas fa-history',         'grupo' => 'Compras'],
         // Inventario
-        'inventario'         => ['label' => 'Stock General',        'icon' => 'fas fa-boxes',           'grupo' => 'Inventario'],
-        'lotes'              => ['label' => 'Lotes / Vencimientos',  'icon' => 'fas fa-calendar-times',  'grupo' => 'Inventario'],
+        'inventario'         => ['label' => 'Stock / Inventario',    'icon' => 'fas fa-boxes',           'grupo' => 'Inventario'],
         // Catálogos
-        'productos'          => ['label' => 'Productos',            'icon' => 'fas fa-capsules',        'grupo' => 'Catálogos'],
-        'categorias'         => ['label' => 'Categorías',           'icon' => 'fas fa-tags',            'grupo' => 'Catálogos'],
-        'unidades'           => ['label' => 'Unidades',             'icon' => 'fas fa-ruler-combined',  'grupo' => 'Catálogos'],
+        'productos'          => ['label' => 'Productos',             'icon' => 'fas fa-laptop',          'grupo' => 'Catálogos'],
+        'categorias'         => ['label' => 'Categorías',            'icon' => 'fas fa-tags',            'grupo' => 'Catálogos'],
+        'catalogo_servicios' => ['label' => 'Servicios Técnicos',    'icon' => 'fas fa-wrench',          'grupo' => 'Catálogos'],
         // Personas
-        'clientes'           => ['label' => 'Clientes',             'icon' => 'fas fa-users',           'grupo' => 'Personas'],
-        'proveedores'        => ['label' => 'Proveedores',          'icon' => 'fas fa-truck',           'grupo' => 'Personas'],
+        'clientes'           => ['label' => 'Clientes',              'icon' => 'fas fa-users',           'grupo' => 'Personas'],
+        'proveedores'        => ['label' => 'Proveedores',           'icon' => 'fas fa-truck',           'grupo' => 'Personas'],
         // Empresa
-        'empresa'            => ['label' => 'Mi Empresa',           'icon' => 'fas fa-building',        'grupo' => 'Empresa'],
+        'empresa'            => ['label' => 'Mi Empresa',            'icon' => 'fas fa-building',        'grupo' => 'Empresa'],
     ];
 }
 
@@ -98,7 +104,7 @@ function verificarPermiso(PDO $pdo, string $modulo): void {
     $permisos = cargarPermisos($pdo, $id_usuario);
 
     if (empty($permisos[$modulo])) {
-        header('Location: /botica-2026/public/dashboard.php?error=sin_permiso&modulo=' . urlencode($modulo));
+        header('Location: /sysinversioneschcomputer/public/dashboard.php?error=sin_permiso&modulo=' . urlencode($modulo));
         exit;
     }
 }

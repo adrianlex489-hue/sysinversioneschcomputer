@@ -1,0 +1,307 @@
+/* ============================================================
+   cobro_compras.css — Pago de Compras a Crédito | SysInversiones 2026
+   ============================================================ */
+
+.page-header-cobrocomp {
+    background: linear-gradient(135deg, #4c1d95, #7c3aed) !important;
+    color: #fff !important;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(124,58,237,.3);
+}
+.page-header-cobrocomp h4  { margin: 0; font-weight: 700; font-size: 1.2rem; color: #fff !important; }
+.page-header-cobrocomp small { opacity: .85; font-size: .82rem; color: rgba(255,255,255,.9) !important; }
+
+.cobrocomp-caja-badge {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.35);
+    color: #fff;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: .82rem;
+    font-weight: 600;
+}
+.cobrocomp-caja-sin { background: rgba(220,38,38,.2); border-color: rgba(252,165,165,.5); }
+
+/* ── STATS ── */
+.cobrocomp-stat {
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.12);
+}
+.cobrocomp-stat i { font-size: 1.8rem; opacity: .8; }
+.cobrocomp-stat-val { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.cobrocomp-stat-lbl { font-size: .78rem; opacity: .9; }
+
+/* ── CARD HEADER ── */
+.cobrocomp-card-header {
+    background: linear-gradient(90deg, #4c1d95, #7c3aed) !important;
+    color: #fff !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px !important;
+    border-bottom: none !important;
+}
+.cobrocomp-card-header h6 { margin: 0 !important; font-weight: 700 !important; font-size: .95rem !important; color: #fff !important; }
+.cobrocomp-card-header .nav-link { color: rgba(255,255,255,.8) !important; font-weight: 600; border: none !important; }
+.cobrocomp-card-header .nav-link.active { color: #fff !important; background: rgba(255,255,255,.2) !important; border-radius: 5px; }
+
+/* ── TABLA ── */
+.table-cobrocomp thead th {
+    background: #f8f9fa !important;
+    color: #495057 !important;
+    font-weight: 700 !important;
+    font-size: .82rem !important;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 2px solid #7c3aed !important;
+}
+.table-cobrocomp tbody tr:hover { background: #f5f3ff !important; }
+.table-cobrocomp td { vertical-align: middle !important; font-size: .88rem; }
+
+/* ── BADGES ── */
+.cobrocomp-num-comp {
+    font-family: monospace;
+    font-weight: 700;
+    color: #7c3aed;
+    background: #ede9fe;
+    border: 1px solid #c4b5fd;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: .85rem;
+    white-space: nowrap;
+}
+.cobrocomp-saldo-badge {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: .85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.cobrocomp-tipo-badge {
+    background: #ede9fe;
+    color: #5b21b6;
+    border: 1px solid #c4b5fd;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: .75rem;
+    font-weight: 700;
+}
+
+/* ── BOTÓN PAGAR ── */
+.btn-pagar-comp {
+    background: linear-gradient(135deg, #4c1d95, #7c3aed) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: .8rem !important;
+    padding: 4px 10px !important;
+    transition: all .2s !important;
+}
+.btn-pagar-comp:hover {
+    background: linear-gradient(135deg, #5b21b6, #a78bfa) !important;
+    color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(124,58,237,.3) !important;
+}
+
+/* ── EMPTY STATE ── */
+.cobrocomp-empty {
+    text-align: center;
+    padding: 50px 20px;
+    color: #94a3b8;
+}
+.cobrocomp-empty i { font-size: 3rem; margin-bottom: 12px; color: #7c3aed; opacity: .4; }
+.cobrocomp-empty p { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+.cobrocomp-empty small { font-size: .85rem; }
+
+/* ── BADGES MÉTODO PAGO ── */
+.cobrocomp-metodo-badge {
+    font-size: .78rem;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+}
+.cobrocomp-metodo-efectivo     { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.cobrocomp-metodo-transferencia{ background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+.cobrocomp-metodo-yape         { background: #ede9fe; color: #5b21b6; border: 1px solid #c4b5fd; }
+.cobrocomp-metodo-plin         { background: #fce7f3; color: #9d174d; border: 1px solid #f9a8d4; }
+.cobrocomp-metodo-tarjeta      { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+
+/* ══════════════════════════════════════════════════════════
+   MODAL
+   ══════════════════════════════════════════════════════════ */
+.cobrocomp-modal-header {
+    background: linear-gradient(135deg, #4c1d95, #7c3aed) !important;
+    color: #fff !important;
+    padding: 16px 22px !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.cobrocomp-modal-num {
+    display: inline-block;
+    background: rgba(255,255,255,.2);
+    color: #fff;
+    font-family: monospace;
+    font-weight: 700;
+    font-size: .88rem;
+    padding: 2px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.3);
+    letter-spacing: 1px;
+}
+.cobrocomp-modal-resumen {
+    background: #f5f3ff;
+    border-bottom: 1px solid #ddd6fe;
+    padding: 12px 24px;
+}
+.cobrocomp-resumen-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .88rem;
+    padding: 4px 0;
+    border-bottom: 1px solid #ddd6fe;
+    gap: 12px;
+}
+.cobrocomp-resumen-row:last-child { border-bottom: none; }
+.cobrocomp-resumen-row span { color: #64748b; font-size: .82rem; }
+
+.cobrocomp-metodos-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+}
+.cobrocomp-metodo-opt { cursor: pointer; margin: 0; }
+.cobrocomp-metodo-opt input[type="radio"] { display: none; }
+.cobrocomp-metodo-opt span {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    padding: 10px 6px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: .75rem;
+    font-weight: 600;
+    color: #64748b;
+    background: #f8fafc;
+    transition: all .2s;
+    text-align: center;
+    min-height: 60px;
+}
+.cobrocomp-metodo-opt span i { font-size: 1.1rem; }
+.cobrocomp-metodo-opt:hover span { border-color: #7c3aed; background: #f5f3ff; color: #7c3aed; }
+.cobrocomp-metodo-opt input:checked + span {
+    border-color: #7c3aed;
+    background: linear-gradient(135deg, #4c1d95, #7c3aed);
+    color: #fff;
+    box-shadow: 0 3px 8px rgba(124,58,237,.3);
+}
+
+.cobrocomp-form-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: .85rem;
+    margin-bottom: 6px;
+    display: block;
+}
+.btn-pagar-submit {
+    background: linear-gradient(135deg, #4c1d95, #7c3aed) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 7px !important;
+    font-weight: 700 !important;
+    padding: 8px 20px !important;
+    font-size: .9rem !important;
+    transition: all .2s !important;
+}
+.btn-pagar-submit:hover {
+    background: linear-gradient(135deg, #5b21b6, #a78bfa) !important;
+    color: #fff !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124,58,237,.35) !important;
+}
+
+/* ── DETALLE MODAL ── */
+.det-comp-status-bar { display: flex; flex-wrap: wrap; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+.det-comp-status-item { display: flex; flex-direction: column; justify-content: center; padding: 12px 18px; flex: 1; min-width: 110px; gap: 4px; }
+.det-comp-status-lbl { font-size: .68rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .6px; }
+.det-comp-status-val { font-size: .88rem; font-weight: 600; color: #1e293b; }
+.det-comp-status-sep { width: 1px; background: #e2e8f0; margin: 8px 0; }
+.det-comp-money { color: #7c3aed !important; font-size: 1rem !important; font-family: monospace; }
+
+.det-comp-progress-wrap { display: flex; align-items: center; gap: 10px; padding: 8px 18px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+.det-comp-progress-bg { flex: 1; height: 6px; background: #e2e8f0; border-radius: 99px; overflow: hidden; }
+.det-comp-progress-fill { height: 100%; border-radius: 99px; transition: width .4s ease; }
+.det-comp-progress-label { font-size: .75rem; font-weight: 700; white-space: nowrap; min-width: 70px; text-align: right; }
+
+.det-comp-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 99px; font-size: .75rem; font-weight: 700; white-space: nowrap; }
+.det-comp-pill-ok   { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.det-comp-pill-warn { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+.det-comp-pill-red  { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+.det-comp-card-row { display: flex; border-bottom: 1px solid #e2e8f0; }
+.det-comp-card { display: flex; align-items: flex-start; gap: 12px; padding: 16px 18px; flex: 1; }
+.det-comp-card-prov { border-right: 1px solid #e2e8f0; }
+.det-comp-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.1rem; flex-shrink: 0; }
+.det-comp-card-label { font-size: .68rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px; }
+.det-comp-card-name { font-size: .95rem; font-weight: 700; color: #1e293b; line-height: 1.3; margin-bottom: 6px; }
+.det-comp-card-meta { display: flex; flex-direction: column; gap: 3px; }
+.det-comp-card-meta span { font-size: .78rem; color: #64748b; display: flex; align-items: center; gap: 5px; }
+.det-comp-card-meta i { color: #94a3b8; width: 12px; text-align: center; }
+
+.det-comp-section { border-bottom: 1px solid #f1f5f9; }
+.det-comp-section:last-child { border-bottom: none; }
+.det-comp-section-hdr { display: flex; align-items: center; gap: 8px; padding: 9px 18px; font-size: .8rem; font-weight: 700; letter-spacing: .3px; }
+.det-comp-hdr-purple { background: linear-gradient(90deg,#faf5ff,#ede9fe); color: #5b21b6; border-bottom: 1px solid #ddd6fe; }
+.det-comp-hdr-teal   { background: linear-gradient(90deg,#f0fdfa,#ccfbf1); color: #0f766e; border-bottom: 1px solid #99f6e4; }
+.det-comp-section-count { background: rgba(0,0,0,.1); border-radius: 99px; padding: 1px 7px; font-size: .7rem; font-weight: 700; }
+.det-comp-section-total { margin-left: auto; font-size: .78rem; font-weight: 700; opacity: .85; }
+
+.det-comp-items-list { padding: 4px 0; }
+.det-comp-item-row { display: flex; align-items: center; gap: 10px; padding: 9px 18px; transition: background .15s; }
+.det-comp-item-even { background: #fafafa; }
+.det-comp-item-row:hover { background: #f5f3ff; }
+.det-comp-item-icon { width: 30px; height: 30px; border-radius: 8px; background: #ede9fe; color: #5b21b6; display: flex; align-items: center; justify-content: center; font-size: .8rem; flex-shrink: 0; }
+.det-comp-item-info { flex: 1; min-width: 0; }
+.det-comp-item-name { font-size: .88rem; font-weight: 700; color: #1e293b; }
+.det-comp-item-sub  { font-size: .75rem; color: #94a3b8; margin-top: 1px; }
+.det-comp-item-qty  { font-size: .8rem; color: #64748b; font-weight: 600; min-width: 30px; text-align: center; }
+.det-comp-item-price { font-size: .82rem; color: #64748b; min-width: 70px; text-align: right; }
+.det-comp-item-subtotal { font-size: .9rem; font-weight: 700; color: #7c3aed; min-width: 80px; text-align: right; font-family: monospace; }
+
+.det-comp-subtotal-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 18px; background: #f8fafc; border-top: 1px dashed #e2e8f0; font-size: .82rem; font-weight: 700; color: #475569; }
+
+.det-comp-total-final { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 60%, #a78bfa 100%); }
+.det-comp-total-left { display: flex; align-items: center; gap: 12px; }
+.det-comp-total-icon { width: 38px; height: 38px; background: rgba(255,255,255,.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1rem; }
+.det-comp-total-label { font-size: .82rem; font-weight: 700; color: rgba(255,255,255,.9); letter-spacing: .5px; }
+.det-comp-total-sub   { font-size: .75rem; color: rgba(255,255,255,.65); margin-top: 2px; }
+.det-comp-total-amount { font-size: 1.5rem; font-weight: 800; color: #fff; font-family: monospace; letter-spacing: 1px; }
+
+.det-comp-cuota-row { display: flex; align-items: center; gap: 10px; padding: 8px 18px; border-bottom: 1px solid #f1f5f9; }
+.det-comp-cuota-row:last-child { border-bottom: none; }
+.det-comp-cuota-num { font-size: .75rem; font-weight: 700; background: #ede9fe; color: #5b21b6; border-radius: 99px; padding: 2px 8px; min-width: 60px; text-align: center; }
+.det-comp-cuota-info { flex: 1; font-size: .82rem; color: #475569; }
+.det-comp-cuota-monto { font-size: .9rem; font-weight: 700; color: #7c3aed; font-family: monospace; }
+
+.det-comp-pago-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+.det-comp-pago-row:last-child { border-bottom: none; }
+.det-comp-pago-metodo { font-size: .75rem; font-weight: 700; padding: 4px 10px; border-radius: 99px; white-space: nowrap; display: flex; align-items: center; gap: 5px; min-width: 110px; justify-content: center; }
+.det-comp-pago-info { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.det-comp-pago-user  { font-size: .78rem; color: #475569; font-weight: 600; }
+.det-comp-pago-fecha { font-size: .72rem; color: #94a3b8; }
+.det-comp-pago-monto { font-size: .95rem; font-weight: 800; color: #dc2626; font-family: monospace; white-space: nowrap; }

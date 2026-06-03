@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 // ============================================================
-// ajax_buscar_ruc.php | Botica 2026
+// ajax_buscar_ruc.php | SysInversiones CH Computer
 // Consulta RUC via API y opcionalmente guarda el proveedor en BD
 // POST: ruc, guardar (0|1)
 // ============================================================
@@ -16,9 +16,9 @@ require_once $ruta_base . 'conf/verificar_acceso.php';
 require_once $ruta_base . 'includes/api_ruc.php';
 
 if (!defined('ROL_ADMINISTRADOR')) define('ROL_ADMINISTRADOR', 1);
-if (!defined('ROL_CAJERO'))        define('ROL_CAJERO', 2);
-if (!defined('ROL_TRABAJADOR'))    define('ROL_TRABAJADOR', 3);
-verificar_acceso([ROL_ADMINISTRADOR, ROL_CAJERO, ROL_TRABAJADOR]);
+if (!defined('ROL_ASESOR_COMERCIAL'))        define('ROL_ASESOR_COMERCIAL', 2);
+if (!defined('ROL_TECNICO'))    define('ROL_TECNICO', 3);
+verificar_acceso([ROL_ADMINISTRADOR, ROL_ASESOR_COMERCIAL, ROL_TECNICO]);
 
 define('API_RUC_TOKEN', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjo0MTUsImV4cCI6MTc2NTc0NjcwM30.HX2wdiyrwQ55YfmBIlnsxqY3mhEW8_gqpl1V598c1NM');
 

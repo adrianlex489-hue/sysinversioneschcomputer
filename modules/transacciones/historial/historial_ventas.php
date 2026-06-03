@@ -1,7 +1,7 @@
-﻿<?php
+<?php
 // ============================================================
 // modules/transacciones/historial/historial_ventas.php
-// Historial completo de ventas | Botica 2026
+// Historial completo de ventas | SysInversiones CH Computer 2026
 // ============================================================
 $ruta_base = '../../../';
 require_once $ruta_base . 'conf/database.php';
@@ -10,9 +10,9 @@ require_once $ruta_base . 'conf/permisos.php';
 
 if (!isset($pdo) || !($pdo instanceof PDO)) die('Error: Conexion BD no disponible.');
 if (!defined('ROL_ADMINISTRADOR')) define('ROL_ADMINISTRADOR', 1);
-if (!defined('ROL_CAJERO'))        define('ROL_CAJERO', 2);
-if (!defined('ROL_TRABAJADOR'))    define('ROL_TRABAJADOR', 3);
-verificar_acceso([ROL_ADMINISTRADOR, ROL_CAJERO, ROL_TRABAJADOR]);
+if (!defined('ROL_ASESOR_COMERCIAL'))        define('ROL_ASESOR_COMERCIAL', 2);
+if (!defined('ROL_TECNICO'))    define('ROL_TECNICO', 3);
+verificar_acceso([ROL_ADMINISTRADOR, ROL_ASESOR_COMERCIAL, ROL_TECNICO]);
 verificarPermiso($pdo, 'historial_ventas');
 
 $id_usuario = $_SESSION['id_usuario'] ?? 0;
@@ -31,15 +31,43 @@ try {
     $pdo->exec("UPDATE cuotas_venta SET estado='vencido' WHERE estado='pendiente' AND fecha_vencimiento < CURDATE()");
 } catch (PDOException $e) {}
 
+// AJAX: cuotas de una venta (para modal de pago)
+if (isset($_GET['accion']) && $_GET['accion'] === 'cuotas_ajax') {
+    header('Content-Type: application/json');
+    $id = (int)($_GET['id_venta'] ?? 0);
+    try {
+        $stCuotas = $pdo->prepare(
+            "SELECT id_cuota, numero_cuota, monto_cuota, fecha_vencimiento, estado
+             FROM cuotas_venta WHERE id_venta = ? ORDER BY numero_cuota ASC"
+        );
+        $stCuotas->execute([$id]);
+        $cuotas = $stCuotas->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode(['ok' => true, 'cuotas' => $cuotas]);
+    } catch (PDOException $e) {
+        echo json_encode(['ok' => false, 'msg' => $e->getMessage()]);
+    }
+    exit;
+}
+
 // AJAX: detalle de venta
 if (isset($_GET['accion']) && $_GET['accion'] === 'detalle_ajax') {
     $id = (int)($_GET['id_venta'] ?? 0);
     try {
-        $stmt = $pdo->prepare("SELECT v.*, CONCAT(c.nombres,' ',c.apellido_paterno) AS nombre_cliente, u.nombre_completo FROM ventas v JOIN clientes c ON v.id_cliente=c.id_cliente JOIN usuarios u ON v.id_usuario=u.id_usuario WHERE v.id_venta=?");
+        $stmt = $pdo->prepare("SELECT v.*,
+            CASE v.tipo_cliente
+                WHEN 'empresa' THEN COALESCE(ce.razon_social,'Sin nombre')
+                ELSE CONCAT(COALESCE(cn.nombres,''),' ',COALESCE(cn.apellido_paterno,''),
+                     CASE WHEN cn.apellido_materno IS NOT NULL AND cn.apellido_materno!='' THEN CONCAT(' ',cn.apellido_materno) ELSE '' END)
+            END AS nombre_cliente,
+            u.nombre_completo
+            FROM ventas v
+            LEFT JOIN clientes_natural cn ON cn.id_cliente_natural = v.id_cliente AND v.tipo_cliente = 'natural'
+            LEFT JOIN clientes_empresa ce ON ce.id_cliente_empresa = v.id_cliente AND v.tipo_cliente = 'empresa'
+            JOIN usuarios u ON v.id_usuario=u.id_usuario WHERE v.id_venta=?");
         $stmt->execute([$id]); $cab = $stmt->fetch();
         if (!$cab) { echo '<div class="alert alert-warning">Venta no encontrada.</div>'; exit; }
 
-        $det = $pdo->prepare("SELECT dv.*, p.nombre_producto, p.codigo, l.codigo_lote, l.fecha_vencimiento FROM detalle_venta dv JOIN productos p ON dv.id_producto=p.id_producto JOIN lotes l ON dv.id_lote=l.id_lote WHERE dv.id_venta=?");
+        $det = $pdo->prepare("SELECT dv.*, p.nombre_producto, p.codigo FROM detalle_venta dv JOIN productos p ON dv.id_producto=p.id_producto WHERE dv.id_venta=?");
         $det->execute([$id]); $items = $det->fetchAll();
 
         $cuotas = []; $pagos = [];
@@ -64,16 +92,12 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'detalle_ajax') {
 
         echo '<h6 class="font-weight-bold text-muted mb-2" style="font-size:.82rem;"><i class="fas fa-shopping-cart mr-1"></i>PRODUCTOS VENDIDOS</h6>';
         echo '<div class="table-responsive mb-3"><table class="table table-sm table-bordered" style="font-size:.83rem;">';
-        echo '<thead style="background:#1a7a4a;color:#fff;"><tr><th><i class="fas fa-pills mr-1"></i>Producto</th><th><i class="fas fa-tag mr-1"></i>Lote</th><th><i class="fas fa-calendar-times mr-1"></i>Vence</th><th class="text-center"><i class="fas fa-sort-numeric-up mr-1"></i>Cant.</th><th class="text-right"><i class="fas fa-dollar-sign mr-1"></i>P.Venta</th><th class="text-right"><i class="fas fa-calculator mr-1"></i>Subtotal</th></tr></thead><tbody>';
+        echo '<thead style="background:#1a5276;color:#fff;"><tr><th><i class="fas fa-box mr-1"></i>Producto</th><th class="text-center">Cant.</th><th class="text-right">P.Venta</th><th class="text-right">Descuento</th><th class="text-right">Subtotal</th></tr></thead><tbody>';
         foreach ($items as $it) {
-            $vence = $it['fecha_vencimiento'] ? date('d/m/Y',strtotime($it['fecha_vencimiento'])) : '---';
-            $hoy = new DateTime(); $fv = new DateTime($it['fecha_vencimiento']);
-            $dias = (int)$hoy->diff($fv)->days * ($fv >= $hoy ? 1 : -1);
-            $av = $dias < 0 ? '<span class="alerta-vencido ml-1">VENCIDO</span>' : ($dias <= 90 ? '<span class="alerta-vence-pronto ml-1">'.(string)$dias.'d</span>' : '');
             echo '<tr><td><strong>'.htmlspecialchars($it['nombre_producto']).'</strong><br><small class="text-muted">'.htmlspecialchars($it['codigo']).'</small></td>';
-            echo '<td><code style="background:#e0f7fa;color:#117a8b;padding:2px 5px;border-radius:3px;">'.htmlspecialchars($it['codigo_lote']).'</code></td>';
-            echo '<td>'.(string)$vence.(string)$av.'</td><td class="text-center">'.(string)$it['cantidad'].'</td>';
+            echo '<td class="text-center">'.$it['cantidad'].'</td>';
             echo '<td class="text-right">S/. '.number_format($it['precio_unitario'],2).'</td>';
+            echo '<td class="text-right">'.($it['descuento']>0 ? 'S/. '.number_format($it['descuento'],2) : '---').'</td>';
             echo '<td class="text-right font-weight-bold">S/. '.number_format($it['subtotal'],2).'</td></tr>';
         }
         echo '</tbody></table></div>';
@@ -82,7 +106,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'detalle_ajax') {
         echo '<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:.87rem;color:#555;border-bottom:1px solid #e9ecef;"><span><i class="fas fa-receipt mr-2 text-muted"></i>Subtotal</span><strong style="font-family:monospace;">S/. '.number_format($cab['subtotal'],2).'</strong></div>';
         if ($cab['descuento']>0) { echo '<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:.87rem;color:#555;border-bottom:1px solid #e9ecef;"><span><i class="fas fa-tag mr-2 text-muted"></i>Descuento</span><strong style="font-family:monospace;color:#e74c3c;">- S/. '.number_format($cab['descuento'],2).'</strong></div>'; }
         if ($cab['aplica_igv']) { echo '<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:.87rem;color:#555;border-bottom:1px solid #e9ecef;"><span><i class="fas fa-percentage mr-2 text-muted"></i>IGV 18%</span><strong style="font-family:monospace;">S/. '.number_format($cab['igv'],2).'</strong></div>'; }
-        echo '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 3px;font-size:1rem;font-weight:700;"><span style="color:#1a7a4a;"><i class="fas fa-check-circle mr-2"></i>TOTAL</span><span style="color:#1a7a4a;font-size:1.15rem;font-family:monospace;">S/. '.number_format($cab['total'],2).'</span></div>';
+        echo '<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0 3px;font-size:1rem;font-weight:700;"><span style="color:#1a5276;"><i class="fas fa-check-circle mr-2"></i>TOTAL</span><span style="color:#1a5276;font-size:1.15rem;font-family:monospace;">S/. '.number_format($cab['total'],2).'</span></div>';
         echo '</div></div>';
 
         if ($cab['tipo_pago']==='credito' && !empty($cuotas)) {
@@ -103,7 +127,7 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'detalle_ajax') {
         if (!empty($pagos)) {
             echo '<h6 class="font-weight-bold text-muted mb-2 mt-3" style="font-size:.82rem;"><i class="fas fa-money-bill-wave mr-1"></i>PAGOS REALIZADOS</h6>';
             echo '<div class="table-responsive"><table class="table table-sm table-bordered" style="font-size:.83rem;">';
-            echo '<thead style="background:#1a7a4a;color:#fff;"><tr><th>Fecha</th><th>Metodo</th><th class="text-right">Monto</th><th>Registrado por</th></tr></thead><tbody>';
+            echo '<thead style="background:#1a5276;color:#fff;"><tr><th>Fecha</th><th>M�todo</th><th class="text-right">Monto</th><th>Registrado por</th></tr></thead><tbody>';
             foreach ($pagos as $pg) {
                 echo '<tr><td>'.date('d/m/Y H:i',strtotime($pg['fecha'])).'</td><td>'.strtoupper($pg['metodo_pago']).'</td>';
                 echo '<td class="text-right font-weight-bold text-success">S/. '.number_format($pg['monto'],2).'</td>';
@@ -151,6 +175,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 } catch(PDOException $e){}
             }
+
+            // -- Registrar en caja si hay una abierta --------------------------
+            $caja_hist = $pdo->query("SELECT id_caja FROM caja WHERE estado='abierta' ORDER BY fecha_apertura DESC LIMIT 1")->fetch();
+            if ($caja_hist) {
+                $num_vta  = 'VTA-' . str_pad($id_venta, 6, '0', STR_PAD_LEFT);
+                $desc_mov = "Abono crédito {$num_vta}";
+                $pdo->prepare("INSERT INTO movimientos_caja (id_caja,tipo_referencia,id_referencia,id_usuario,tipo,descripcion,monto,metodo_pago) VALUES (?,'venta',?,?,'ingreso',?,?,?)")
+                    ->execute([$caja_hist['id_caja'], $id_venta, $id_usuario, $desc_mov, $monto, $metodo_pago]);
+            }
+
             $pdo->commit();
             $msg = $nuevo_saldo<=0 ? "Venta #$id_venta completamente pagada." : "Pago de S/. ".number_format($monto,2)." registrado. Saldo: S/. ".number_format($nuevo_saldo,2).".";
             redirigirHistVta('success','Pago registrado!',$msg);
@@ -166,9 +200,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $pdo->beginTransaction();
             $stV = $pdo->prepare("SELECT estado FROM ventas WHERE id_venta=?"); $stV->execute([$id_venta]); $ven = $stV->fetch();
             if (!$ven || $ven['estado']==='anulado') { $pdo->rollBack(); redirigirHistVta('warning','No se puede anular','La venta ya esta anulada.'); }
-            $det = $pdo->prepare("SELECT id_producto,id_lote,cantidad FROM detalle_venta WHERE id_venta=?"); $det->execute([$id_venta]);
+            $det = $pdo->prepare("SELECT id_producto,cantidad FROM detalle_venta WHERE id_venta=?"); $det->execute([$id_venta]);
             foreach ($det->fetchAll() as $d) {
-                $pdo->prepare("UPDATE lotes    SET stock_actual=stock_actual+? WHERE id_lote=?")->execute([$d['cantidad'],$d['id_lote']]);
                 $pdo->prepare("UPDATE productos SET stock=stock+? WHERE id_producto=?")->execute([$d['cantidad'],$d['id_producto']]);
             }
             $pdo->prepare("UPDATE ventas SET estado='anulado',saldo_pendiente=0 WHERE id_venta=?")->execute([$id_venta]);
@@ -188,12 +221,18 @@ $stats = ['total'=>0,'monto'=>0,'pendientes'=>0,'anuladas'=>0,'creditos'=>0];
 try {
     $ventas = $pdo->query("SELECT v.id_venta, v.fecha, v.tipo_comprobante, v.numero_comprobante,
         v.total, v.tipo_pago, v.metodo_pago, v.estado, v.saldo_pendiente,
-        CONCAT(c.nombres,' ',c.apellido_paterno) AS nombre_cliente, u.nombre_completo,
+        CASE v.tipo_cliente
+            WHEN 'empresa' THEN COALESCE(ce.razon_social,'Sin nombre')
+            ELSE CONCAT(COALESCE(cn.nombres,''),' ',COALESCE(cn.apellido_paterno,''),
+                 CASE WHEN cn.apellido_materno IS NOT NULL AND cn.apellido_materno!='' THEN CONCAT(' ',cn.apellido_materno) ELSE '' END)
+        END AS nombre_cliente,
+        u.nombre_completo,
         (SELECT COUNT(*) FROM cuotas_venta cv WHERE cv.id_venta=v.id_venta AND cv.estado='pendiente') AS cuotas_pendientes,
         (SELECT COUNT(*) FROM cuotas_venta cv WHERE cv.id_venta=v.id_venta AND cv.estado='vencido')   AS cuotas_vencidas,
         (SELECT COUNT(*) FROM cuotas_venta cv WHERE cv.id_venta=v.id_venta) AS total_cuotas
         FROM ventas v
-        JOIN clientes c ON v.id_cliente=c.id_cliente
+        LEFT JOIN clientes_natural cn ON cn.id_cliente_natural = v.id_cliente AND v.tipo_cliente = 'natural'
+        LEFT JOIN clientes_empresa ce ON ce.id_cliente_empresa = v.id_cliente AND v.tipo_cliente = 'empresa'
         JOIN usuarios u ON v.id_usuario=u.id_usuario
         ORDER BY v.fecha DESC")->fetchAll();
 
@@ -216,9 +255,9 @@ include $ruta_base . 'includes/sidebar.php';
 <div class="page-header-hist-vta d-flex justify-content-between align-items-center flex-wrap">
 <div>
 <h4><i class="fas fa-history mr-2"></i>Historial de Ventas</h4>
-<small><i class="fas fa-map-marker-alt mr-1"></i>Botica 2026 &rsaquo; Transacciones &rsaquo; Historial de Ventas</small>
+<small><i class="fas fa-map-marker-alt mr-1"></i>SysInversiones &rsaquo; Transacciones &rsaquo; Historial de Ventas</small>
 </div>
-<a href="/botica-2026/modules/transacciones/ventas.php" class="btn btn-light font-weight-bold btn-sm">
+<a href="/sysinversioneschcomputer/modules/transacciones/ventas.php" class="btn btn-light font-weight-bold btn-sm">
 <i class="fas fa-plus-circle mr-1"></i>Nueva Venta
 </a>
 </div>
@@ -229,7 +268,7 @@ include $ruta_base . 'includes/sidebar.php';
 <!-- STATS -->
 <div class="row mb-4">
 <div class="col-md-3 col-6 mb-2">
-<div class="stat-mini-hist-vta" style="background:linear-gradient(135deg,#1a7a4a,#27ae60);">
+<div class="stat-mini-hist-vta" style="background:linear-gradient(135deg,#1a5276,#2980b9);">
 <i class="fas fa-shopping-cart"></i>
 <div><div class="stat-value"><?= $stats['total'] ?></div><div class="stat-label">Total ventas</div></div>
 </div>
@@ -237,7 +276,7 @@ include $ruta_base . 'includes/sidebar.php';
 <div class="col-md-3 col-6 mb-2">
 <div class="stat-mini-hist-vta" style="background:linear-gradient(135deg,#1a5276,#2980b9);">
 <i class="fas fa-money-bill-wave"></i>
-<div><div class="stat-value">S/. <?= number_format($stats['monto'],0) ?></div><div class="stat-label">Monto total</div></div>
+<div><div class="stat-value">S/. <?= number_format($stats['monto'],2) ?></div><div class="stat-label">Monto total</div></div>
 </div>
 </div>
 <div class="col-md-3 col-6 mb-2">
@@ -254,22 +293,28 @@ include $ruta_base . 'includes/sidebar.php';
 </div>
 </div>
 
-<?php if ($swal): ?><script>document.addEventListener('DOMContentLoaded',function(){Swal.fire({icon:'<?= $swal['icon'] ?>',title:'<?= addslashes($swal['title']) ?>',text:'<?= addslashes($swal['text']) ?>',confirmButtonColor:'#1a7a4a',timer:<?= in_array($swal['icon'],['success','info'])?3500:0 ?>,timerProgressBar:<?= in_array($swal['icon'],['success','info'])?'true':'false' ?>,showConfirmButton:<?= in_array($swal['icon'],['success','info'])?'false':'true' ?>,});});</script><?php endif; ?>
+<?php if ($swal): ?><script>document.addEventListener('DOMContentLoaded',function(){Swal.fire({icon:'<?= $swal['icon'] ?>',title:'<?= addslashes($swal['title']) ?>',text:'<?= addslashes($swal['text']) ?>',confirmButtonColor:'#1a5276',timer:<?= in_array($swal['icon'],['success','info'])?3500:0 ?>,timerProgressBar:<?= in_array($swal['icon'],['success','info'])?'true':'false' ?>,showConfirmButton:<?= in_array($swal['icon'],['success','info'])?'false':'true' ?>,});});</script><?php endif; ?>
 
 <!-- FILTROS RAPIDOS -->
 <div class="filtros-card d-flex align-items-center gap-3 flex-wrap">
 <span style="font-weight:700;font-size:.85rem;color:#495057;"><i class="fas fa-filter mr-1"></i>Filtrar:</span>
-<button class="btn btn-sm btn-filtro-estado active" data-estado="todos" style="border-radius:20px;border:2px solid #1a7a4a;background:#1a7a4a;color:#fff;font-weight:600;padding:4px 14px;">Todos</button>
-<button class="btn btn-sm btn-filtro-estado" data-estado="pagado" style="border-radius:20px;border:2px solid #27ae60;color:#27ae60;font-weight:600;padding:4px 14px;">Pagados</button>
+<button class="btn btn-sm btn-filtro-estado active" data-estado="todos" style="border-radius:20px;border:2px solid #1a5276;background:#1a5276;color:#fff;font-weight:600;padding:4px 14px;">Todos</button>
+<button class="btn btn-sm btn-filtro-estado" data-estado="pagado" style="border-radius:20px;border:2px solid #1a5276;color:#1a5276;font-weight:600;padding:4px 14px;">Pagados</button>
 <button class="btn btn-sm btn-filtro-estado" data-estado="pendiente" style="border-radius:20px;border:2px solid #e67e22;color:#e67e22;font-weight:600;padding:4px 14px;">Pendientes</button>
 <button class="btn btn-sm btn-filtro-estado" data-estado="anulado" style="border-radius:20px;border:2px solid #e74c3c;color:#e74c3c;font-weight:600;padding:4px 14px;">Anulados</button>
 </div>
 
 <!-- TABLA -->
 <div class="card">
-<div class="card-header-hist-vta d-flex align-items-center justify-content-between">
+<div class="card-header-hist-vta d-flex align-items-center justify-content-between flex-wrap" style="gap:8px;">
 <h6 class="mb-0"><i class="fas fa-list mr-2"></i>Registro de Ventas</h6>
-<span class="badge badge-light"><?= count($ventas) ?> registros</span>
+<div class="d-flex align-items-center" style="gap:6px;">
+    <span class="badge badge-light mr-2"><?= count($ventas) ?> registros</span>
+    <button type="button" class="btn btn-sm btn-export-hvta" id="btnExportarHVta"
+        style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:6px;font-size:.8rem;font-weight:600;padding:4px 12px;">
+        <i class="fas fa-download mr-1"></i>Exportar
+    </button>
+</div>
 </div>
 <div class="card-body">
 <div class="table-responsive">
@@ -288,7 +333,7 @@ include $ruta_base . 'includes/sidebar.php';
 <tbody>
 <?php foreach ($ventas as $v): ?>
 <tr class="<?= $v['estado']==='anulado'?'anulada':'' ?>">
-<td class="text-center font-weight-bold" style="color:#1a7a4a;">#<?= $v['id_venta'] ?></td>
+<td class="text-center font-weight-bold" style="color:#1a5276;">#<?= $v['id_venta'] ?></td>
 <td style="font-size:.82rem;"><?= date('d/m/Y H:i',strtotime($v['fecha'])) ?></td>
 <td>
 <div style="font-weight:600;font-size:.88rem;"><?= htmlspecialchars($v['nombre_cliente']) ?></div>
@@ -306,7 +351,7 @@ include $ruta_base . 'includes/sidebar.php';
 <?php else: ?><span class="badge-contado-vta"><i class="fas fa-money-bill-wave mr-1"></i>CONTADO</span><?php endif; ?>
 </td>
 <td class="text-center" style="font-size:.8rem;text-transform:capitalize;"><?= htmlspecialchars($v['metodo_pago']) ?></td>
-<td class="text-right font-weight-bold" style="color:#1a7a4a;">
+<td class="text-right font-weight-bold" style="color:#1a5276;">
 S/. <?= number_format($v['total'],2) ?>
 <?php if ($v['saldo_pendiente']>0): ?><div style="font-size:.72rem;color:#e67e22;font-weight:600;">Saldo: S/. <?= number_format($v['saldo_pendiente'],2) ?></div><?php endif; ?>
 </td>
@@ -317,10 +362,13 @@ S/. <?= number_format($v['total'],2) ?>
 <td class="text-center">
 <button class="btn btn-sm btn-info btn-ver-venta" title="Ver detalle" data-id="<?= $v['id_venta'] ?>"><i class="fas fa-eye"></i></button>
 <?php if ($v['estado'] !== 'anulado'): ?>
-<a href="/botica-2026/modules/Comprobantes/imprimir.php?tipo=venta&id=<?= $v['id_venta'] ?>"
-   target="_blank" class="btn btn-sm btn-secondary" title="Imprimir comprobante">
-    <i class="fas fa-print"></i>
-</a>
+<button class="btn btn-sm btn-ver-ticket" title="Ver comprobante PDF"
+    data-id="<?= $v['id_venta'] ?>"
+    data-tipo="<?= htmlspecialchars($v['tipo_comprobante'], ENT_QUOTES) ?>"
+    data-numero="<?= htmlspecialchars($v['numero_comprobante'] ?? '#'.$v['id_venta'], ENT_QUOTES) ?>"
+    style="background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;border:none;border-radius:4px;padding:2px 7px;">
+    <i class="fas fa-file-pdf"></i>
+</button>
 <?php endif; ?>
 <?php if ($v['estado']==='pendiente' && $v['tipo_pago']==='credito'): ?>
 <button class="btn btn-sm btn-success btn-pagar-venta" title="Registrar pago"
@@ -353,7 +401,7 @@ data-numero="<?= htmlspecialchars(ucfirst($v['tipo_comprobante']).' '.($v['numer
 <!-- MODAL VER DETALLE -->
 <div class="modal fade" id="modalVerVenta" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog modal-lg"><div class="modal-content" style="border-radius:14px;overflow:hidden;">
-<div style="background:linear-gradient(135deg,#1a7a4a,#27ae60);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+<div style="background:linear-gradient(135deg,#1a5276,#2980b9);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
 <h6 style="color:#fff;font-weight:700;margin:0;"><i class="fas fa-file-invoice-dollar mr-2"></i>Detalle de Venta</h6>
 <button type="button" class="close" style="color:#fff;opacity:.8;font-size:1.3rem;" data-dismiss="modal"><span>&times;</span></button>
 </div>
@@ -366,7 +414,7 @@ data-numero="<?= htmlspecialchars(ucfirst($v['tipo_comprobante']).' '.($v['numer
 <!-- MODAL REGISTRAR PAGO -->
 <div class="modal fade" id="modalPagarVenta" tabindex="-1" aria-hidden="true">
 <div class="modal-dialog"><div class="modal-content" style="border-radius:14px;overflow:hidden;">
-<div style="background:linear-gradient(135deg,#1a7a4a,#27ae60);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+<div style="background:linear-gradient(135deg,#1a5276,#2980b9);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
 <div>
 <h6 style="color:#fff;font-weight:700;margin:0;"><i class="fas fa-dollar-sign mr-2"></i>Registrar Pago</h6>
 <small id="pago_cliente_label" style="color:rgba(255,255,255,.85);font-size:.82rem;"></small>
@@ -376,27 +424,39 @@ data-numero="<?= htmlspecialchars(ucfirst($v['tipo_comprobante']).' '.($v['numer
 <form method="POST" id="formRegistrarPagoVta">
 <input type="hidden" name="accion" value="registrar_pago">
 <input type="hidden" name="id_venta" id="pago_id_venta">
-<div class="modal-body p-4">
-<div class="saldo-alerta mb-3">
-<div style="font-size:.8rem;color:#999;text-transform:uppercase;font-weight:600;">Saldo pendiente</div>
-<div id="pago_saldo_display" style="font-size:1.4rem;font-weight:700;color:#e67e22;"></div>
+
+<!-- Saldo resumen -->
+<div style="padding:12px 20px 0;">
+    <div class="saldo-alerta">
+        <div style="font-size:.8rem;color:#999;text-transform:uppercase;font-weight:600;">Saldo pendiente</div>
+        <div id="pago_saldo_display" style="font-size:1.4rem;font-weight:700;color:#e67e22;"></div>
+    </div>
 </div>
+
+<!-- Cuotas -->
+<div style="padding:10px 20px 0;">
+    <div id="pago_cuotas_loading" style="display:none;text-align:center;padding:10px 0;">
+        <i class="fas fa-spinner fa-spin text-muted"></i>
+        <span class="text-muted ml-2" style="font-size:.85rem;">Cargando cuotas...</span>
+    </div>
+    <div id="pago_cuotas_lista"></div>
+</div>
+
+<div class="modal-body p-4" style="padding-top:12px!important;">
 <div class="form-group">
 <label style="font-weight:600;font-size:.83rem;">Monto a pagar <span class="text-danger">*</span></label>
 <div class="input-group input-group-sm">
 <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
 <input type="number" step="0.01" min="0.01" class="form-control" name="monto_pago" id="monto_pago" placeholder="0.00">
 </div>
-<small class="text-muted">Puede ser pago parcial o total del saldo</small>
+<small id="pago_monto_hint" class="text-muted"></small>
 </div>
 <div class="form-group">
 <label style="font-weight:600;font-size:.83rem;">Metodo de Pago</label>
 <div class="d-flex gap-2 flex-wrap">
 <button type="button" class="btn-metodo-pago-vta" data-metodo="efectivo"><i class="fas fa-money-bill-wave mr-1"></i>Efectivo</button>
 <button type="button" class="btn-metodo-pago-vta" data-metodo="yape"><i class="fas fa-mobile-alt mr-1"></i>Yape</button>
-<button type="button" class="btn-metodo-pago-vta" data-metodo="plin"><i class="fas fa-mobile-alt mr-1"></i>Plin</button>
 <button type="button" class="btn-metodo-pago-vta" data-metodo="transferencia"><i class="fas fa-university mr-1"></i>Transferencia</button>
-<button type="button" class="btn-metodo-pago-vta" data-metodo="tarjeta"><i class="fas fa-credit-card mr-1"></i>Tarjeta</button>
 </div>
 <input type="hidden" name="metodo_pago_abono" id="metodo_pago_abono" value="efectivo">
 </div>
@@ -407,12 +467,113 @@ data-numero="<?= htmlspecialchars(ucfirst($v['tipo_comprobante']).' '.($v['numer
 </div>
 <div class="modal-footer" style="border-top:1px solid #f0f0f0;padding:12px 20px;">
 <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times mr-1"></i>Cancelar</button>
-<button type="submit" class="btn btn-sm font-weight-bold" style="background:linear-gradient(135deg,#1a7a4a,#27ae60);color:#fff;"><i class="fas fa-check mr-1"></i>Registrar Pago</button>
+<button type="submit" class="btn btn-sm font-weight-bold" style="background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;"><i class="fas fa-check mr-1"></i>Registrar Pago</button>
 </div>
 </form>
 </div></div></div>
 
-<?php include $ruta_base . 'includes/footer.php'; ?>
-<script src="js/historial_ventas.js"></script>
+<!-- -- MODAL TICKET PDF -- -->
+<div class="modal fade" id="modalTicketPDF" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog modal-xl" style="max-width:860px;">
+<div class="modal-content" style="border-radius:14px;overflow:hidden;">
+<div style="background:linear-gradient(135deg,#1a5276,#2980b9);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;">
+    <div>
+        <h6 style="color:#fff;font-weight:700;margin:0;"><i class="fas fa-file-pdf mr-2"></i>Comprobante de Venta</h6>
+        <small id="ticketPdfNumero" style="color:rgba(255,255,255,.85);font-size:.82rem;"></small>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+        <a id="btnDescargarTicket" href="#" target="_blank"
+           class="btn btn-sm font-weight-bold"
+           style="background:#27ae60;color:#fff;border:none;border-radius:6px;padding:6px 14px;">
+            <i class="fas fa-download mr-1"></i>Descargar PDF
+        </a>
+        <button type="button" class="close" style="color:#fff;opacity:.8;font-size:1.3rem;" data-dismiss="modal"><span>&times;</span></button>
+    </div>
+</div>
+<div class="modal-body p-0" style="background:#525659;">
+    <div id="ticketPdfCargando" class="text-center py-5" style="color:#fff;">
+        <i class="fas fa-spinner fa-spin fa-2x mb-3 d-block"></i>
+        <span>Generando comprobante...</span>
+    </div>
+    <iframe id="ticketPdfFrame"
+            src=""
+            style="width:100%;height:75vh;border:none;display:none;"
+            onload="document.getElementById('ticketPdfCargando').style.display='none';this.style.display='block';">
+    </iframe>
+</div>
+</div></div></div>
+
+<!-- -- MODAL EXPORTAR HISTORIAL VENTAS -- -->
+<div class="modal fade" id="modalExportarHVta" tabindex="-1" aria-hidden="true">
+<div class="modal-dialog" style="max-width:440px;">
+<div class="modal-content" style="border-radius:14px;overflow:hidden;">
+<div style="background:linear-gradient(135deg,#1a7a4a,#27ae60);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;">
+    <h6 style="color:#fff;font-weight:700;margin:0;"><i class="fas fa-download mr-2"></i>Exportar Historial de Ventas</h6>
+    <button type="button" class="close" style="color:#fff;opacity:.8;font-size:1.3rem;" data-dismiss="modal"><span>&times;</span></button>
+</div>
+<div class="modal-body p-4">
+
+    <!-- Filtro estado -->
+    <div class="form-group mb-3">
+        <label style="font-weight:600;font-size:.83rem;color:#495057;"><i class="fas fa-circle mr-1 text-muted"></i>Estado</label>
+        <select id="hvta_exp_estado" class="form-control form-control-sm">
+            <option value="all">Todos los estados</option>
+            <option value="pagado">Pagadas</option>
+            <option value="pendiente">Pendientes</option>
+            <option value="anulado">Anuladas</option>
+        </select>
+    </div>
+
+    <!-- Filtro tipo pago -->
+    <div class="form-group mb-3">
+        <label style="font-weight:600;font-size:.83rem;color:#495057;"><i class="fas fa-credit-card mr-1 text-muted"></i>Tipo de Pago</label>
+        <select id="hvta_exp_pago" class="form-control form-control-sm">
+            <option value="all">Todos</option>
+            <option value="contado">Contado</option>
+            <option value="credito">Cr�dito</option>
+        </select>
+    </div>
+
+    <!-- Rango de fechas -->
+    <div class="row mb-3">
+        <div class="col-6">
+            <label style="font-weight:600;font-size:.83rem;color:#495057;"><i class="fas fa-calendar-alt mr-1 text-muted"></i>Desde</label>
+            <input type="date" id="hvta_exp_desde" class="form-control form-control-sm">
+        </div>
+        <div class="col-6">
+            <label style="font-weight:600;font-size:.83rem;color:#495057;"><i class="fas fa-calendar-alt mr-1 text-muted"></i>Hasta</label>
+            <input type="date" id="hvta_exp_hasta" class="form-control form-control-sm">
+        </div>
+    </div>
+
+    <!-- Botones de formato -->
+    <div style="background:#f8f9fa;border-radius:10px;padding:14px;border:1px solid #e9ecef;">
+        <p style="font-weight:600;font-size:.82rem;color:#495057;margin-bottom:10px;"><i class="fas fa-file-export mr-1"></i>Selecciona el formato:</p>
+        <div class="d-flex" style="gap:8px;">
+            <button type="button" id="hvta_btn_csv"
+                style="flex:1;background:linear-gradient(135deg,#1a7a4a,#27ae60);color:#fff;border:none;border-radius:8px;padding:10px 8px;font-weight:700;font-size:.82rem;cursor:pointer;">
+                <i class="fas fa-file-csv d-block mb-1" style="font-size:1.3rem;"></i>CSV
+            </button>
+            <button type="button" id="hvta_btn_excel"
+                style="flex:1;background:linear-gradient(135deg,#1a5276,#2980b9);color:#fff;border:none;border-radius:8px;padding:10px 8px;font-weight:700;font-size:.82rem;cursor:pointer;">
+                <i class="fas fa-file-excel d-block mb-1" style="font-size:1.3rem;"></i>Excel
+            </button>
+            <button type="button" id="hvta_btn_pdf"
+                style="flex:1;background:linear-gradient(135deg,#922b21,#e74c3c);color:#fff;border:none;border-radius:8px;padding:10px 8px;font-weight:700;font-size:.82rem;cursor:pointer;">
+                <i class="fas fa-file-pdf d-block mb-1" style="font-size:1.3rem;"></i>PDF
+            </button>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer" style="border-top:1px solid #f0f0f0;padding:10px 20px;">
+    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal"><i class="fas fa-times mr-1"></i>Cerrar</button>
+</div>
+</div></div></div>
+
+<?php
+$extra_js = '<script src="js/historial_ventas.js?v=' . time() . '"></script>';
+include $ruta_base . 'includes/footer.php';
+?>
 
 

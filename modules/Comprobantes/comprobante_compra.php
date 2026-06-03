@@ -1,6 +1,6 @@
-<?php
+﻿<?php
 // ============================================================
-// comprobante_compra.php | Botica 2026
+// comprobante_compra.php | SysInversiones CH Computer
 // Genera PDF A4: Nota de Compra / Ticket de Compra (A4)
 // Ticket 80mm → comprobante_ticket_compra.php
 // Uso: ?id_compra=3
@@ -11,12 +11,12 @@ $ruta_base = '../../';
 require_once $ruta_base . 'conf/database.php';
 require_once $ruta_base . 'conf/verificar_acceso.php';
 require_once $ruta_base . 'libs/fpdf.php';
-require_once __DIR__ . '/empresa_helper.php';
+require_once __DIR__ . '/../configuracion_empresa/empresa_helper.php';
 
 if (!defined('ROL_ADMINISTRADOR')) define('ROL_ADMINISTRADOR', 1);
-if (!defined('ROL_CAJERO'))        define('ROL_CAJERO', 2);
-if (!defined('ROL_TRABAJADOR'))    define('ROL_TRABAJADOR', 3);
-verificar_acceso([ROL_ADMINISTRADOR, ROL_CAJERO, ROL_TRABAJADOR]);
+if (!defined('ROL_ASESOR_COMERCIAL'))        define('ROL_ASESOR_COMERCIAL', 2);
+if (!defined('ROL_TECNICO'))    define('ROL_TECNICO', 3);
+verificar_acceso([ROL_ADMINISTRADOR, ROL_ASESOR_COMERCIAL, ROL_TECNICO]);
 
 $id_compra = (int)($_GET['id_compra'] ?? 0);
 if (!$id_compra) { ob_end_clean(); die('ID de compra no especificado.'); }

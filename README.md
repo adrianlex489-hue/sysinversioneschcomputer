@@ -1,407 +1,525 @@
-# Sistema de Gestión para Botica — Botica 2026
+# SysInversiones CH Computer
 
-**Tecnologías:** PHP 8.2 · MariaDB 10.4 · Bootstrap 4 · AdminLTE 3 · jQuery · FPDF · XAMPP  
-**Entorno:** Servidor local Apache (XAMPP) · Base de datos: `bdbotica`  
-**Zona horaria:** America/Lima (UTC-5, hora peruana)
+Sistema de gestión integral para **Inversiones CH Computer SRL** — empresa de servicio técnico y venta de equipos tecnológicos ubicada en Chiclayo, Lambayeque, Perú.
+
+---
+
+## Tabla de Contenidos
+
+- [Descripción General](#descripción-general)
+- [Tecnologías Utilizadas](#tecnologías-utilizadas)
+- [Requisitos del Sistema](#requisitos-del-sistema)
+- [Instalación](#instalación)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Módulos del Sistema](#módulos-del-sistema)
+- [Roles y Permisos](#roles-y-permisos)
+- [Base de Datos](#base-de-datos)
+- [Configuración](#configuración)
+- [Acceso al Sistema](#acceso-al-sistema)
 
 ---
 
 ## Descripción General
 
-Botica 2026 es un sistema de gestión integral desarrollado para farmacias y boticas de pequeña y mediana escala. Permite administrar de forma centralizada las operaciones diarias: ventas al público, compras a proveedores, control de inventario por lotes, gestión de caja por turnos, emisión de comprobantes y administración de personas (clientes, proveedores y usuarios). El sistema implementa el patrón PRG (Post-Redirect-Get) en todos sus módulos para evitar el reenvío accidental de formularios, y aplica validaciones tanto en el lado del servidor (PHP) como en el cliente (JavaScript con SweetAlert2).
+SysInversiones CH Computer es una aplicación web desarrollada en PHP con MySQL que centraliza todas las operaciones del negocio:
+
+- Registro y seguimiento de órdenes de servicio técnico
+- Gestión de ventas y compras con soporte de pago al contado y a crédito
+- Control de inventario con alertas de stock mínimo
+- Administración de caja con apertura, cierre y movimientos diarios
+- Gestión de clientes (personas naturales y empresas) y proveedores
+- Catálogo de productos, categorías y servicios técnicos
+- Comprobantes imprimibles (tickets, notas de venta, notas de compra)
+- Auditoría completa de acciones del sistema
+- Dashboard con métricas y gráficos en tiempo real
+
+---
+
+## Tecnologías Utilizadas
+
+| Capa | Tecnología |
+|------|-----------|
+| Backend | PHP 8.2 |
+| Base de datos | MariaDB 10.4 / MySQL |
+| Acceso BD | PDO (prepared statements) |
+| Frontend | AdminLTE 3.2, Bootstrap 4 |
+| Iconos | Font Awesome 6.5 |
+| Tipografía | Google Fonts — Inter |
+| Gráficos | Chart.js |
+| Alertas | SweetAlert2 |
+| Generación PDF | FPDF |
+| Servidor local | XAMPP (Apache + MariaDB) |
+
+---
+
+## Requisitos del Sistema
+
+- PHP 8.0 o superior
+- MariaDB 10.4+ o MySQL 8.0+
+- Servidor web Apache (XAMPP recomendado para desarrollo)
+- Extensión PDO habilitada en PHP
+- Extensión `pdo_mysql` habilitada en PHP
+- Extensión `mbstring` habilitada en PHP
+
+---
+
+## Instalación
+
+### 1. Clonar o copiar el proyecto
+
+Colocar la carpeta del proyecto en el directorio raíz de XAMPP:
+
+```
+C:\xampp\htdocs\sysinversioneschcomputer\
+```
+
+### 2. Importar la base de datos
+
+1. Iniciar Apache y MySQL desde el panel de XAMPP.
+2. Abrir **phpMyAdmin** en `http://localhost/phpmyadmin`.
+3. Crear una base de datos llamada `bdinversioneschcomputer`.
+4. Importar el archivo:
+
+```
+bdinversioneschcomputer.sql
+```
+
+### 3. Configurar la conexión
+
+Editar el archivo `conf/database.php` con los datos de tu entorno:
+
+```php
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'bdinversioneschcomputer');
+define('DB_USER', 'root');
+define('DB_PASS', '');
+```
+
+La zona horaria está configurada para **Perú (UTC-5)**. Si se despliega en otro servidor, ajustar:
+
+```php
+date_default_timezone_set('America/Lima');
+```
+
+### 4. Acceder al sistema
+
+Abrir el navegador y navegar a:
+
+```
+http://localhost/sysinversioneschcomputer/
+```
+
+El sistema redirige automáticamente al login si no hay sesión activa.
 
 ---
 
 ## Estructura del Proyecto
 
 ```
-Botica-2026/
-├── conf/                        # Configuración de base de datos y control de acceso
-│   ├── database.php             # Conexión PDO con zona horaria Lima configurada
-│   └── verificar_acceso.php     # Middleware de autenticación y roles
-├── includes/                    # Componentes reutilizables
-│   ├── header.php               # Cabecera HTML, navbar y estilos globales
-│   ├── sidebar.php              # Menú lateral dinámico según rol
-│   ├── footer.php               # Pie de página y scripts globales
-│   ├── api_dni.php              # Clase APIDni — consulta RENIEC
-│   └── api_ruc.php              # Clase APIRuc — consulta SUNAT
-├── modules/
-│   ├── Caja/                    # Gestión de caja por turnos
-│   ├── catalogos/               # Productos, categorías y unidades
-│   ├── Comprobantes/            # Empresa y generación de PDFs
-│   ├── Inventario/              # Stock general
-│   ├── Lotes/                   # Control de lotes y vencimientos
-│   ├── personas/                # Usuarios, clientes y proveedores
-│   └── transacciones/           # Ventas, compras e historiales
-├── public/
-│   ├── dashboard.php            # Panel de control principal
-│   ├── login.php                # Autenticación de usuarios
-│   ├── logout.php               # Cierre de sesión
-│   └── assets/                  # Imágenes, logos y sonidos
-├── libs/                        # Librería FPDF para generación de PDFs
-└── bdbotica.sql                 # Script SQL de la base de datos
+sysinversioneschcomputer/
+│
+├── index.php                       # Punto de entrada (redirige a login o dashboard)
+├── bdinversioneschcomputer.sql     # Script completo de la base de datos
+│
+├── conf/                           # Configuración global
+│   ├── database.php                # Conexión PDO a MySQL
+│   ├── permisos.php                # Catálogo de módulos y helpers de permisos
+│   ├── verificar_acceso.php        # Verificación de sesión activa
+│   ├── auditoria.php               # Helper para registrar eventos de auditoría
+│   └── ajax_verificar_admin.php    # Verificación de rol administrador vía AJAX
+│
+├── includes/                       # Componentes reutilizables
+│   ├── header.php                  # Cabecera HTML común
+│   ├── footer.php                  # Pie de página común
+│   ├── sidebar.php                 # Menú lateral dinámico (por rol y permisos)
+│   ├── api_dni.php                 # Consulta API de DNI
+│   └── api_ruc.php                 # Consulta API de RUC
+│
+├── public/                         # Páginas accesibles desde el navegador
+│   ├── login.php                   # Formulario de inicio de sesión
+│   ├── logout.php                  # Cierre de sesión
+│   ├── dashboard.php               # Panel de control principal
+│   ├── assets/                     # Recursos estáticos globales
+│   ├── css/                        # Hojas de estilo globales
+│   └── uploads/                    # Archivos subidos (imágenes, etc.)
+│
+├── modules/                        # Módulos funcionales del sistema
+│   ├── servicios/                  # Servicio técnico
+│   ├── Caja/                       # Gestión de caja
+│   ├── transacciones/              # Ventas y compras
+│   ├── Inventario/                 # Control de stock
+│   ├── catalogos/                  # Productos, categorías y servicios
+│   ├── personas/                   # Clientes, proveedores y usuarios
+│   ├── Comprobantes/               # Generación de documentos
+│   ├── configuracion_empresa/      # Datos de la empresa
+│   └── auditoria/                  # Registro de auditoría
+│
+├── libs/                           # Librería FPDF para generación de PDFs
+│   ├── fpdf.php
+│   └── font/
+│
+├── Logo/                           # Logo de la empresa
+└── uploads/                        # Archivos subidos al sistema
 ```
 
 ---
 
 ## Módulos del Sistema
 
----
+### Dashboard
 
-### 1. Autenticación y Control de Acceso
+Página principal del sistema tras iniciar sesión. Muestra:
 
-**Archivo:** `public/login.php` · `conf/verificar_acceso.php`
-
-El sistema implementa un control de acceso basado en roles. Existen tres roles definidos:
-
-| Rol | ID | Descripción |
-|-----|----|-------------|
-| Administrador | 1 | Acceso total al sistema |
-| Cajero | 2 | Gestión de caja y ventas |
-| Trabajador | 3 | Ventas y consulta de catálogos |
-
-Cada módulo verifica el rol del usuario mediante la función `verificar_acceso(array $roles_permitidos)`. Si el usuario no está autenticado, es redirigido al login. Si no tiene el rol requerido, es redirigido al dashboard con un mensaje de acceso denegado. Las contraseñas se almacenan con hash `bcrypt` mediante `password_hash()`.
+- Indicadores clave: total de productos, clientes, ventas, órdenes de servicio.
+- Estado de la caja activa y saldo actual.
+- Alertas de stock bajo y órdenes en proceso.
+- Gráfico comparativo de ventas vs. compras de los últimos 6 meses.
+- Distribución de productos por categoría.
+- Listado de últimas ventas y últimas órdenes de servicio.
+- Productos con stock bajo el mínimo.
 
 ---
 
-### 2. Dashboard — Panel de Control
+### Servicio Técnico
 
-**Archivo:** `public/dashboard.php`
+Gestión completa del taller de reparaciones.
 
-El panel de control es la pantalla principal del sistema tras iniciar sesión. Presenta información consolidada en tiempo real sobre el estado del negocio.
+**Recepción de Equipos** (`modules/servicios/recepcion.php`)
+- Registro de equipos ingresados al taller (laptops, PCs, tablets, celulares, etc.).
+- Búsqueda de cliente por DNI o RUC con integración a APIs externas.
+- Registro del equipo con descripción del problema, accesorios y prioridad.
+- Generación de orden de trabajo en PDF.
 
-**Funcionalidades:**
+**Taller Técnico** (`modules/servicios/taller.php`)
+- Vista tipo kanban del estado de las órdenes: Recibido → Diagnóstico → En Proceso → Listo → Entregado.
+- Carga de fotos del equipo durante la reparación.
+- Registro de cotizaciones y repuestos utilizados.
+- Historial de cambios de estado por orden.
 
-- **Indicadores KPI (Key Performance Indicators):** Muestra tarjetas con los totales de productos activos, clientes registrados, proveedores activos, ventas realizadas, ingresos totales acumulados y lotes próximos a vencer. Los KPIs de ventas e ingresos son visibles únicamente para el rol Administrador.
-
-- **Alertas farmacéuticas:** Si existen productos con stock por debajo del mínimo configurado o lotes que vencen en los próximos 90 días, el sistema muestra alertas visuales destacadas en la parte superior del panel y en la barra de navegación con contadores numéricos.
-
-- **Gráfico de ventas:** Gráfico de líneas (Chart.js) que muestra la evolución de las ventas en los últimos 6 meses, con valores en soles peruanos. Visible solo para Administrador.
-
-- **Gráfico de stock por categoría:** Gráfico de dona (doughnut) que distribuye el stock actual entre las categorías de productos registradas.
-
-- **Últimas 5 ventas:** Tabla con las ventas más recientes, mostrando cliente, tipo de comprobante, monto total, fecha y estado (pagado, pendiente, anulado).
-
-- **Lotes próximos a vencer:** Tabla con los 5 lotes más urgentes, indicando días restantes con código de color (amarillo: menos de 90 días, rojo: menos de 30 días).
-
-- **Accesos rápidos:** Botones de acceso directo a los módulos más utilizados.
-
-- **Sonido de bienvenida:** Al iniciar sesión por primera vez en la sesión, el sistema reproduce automáticamente un audio de bienvenida (`bienvenida.mp3`). Este sonido se reproduce una única vez por sesión gracias al control mediante `$_SESSION['bienvenida_reproducida']`.
+**Cobro de Servicios** (`modules/servicios/cobro_servicio.php`)
+- Cobro de órdenes con estado "Listo".
+- Soporte de pago al contado o a crédito.
+- Registro automático en caja activa.
 
 ---
 
-### 3. Gestión de Caja por Turnos
+### Caja
 
-**Archivos:** `modules/Caja/caja.php` · `modules/Caja/historial/historial_caja.php`
+Control financiero diario.
 
-Este módulo implementa el control de caja diaria por turnos de trabajo, garantizando que todas las transacciones económicas queden asociadas a un turno específico y a un cajero responsable.
+**Gestión de Caja** (`modules/Caja/caja.php`)
+- Apertura de caja con monto inicial.
+- Registro de movimientos manuales de ingreso y egreso.
+- Cierre de caja con conteo físico del efectivo y cálculo de diferencias.
 
-**Funcionalidades:**
+**Resumen del Día** (`modules/Caja/resumen_caja.php`)
+- Vista consolidada de todos los movimientos del día actual.
+- Totales por tipo de movimiento (ventas, cobros, servicios, manuales).
 
-#### 3.1 Apertura de Caja
+**Movimientos** (`modules/Caja/movimientos_caja.php`)
+- Listado detallado de todos los movimientos de la caja activa.
 
-Para iniciar operaciones, el cajero debe aperturar una caja indicando:
-- **Turno de trabajo:** Mañana (☀️), Tarde (🌤️) o Noche (🌙).
-- **Monto inicial (fondo de caja):** Dinero físico con el que inicia el turno.
-- **Observación opcional:** Notas sobre el inicio del turno.
+**Historial de Cajas** (`modules/Caja/historial_caja.php`)
+- Registro de todas las cajas abiertas y cerradas históricamente.
 
-El sistema valida que no exista ya una caja abierta para el mismo usuario antes de permitir la apertura. Una vez aperturada, el estado de la caja queda en `abierta` y se registra la fecha y hora exacta de apertura con zona horaria de Lima.
-
-**Restricción crítica:** Mientras no exista una caja abierta, el sistema bloquea completamente el registro de ventas y compras. Los formularios se muestran con opacidad reducida y los botones de acción (seleccionar cliente, seleccionar proveedor, agregar producto) disparan una alerta visual con sonido (`alerta.mp3`) indicando que la caja debe aperturarse primero, con un botón de acceso directo al módulo de caja.
-
-#### 3.2 Movimientos de Caja
-
-Durante el turno activo, el cajero puede registrar movimientos manuales adicionales:
-- **Ingresos externos:** Fondos adicionales, préstamos del propietario, cobros varios.
-- **Egresos externos:** Pagos de servicios, gastos operativos, movilidad, limpieza.
-
-Cada movimiento registra: tipo (ingreso/egreso), descripción, monto, método de pago (efectivo, Yape, Plin, transferencia, tarjeta), fecha/hora y usuario responsable.
-
-**Movimientos automáticos:** El sistema registra automáticamente en `movimientos_caja` los siguientes eventos:
-- Venta al contado → ingreso con referencia a la venta.
-- Abono de venta a crédito → ingreso con referencia a la venta.
-- Compra al contado → egreso con referencia a la compra.
-- Abono de compra a crédito → egreso con referencia a la compra.
-
-#### 3.3 Resumen Financiero en Tiempo Real
-
-El panel de caja activa muestra en tiempo real:
-- Fondo inicial del turno.
-- Total de ingresos acumulados.
-- Total de egresos acumulados.
-- **Saldo actual en caja** = Fondo inicial + Ingresos − Egresos.
-
-#### 3.4 Cierre de Caja
-
-Al finalizar el turno, el cajero realiza el cierre ingresando el monto físico contado en caja. El sistema calcula automáticamente:
-- **Monto esperado** = Fondo inicial + Total ingresos − Total egresos.
-- **Diferencia** = Monto contado − Monto esperado.
-  - Diferencia positiva: sobrante de caja.
-  - Diferencia negativa: faltante de caja.
-  - Diferencia cero: cuadre exacto.
-
-Todos estos valores quedan registrados en la base de datos para auditoría posterior.
-
-#### 3.5 Historial de Cajas
-
-El historial muestra todas las cajas registradas con filtros por estado (abierta/cerrada) y por turno (mañana/tarde/noche). Cada registro permite ver el detalle completo con todos los movimientos del turno. El Administrador puede ver las cajas de todos los usuarios; los demás roles solo ven las propias.
+**Reporte de Cajas** (`modules/Caja/reporte_cajas.php`)
+- Reporte exportable a PDF con detalle de una caja seleccionada.
 
 ---
 
-### 4. Gestión de Ventas
+### Ventas
 
-**Archivos:** `modules/transacciones/ventas.php` · `modules/transacciones/historial/historial_ventas.php`
+**Nueva Venta** (`modules/transacciones/ventas.php`)
+- Búsqueda de cliente por DNI (persona natural) o RUC (empresa).
+- Selección de productos con stock disponible.
+- Aplicación de descuentos por ítem o en el total.
+- Tipos de comprobante: Ticket, Nota de Venta.
+- Métodos de pago: contado o crédito (con registro de cuotas).
+- Registro automático del movimiento en caja activa.
+- Generación de comprobante imprimible.
 
-Módulo para el registro de ventas al público con soporte para múltiples tipos de comprobante, modalidades de pago y gestión de crédito.
+**Cobro de Créditos** (`modules/transacciones/cobro_ventas.php`)
+- Listado de ventas con saldo pendiente.
+- Registro de pagos parciales o totales.
+- Actualización del estado de la venta (pendiente → pagado).
 
-**Funcionalidades:**
-
-#### 4.1 Registro de Nueva Venta
-
-El formulario de nueva venta incluye:
-
-- **Selección de cliente:** Modal de búsqueda con filtro en tiempo real por nombre completo o DNI. Incluye integración con la API de RENIEC para buscar clientes por DNI directamente desde el modal, con dos opciones: usar el cliente solo para la venta actual (sin guardar en el sistema) o guardarlo permanentemente en la base de datos de clientes.
-
-- **Tipo de comprobante:** Ticket de venta o Nota de Venta. El número de comprobante se genera automáticamente con la serie configurada en la empresa (ej. T001-00000001) y se incrementa correlativamente por tipo.
-
-- **Selección de productos:** Modal de búsqueda con filtro por nombre, código o laboratorio. Cada producto muestra precio de venta, stock disponible y categoría. Al seleccionar un producto, se abre un modal de detalle donde se configura cantidad, precio unitario y descuento por ítem.
-
-- **Descuento global:** Campo para aplicar un descuento sobre el subtotal total de la venta.
-
-- **IGV:** Opción de aplicar o no el IGV del 18% sobre la base imponible.
-
-- **Tipo de pago:**
-  - *Contado:* Se selecciona el método de pago (efectivo, Yape, Plin, transferencia, tarjeta). El stock se descuenta inmediatamente y se registra el movimiento en caja.
-  - *Crédito:* Se configura el número de cuotas (1 a 4), la fecha de la primera cuota y la frecuencia en días. El sistema genera automáticamente el cronograma de cuotas.
-
-#### 4.2 Control de Stock FEFO
-
-El sistema aplica el método FEFO (First Expired, First Out — primero en vencer, primero en salir) para el descuento de stock. Al registrar una venta, el sistema selecciona automáticamente los lotes con fecha de vencimiento más próxima para descontar primero, garantizando la rotación correcta del inventario farmacéutico.
-
-#### 4.3 Historial de Ventas
-
-Tabla completa con todas las ventas registradas, con filtros rápidos por estado (pagadas, pendientes, anuladas). Funcionalidades disponibles:
-- **Ver detalle:** Modal con información completa de la venta, productos, cronograma de cuotas y pagos realizados.
-- **Registrar abono:** Para ventas a crédito con saldo pendiente, permite registrar pagos parciales o totales. Cada abono actualiza el saldo pendiente y el estado de las cuotas correspondientes, y genera automáticamente un movimiento de ingreso en la caja activa.
-- **Anular venta:** Revierte el stock de todos los productos vendidos a sus lotes originales y marca la venta como anulada.
-- **Imprimir comprobante:** Genera el PDF correspondiente según el tipo de comprobante.
+**Historial de Ventas** (`modules/transacciones/historial/historial_ventas.php`)
+- Búsqueda y filtros por fecha, cliente, comprobante y estado.
+- Visualización del detalle de cada venta.
+- Anulación de ventas con reversión de stock.
 
 ---
 
-### 5. Gestión de Compras
+### Compras
 
-**Archivos:** `modules/transacciones/compras.php` · `modules/transacciones/historial/historial_compras.php`
+**Nueva Compra** (`modules/transacciones/compras.php`)
+- Registro de compras a proveedores.
+- Búsqueda de proveedor por RUC.
+- Selección de productos con actualización automática de stock.
+- Tipos de comprobante: Ticket, Nota de Compra.
+- Métodos de pago: contado o crédito.
+- Generación de comprobante de compra imprimible.
 
-Módulo para el registro de compras a proveedores con creación automática de lotes y actualización de stock.
+**Pago de Créditos** (`modules/transacciones/cobro_compras.php`)
+- Gestión de compras a crédito con registro de abonos.
 
-**Funcionalidades:**
-
-#### 5.1 Registro de Nueva Compra
-
-- **Selección de proveedor:** Modal de búsqueda con filtro por nombre o RUC. Incluye integración con la API de SUNAT para buscar proveedores por RUC directamente desde el modal, con opción de guardar el proveedor en el sistema o usarlo solo para la compra actual.
-
-- **Tipo de comprobante:** Ticket o Nota de Venta. Numeración automática correlativa por tipo.
-
-- **Selección de productos con lotes:** Cada producto requiere el ingreso del código de lote del fabricante y la fecha de vencimiento. Si el lote ya existe en el sistema, se incrementa su stock; si es nuevo, se crea automáticamente.
-
-- **IGV configurable:** Opción de aplicar o no el IGV del 18%.
-
-- **Tipo de pago:** Contado (con método de pago) o crédito (con cronograma de cuotas de 1 a 4). Las compras al contado generan automáticamente un egreso en la caja activa.
-
-#### 5.2 Historial de Compras
-
-Funcionalidades equivalentes al historial de ventas: ver detalle, registrar abonos a crédito (que generan egresos en caja), anular compras (revierte el stock de los lotes) e imprimir comprobante.
+**Historial de Compras** (`modules/transacciones/historial/historial_compras.php`)
+- Consulta y filtrado de todas las compras registradas.
+- Anulación de compras con reversión de stock.
 
 ---
 
-### 6. Gestión de Inventario
+### Inventario
 
-**Archivos:** `modules/Inventario/inventario.php` · `modules/Lotes/lotes.php`
-
-#### 6.1 Stock General
-
-Vista consolidada del inventario con el stock actual de cada producto. Permite identificar rápidamente productos con stock bajo el mínimo configurado o sin stock disponible.
-
-#### 6.2 Control de Lotes y Vencimientos
-
-Gestión detallada de los lotes de cada producto con:
-- Código de lote del fabricante.
-- Fecha de vencimiento.
-- Stock inicial y stock actual.
-- Alertas visuales por proximidad de vencimiento: amarillo (menos de 90 días), rojo (menos de 30 días), crítico (vencido).
+**Stock / Inventario** (`modules/Inventario/inventario.php`)
+- Vista completa del stock actual de todos los productos activos.
+- Indicadores visuales para productos con stock bajo el mínimo.
+- Ajuste manual de stock con registro de motivo (queda registrado en auditoría).
+- Exportación a Excel y PDF.
 
 ---
 
-### 7. Gestión de Catálogos
+### Catálogos
 
-**Archivos:** `modules/catalogos/productos.php` · `modules/catalogos/categorias.php` · `modules/catalogos/unidades.php`
+**Productos** (`modules/catalogos/productos.php`)
+- Creación, edición y desactivación de productos.
+- Campos: código, nombre, categoría, precio de compra, precio de venta, stock mínimo, imagen.
+- Exportación a PDF y Excel.
 
-#### 7.1 Productos
+**Categorías** (`modules/catalogos/categorias.php`)
+- Gestión de categorías para clasificar productos.
+- Exportación a PDF y Excel.
 
-Catálogo completo de productos farmacéuticos con los siguientes atributos:
-- Código interno y código de barras.
-- Nombre, laboratorio, presentación y concentración.
-- Categoría y unidad de medida.
-- Proveedor predeterminado.
-- Stock actual, stock mínimo y stock máximo.
-- Precio de compra y precio de venta.
-- Indicador de requerimiento de receta médica.
-- Registro sanitario.
-- Imágenes del producto (múltiples).
-- Estado activo/inactivo.
-
-#### 7.2 Categorías
-
-Gestión de categorías de productos (Medicamentos, Suplementos, Productos Naturales, Cuidado Personal, Bebés, etc.) con activación/desactivación.
-
-#### 7.3 Unidades de Medida
-
-Gestión de unidades (Unidad, Caja, Blíster, Frasco, Pack, Tubo, etc.) con abreviatura y estado activo/inactivo.
+**Servicios Técnicos** (`modules/catalogos/catalogo_servicios.php`)
+- Catálogo de servicios técnicos ofrecidos con precio referencial.
+- Tipos de servicio asociados a cada servicio principal.
+- Exportación a PDF y Excel.
 
 ---
 
-### 8. Gestión de Personas
+### Comprobantes
 
-**Archivos:** `modules/personas/clientes.php` · `modules/personas/proveedores.php` · `modules/personas/usuarios.php`
+Generación de documentos imprimibles en formato PDF usando FPDF.
 
-#### 8.1 Clientes
-
-Registro y gestión de clientes con:
-- Nombres, apellido paterno y materno.
-- Tipo de documento y número de documento.
-- Teléfono, email y dirección.
-- **Consulta automática a RENIEC:** Ingresando el DNI, el sistema consulta la API de RENIEC y completa automáticamente los datos del cliente (nombres, apellidos y dirección de domicilio).
-- Estado activo/inactivo.
-
-#### 8.2 Proveedores
-
-Registro y gestión de proveedores con:
-- Razón social y RUC.
-- Teléfono, email, dirección y persona de contacto.
-- **Consulta automática a SUNAT:** Ingresando el RUC, el sistema consulta la API de SUNAT y completa automáticamente la razón social y dirección fiscal.
-- Estado activo/inactivo.
-
-#### 8.3 Usuarios
-
-Gestión de usuarios del sistema con asignación de roles (Administrador, Cajero, Trabajador). Las contraseñas se almacenan con hash bcrypt y pueden ser actualizadas por el Administrador.
+| Archivo | Descripción |
+|---------|-------------|
+| `comprobante_ticket.php` | Ticket de venta |
+| `comprobante_nota_venta.php` | Nota de venta |
+| `comprobante_compra.php` | Comprobante de compra |
+| `comprobante_nota_compra.php` | Nota de compra |
+| `comprobante_ticket_compra.php` | Ticket de compra |
+| `imprimir.php` | Vista previa de impresión genérica |
 
 ---
 
-### 9. Gestión de Comprobantes
+### Gestión Administrativa
 
-**Archivos:** `modules/Comprobantes/empresa.php` · `modules/Comprobantes/comprobante_venta.php` · `modules/Comprobantes/comprobante_ticket.php` · `modules/Comprobantes/comprobante_compra.php`
+**Clientes** (`modules/personas/clientes.php`)
+- Registro de clientes personas naturales (con DNI) y empresas (con RUC).
+- Consulta automática de datos desde APIs de RENIEC/SUNAT.
+- Importación masiva desde archivo CSV.
+- Exportación a PDF y Excel.
 
-#### 9.1 Configuración de Empresa
+**Proveedores** (`modules/personas/proveedores.php`)
+- Registro completo de proveedores con datos de contacto y condiciones comerciales.
+- Importación masiva desde CSV.
+- Exportación a PDF y Excel.
 
-Panel de configuración de los datos de la empresa que aparecen en todos los comprobantes:
-- Razón social y nombre comercial.
-- RUC (11 dígitos).
-- Dirección, distrito, provincia y departamento.
-- Teléfono, email y sitio web.
-- Logo de la empresa (con vista previa en tiempo real y soporte para cambio estacional).
-- Porcentaje de IGV.
-- Series de comprobantes: Ticket (T001) y Nota de Venta (N001).
-- Pie de comprobante personalizable.
+**Usuarios y Accesos** (`modules/personas/usuarios.php`)
+- Gestión de usuarios del sistema (solo Administrador).
+- Asignación de roles: Administrador, Asesor Comercial, Técnico.
+- Configuración de permisos granulares por módulo para cada usuario.
+- Cambio de contraseñas con hash seguro (`password_hash`).
 
-La interfaz incluye vista previa en tiempo real del comprobante mientras se editan los datos, y confirmación SweetAlert antes de guardar los cambios.
+---
 
-#### 9.2 Generación de PDFs
+### Mi Empresa
 
-El sistema genera comprobantes en PDF utilizando la librería FPDF:
+**Configuración** (`modules/configuracion_empresa/empresa.php`)
+- Datos de la empresa: razón social, RUC, dirección, teléfono, email, logo.
+- Esta información se utiliza en los comprobantes generados.
 
-- **Ticket de venta (80mm):** Formato de impresora térmica. Incluye logo, datos de la empresa, datos del cliente, detalle de productos con precio unitario y subtotal, totales (subtotal, IGV, total), método de pago y pie de comprobante.
+---
 
-- **Nota de Venta A4:** Formato carta con cabecera profesional (logo + datos empresa + caja del comprobante), sección de datos del cliente, tabla de productos con columnas dinámicas (la columna de descuento solo aparece si algún ítem tiene descuento), totales y líneas de firma para receptor y emisor.
+### Auditoría
 
-- **Ticket de compra (80mm):** Equivalente al ticket de venta pero con datos del proveedor y columna de lote.
+**Registro de Auditoría** (`modules/auditoria/auditoria.php`)
+- Solo accesible para el rol Administrador.
+- Registro automático de todas las acciones relevantes: crear, editar, eliminar, ajustar stock, apertura/cierre de caja, cambios de permisos.
+- Filtros por módulo, acción, usuario y rango de fechas.
+- Exportación a PDF.
 
-- **Nota de Compra A4:** Equivalente a la nota de venta pero con datos del proveedor, columnas de lote y fecha de vencimiento.
+---
 
-El router `imprimir.php` detecta automáticamente el tipo de comprobante y redirige al PDF correspondiente (80mm para tickets, A4 para notas).
+## Roles y Permisos
+
+El sistema maneja tres roles predefinidos:
+
+| ID | Rol | Descripción |
+|----|-----|-------------|
+| 1 | Administrador | Acceso total a todos los módulos sin restricciones |
+| 2 | Asesor Comercial | Acceso configurable por módulo |
+| 3 | Técnico | Acceso configurable por módulo |
+
+Los roles 2 y 3 tienen permisos granulares configurables desde el módulo de **Usuarios y Accesos**. Cada módulo puede ser habilitado o deshabilitado individualmente para cada usuario.
+
+### Módulos con permisos granulares
+
+| Clave | Módulo |
+|-------|--------|
+| `servicios` | Recepción de Equipos |
+| `taller` | Taller Técnico |
+| `cobro_servicio` | Cobro de Servicios |
+| `caja` | Gestión de Caja |
+| `historial_caja` | Historial de Caja |
+| `ventas` | Nueva Venta |
+| `cobro_ventas` | Cobro de Créditos (ventas) |
+| `historial_ventas` | Historial de Ventas |
+| `compras` | Nueva Compra |
+| `cobro_compras` | Pago de Créditos (compras) |
+| `historial_compras` | Historial de Compras |
+| `inventario` | Stock / Inventario |
+| `productos` | Productos |
+| `categorias` | Categorías |
+| `catalogo_servicios` | Servicios Técnicos |
+| `clientes` | Clientes |
+| `proveedores` | Proveedores |
+| `empresa` | Mi Empresa |
 
 ---
 
 ## Base de Datos
 
-**Motor:** MariaDB 10.4 · **Charset:** utf8mb4 · **Collation:** utf8mb4_spanish_ci
+**Nombre:** `bdinversioneschcomputer`  
+**Motor:** InnoDB / MariaDB 10.4  
+**Charset:** utf8mb4  
+**Zona horaria:** UTC-5 (América/Lima)
 
-### Tablas Principales
+### Tablas principales
 
 | Tabla | Descripción |
 |-------|-------------|
-| `usuarios` | Usuarios del sistema con roles y contraseñas bcrypt |
-| `roles` | Roles del sistema (Administrador, Cajero, Trabajador) |
-| `clientes` | Clientes registrados con datos de contacto |
-| `proveedores` | Proveedores con RUC y datos comerciales |
+| `usuarios` | Cuentas de acceso al sistema |
+| `roles` | Roles del sistema (Administrador, Asesor, Técnico) |
+| `permisos_usuario` | Permisos granulares por usuario y módulo |
+| `empresa` | Datos de la empresa emisora |
+| `clientes_natural` | Clientes personas naturales (DNI) |
+| `clientes_empresa` | Clientes personas jurídicas (RUC) |
+| `proveedores` | Proveedores del negocio |
 | `categorias` | Categorías de productos |
-| `unidades` | Unidades de medida |
-| `productos` | Catálogo de productos farmacéuticos |
-| `lotes` | Lotes de productos con fecha de vencimiento y stock |
-| `ventas` | Cabecera de ventas (comprobante, totales, estado) |
-| `detalle_venta` | Líneas de productos por venta |
-| `cuotas_venta` | Cronograma de cuotas para ventas a crédito |
-| `pagos_venta` | Abonos registrados para ventas a crédito |
-| `compras` | Cabecera de compras (comprobante, totales, estado) |
-| `detalle_compra` | Líneas de productos por compra con lote |
-| `cuotas_compra` | Cronograma de cuotas para compras a crédito |
-| `pagos_compra` | Abonos registrados para compras a crédito |
-| `caja` | Registro de cajas por turno con montos y diferencias |
-| `movimientos_caja` | Movimientos de ingreso/egreso por caja |
-| `empresa` | Configuración de datos de la empresa |
+| `productos` | Catálogo de productos con stock |
+| `servicios` | Catálogo de servicios técnicos |
+| `servicio_tipos` | Subtipos de servicios técnicos |
+| `equipos` | Equipos registrados para servicio técnico |
+| `ordenes_servicio` | Órdenes de trabajo del taller |
+| `detalle_orden` | Repuestos/servicios por orden |
+| `orden_cotizaciones` | Cotizaciones por orden de servicio |
+| `servicio_historial` | Historial de cambios de estado por orden |
+| `pagos_servicio` | Pagos registrados por orden de servicio |
+| `ventas` | Cabecera de ventas |
+| `detalle_venta` | Productos incluidos en cada venta |
+| `cuotas_venta` | Cuotas programadas para ventas a crédito |
+| `pagos_venta` | Abonos registrados contra ventas a crédito |
+| `compras` | Cabecera de compras |
+| `detalle_compra` | Productos incluidos en cada compra |
+| `cuotas_compra` | Cuotas programadas para compras a crédito |
+| `pagos_compra` | Abonos registrados contra compras a crédito |
+| `caja` | Registro de cajas (apertura/cierre) |
+| `movimientos_caja` | Movimientos de ingreso y egreso por caja |
+| `cierre_caja_detalle` | Detalle del conteo físico al cerrar caja |
+| `movimientos_inventario` | Historial de ajustes de stock |
+| `auditoria` | Registro de eventos auditables del sistema |
 
-### Relaciones Clave
+---
 
-- `ventas` → `clientes`, `usuarios`, `caja`
-- `compras` → `proveedores`, `usuarios`, `caja`
-- `detalle_venta` → `ventas`, `productos`, `lotes`
-- `detalle_compra` → `compras`, `productos`, `lotes`
-- `movimientos_caja` → `caja`, `usuarios`
-- `productos` → `categorias`, `unidades`, `proveedores`
-- `lotes` → `productos`
+## Configuración
+
+### Archivo principal de configuración
+
+**`conf/database.php`** — conexión PDO con zona horaria configurada.
+
+### Zona horaria
+
+La zona horaria está definida tanto en PHP como en MySQL para garantizar consistencia:
+
+```php
+date_default_timezone_set('America/Lima');  // PHP
+$pdo->exec("SET time_zone = '-05:00'");     // MySQL
+```
+
+### Logo de la empresa
+
+El logo se almacena en:
+
+```
+Logo/logo.jpg
+```
+
+Se utiliza en la pantalla de login, el sidebar y los comprobantes PDF.
+
+### Uploads
+
+Los archivos subidos (fotos de equipos en taller, etc.) se almacenan en:
+
+```
+uploads/
+public/uploads/
+```
+
+---
+
+## Acceso al Sistema
+
+**URL local:**
+
+```
+http://localhost/sysinversioneschcomputer/
+```
+
+**Credenciales por defecto** (revisar la base de datos importada):
+
+| Campo | Valor |
+|-------|-------|
+| Usuario | Ver tabla `usuarios` en BD |
+| Contraseña | Definida al crear el usuario (hash bcrypt) |
+
+> Las contraseñas se almacenan con `password_hash()` de PHP. No se guardan en texto plano.
 
 ---
 
 ## Seguridad
 
-- **Autenticación:** Sesiones PHP con verificación de rol en cada módulo.
-- **Contraseñas:** Hash bcrypt con `password_hash()` / `password_verify()`.
-- **Consultas SQL:** Todas las consultas utilizan PDO con sentencias preparadas y parámetros enlazados, previniendo inyección SQL.
-- **Salida HTML:** Todos los datos de usuario se escapan con `htmlspecialchars()` antes de renderizarse.
-- **Control de acceso:** La función `verificar_acceso()` verifica el rol en cada página antes de procesar cualquier lógica.
-- **Zona horaria:** Configurada a `America/Lima` tanto en PHP (`date_default_timezone_set`) como en MySQL (`SET time_zone = '-05:00'`) para garantizar consistencia en todas las fechas.
+- Autenticación por sesión con `session_regenerate_id()` al iniciar sesión.
+- Todas las consultas SQL utilizan **prepared statements** con PDO.
+- Verificación de acceso en cada módulo mediante `conf/verificar_acceso.php`.
+- Permisos granulares verificados antes de renderizar cada sección del menú.
+- Sanitización de salidas con `htmlspecialchars()`.
+- Contraseñas almacenadas con bcrypt (`password_hash` / `password_verify`).
 
 ---
 
-## Instalación
+## Generación de PDFs
 
-1. Copiar la carpeta `Botica-2026` en `C:\xampp\htdocs\`.
-2. Iniciar Apache y MySQL desde el panel de XAMPP.
-3. Abrir phpMyAdmin (`http://localhost/phpmyadmin`).
-4. Crear la base de datos `bdbotica`.
-5. Importar el archivo `bdbotica.sql`.
-6. Importar el archivo `modules/Comprobantes/empresa.sql` y actualizar los datos de la empresa.
-7. Acceder al sistema en `http://localhost/botica-2026/public/login.php`.
+El sistema utiliza la librería **FPDF** (ubicada en `libs/fpdf.php`) para generar documentos en formato PDF sin dependencias externas adicionales.
 
-**Credenciales por defecto:**
-- Usuario: `Adrian`
-- Contraseña: `(configurada en el sistema)`
+PDFs disponibles:
 
----
-
-## Dependencias Externas
-
-| Librería | Versión | Uso |
-|----------|---------|-----|
-| AdminLTE | 3.2.0 | Framework de interfaz administrativa |
-| Bootstrap | 4.6.2 | Sistema de grillas y componentes UI |
-| jQuery | 3.7.1 | Manipulación DOM y AJAX |
-| Font Awesome | 6.5.2 | Iconografía |
-| SweetAlert2 | 11 | Alertas y confirmaciones interactivas |
-| Chart.js | 3.7.1 | Gráficos del dashboard |
-| DataTables | 1.10.25 | Tablas con búsqueda y paginación |
-| FPDF | 1.86 | Generación de PDFs (incluida en `/libs`) |
-| miapi.cloud | — | API de consulta DNI (RENIEC) y RUC (SUNAT) |
+- Orden de trabajo (taller)
+- Comprobantes de venta (ticket, nota de venta)
+- Comprobantes de compra (ticket, nota de compra)
+- Reporte de caja y detalle de caja
+- Inventario
+- Clientes y proveedores
+- Catálogo de productos, categorías y servicios
+- Auditoría
 
 ---
 
-*Documentación generada para el sistema Botica 2026 — Mayo 2026*
+## Créditos
+
+Desarrollado para **Inversiones CH Computer SRL**  
+Chiclayo, Lambayeque, Perú
+
+---
+
+*© 2026 SysInversiones CH Computer — Todos los derechos reservados.*

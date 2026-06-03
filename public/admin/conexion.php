@@ -1,6 +1,6 @@
 <?php
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'bdbotica');
+define('DB_NAME', 'bdinversioneschcomputer');
 define('DB_USER', 'root');
 define('DB_PASS', '');
 

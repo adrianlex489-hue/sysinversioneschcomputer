@@ -1,7 +1,7 @@
 <?php
 /**
  * api_dni.php — Consulta de DNI via miapi.cloud
- * Adaptado para el sistema Botica 2026
+ * Adaptado para el sistema SysInversiones CH Computer
  */
 class APIDni {
 
@@ -67,7 +67,7 @@ class APIDni {
     }
 
     /**
-     * Formatea la respuesta de la API al esquema de la tabla `clientes` de bdbotica.
+     * Formatea la respuesta de la API al esquema de la tabla `clientes` de bdinversioneschcomputer.
      * Campos: nombres, apellido_paterno, apellido_materno, dni, direccion, tipo_documento
      *
      * @param  array $api_response  Respuesta cruda de consultar()

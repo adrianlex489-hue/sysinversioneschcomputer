@@ -1,6 +1,6 @@
 ﻿<?php
 // ============================================================
-// comprobante_venta.php | Botica 2026
+// comprobante_venta.php | SysInversiones CH Computer
 // Genera PDF A4: Boleta / Factura / Nota de Venta
 // Ticket 80mm → comprobante_ticket.php
 // Uso: ?id_venta=5
@@ -11,12 +11,12 @@ $ruta_base = '../../';
 require_once $ruta_base . 'conf/database.php';
 require_once $ruta_base . 'conf/verificar_acceso.php';
 require_once $ruta_base . 'libs/fpdf.php';
-require_once __DIR__ . '/empresa_helper.php';
+require_once __DIR__ . '/../configuracion_empresa/empresa_helper.php';
 
 if (!defined('ROL_ADMINISTRADOR')) define('ROL_ADMINISTRADOR', 1);
-if (!defined('ROL_CAJERO'))        define('ROL_CAJERO', 2);
-if (!defined('ROL_TRABAJADOR'))    define('ROL_TRABAJADOR', 3);
-verificar_acceso([ROL_ADMINISTRADOR, ROL_CAJERO, ROL_TRABAJADOR]);
+if (!defined('ROL_ASESOR_COMERCIAL'))        define('ROL_ASESOR_COMERCIAL', 2);
+if (!defined('ROL_TECNICO'))    define('ROL_TECNICO', 3);
+verificar_acceso([ROL_ADMINISTRADOR, ROL_ASESOR_COMERCIAL, ROL_TECNICO]);
 
 $id_venta = (int)($_GET['id_venta'] ?? 0);
 if (!$id_venta) { ob_end_clean(); die('ID de venta no especificado.'); }
@@ -65,15 +65,19 @@ if ($tipoRow && $tipoRow['tipo_comprobante'] === 'ticket') {
 
 $stV = $pdo->prepare(
     "SELECT v.*,
-            CONCAT(c.nombres,' ',c.apellido_paterno,
-                   CASE WHEN c.apellido_materno IS NOT NULL AND c.apellido_materno != ''
-                        THEN CONCAT(' ',c.apellido_materno) ELSE '' END) AS nombre_cliente,
-            c.dni,
-            c.telefono AS tel_cliente,
-            c.direccion AS dir_cliente,
+            CASE v.tipo_cliente
+                WHEN 'empresa' THEN COALESCE(ce.razon_social,'Sin nombre')
+                ELSE CONCAT(COALESCE(cn.nombres,''),' ',COALESCE(cn.apellido_paterno,''),
+                     CASE WHEN cn.apellido_materno IS NOT NULL AND cn.apellido_materno != ''
+                          THEN CONCAT(' ',cn.apellido_materno) ELSE '' END)
+            END AS nombre_cliente,
+            CASE v.tipo_cliente WHEN 'empresa' THEN ce.ruc ELSE cn.documento_identidad END AS dni,
+            CASE v.tipo_cliente WHEN 'empresa' THEN ce.telefono ELSE cn.telefono END AS tel_cliente,
+            CASE v.tipo_cliente WHEN 'empresa' THEN ce.direccion ELSE cn.direccion END AS dir_cliente,
             u.nombre_completo AS cajero
      FROM ventas v
-     JOIN clientes c ON v.id_cliente = c.id_cliente
+     LEFT JOIN clientes_natural cn ON cn.id_cliente_natural = v.id_cliente AND v.tipo_cliente = 'natural'
+     LEFT JOIN clientes_empresa ce ON ce.id_cliente_empresa = v.id_cliente AND v.tipo_cliente = 'empresa'
      JOIN usuarios u ON v.id_usuario = u.id_usuario
      WHERE v.id_venta = ?"
 );

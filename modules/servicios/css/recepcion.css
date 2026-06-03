@@ -1,0 +1,727 @@
+/* ============================================================
+   recepcion.css — Módulo Recepción de Equipos | SysInversiones 2026
+   ============================================================ */
+
+/* ── CABECERA DE PÁGINA ── */
+.page-header-rec {
+    background: linear-gradient(135deg, #1a3a6b, #2563eb) !important;
+    color: #fff !important;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(37,99,235,.25);
+}
+.page-header-rec h4  { margin: 0; font-weight: 700; font-size: 1.2rem; color: #fff !important; }
+.page-header-rec small { opacity: .85; font-size: .82rem; color: rgba(255,255,255,.9) !important; }
+.page-header-rec .btn-light {
+    background: rgba(255,255,255,.15) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,.4) !important;
+    font-weight: 600;
+}
+.page-header-rec .btn-light:hover { background: rgba(255,255,255,.28) !important; }
+
+/* ── CARD ── */
+.card { border: none !important; border-radius: 10px !important; box-shadow: 0 2px 12px rgba(0,0,0,.07) !important; }
+
+/* ── CARD HEADER AZUL ── */
+.card-header-rec {
+    background: linear-gradient(90deg, #1a3a6b, #2563eb) !important;
+    color: #fff !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 18px !important;
+    border-bottom: none !important;
+}
+.card-header-rec h6 {
+    margin: 0 !important;
+    font-weight: 700 !important;
+    font-size: .95rem !important;
+    color: #fff !important;
+}
+.card-header-rec .nav-link { color: rgba(255,255,255,.8) !important; font-weight: 600; border: none !important; }
+.card-header-rec .nav-link.active { color: #fff !important; background: rgba(255,255,255,0.2) !important; border-radius: 5px; }
+
+/* ── TABLA ── */
+.table-rec thead th {
+    background: #f8f9fa !important;
+    color: #495057 !important;
+    font-weight: 700 !important;
+    font-size: .82rem !important;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 2px solid #2563eb !important;
+}
+.table-rec tbody tr:hover { background: #eff6ff !important; }
+.table-rec td { vertical-align: middle !important; font-size: .88rem; }
+
+/* ── MODAL HEADER AZUL ── */
+.modal-header-rec {
+    background: linear-gradient(135deg, #1a3a6b, #2563eb) !important;
+    color: #fff !important;
+    border-radius: 10px 10px 0 0 !important;
+    border-bottom: none !important;
+}
+.modal-header-rec .modal-title,
+.modal-header-rec h5 { color: #fff !important; }
+.modal-header-rec .close { color: #fff !important; opacity: .8 !important; text-shadow: none !important; }
+.modal-content { border: none !important; border-radius: 10px !important; box-shadow: 0 10px 40px rgba(0,0,0,.15) !important; }
+
+/* ── FORM LABELS ── */
+.form-label-rec {
+    font-weight: 600;
+    color: #495057;
+    font-size: .85rem;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* ── INPUT GROUPS AZUL ── */
+.modal-rec .input-group-text {
+    background-color: #2563eb !important;
+    border-color: #2563eb !important;
+    color: #fff !important;
+}
+.modal-rec .form-control:focus,
+.modal-rec select.form-control:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 .2rem rgba(37,99,235,.2) !important;
+}
+
+/* ── BOTÓN GUARDAR AZUL ── */
+.btn-rec-primary {
+    background: linear-gradient(135deg, #1a3a6b, #2563eb) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 7px;
+    font-weight: 600;
+}
+.btn-rec-primary:hover {
+    background: linear-gradient(135deg, #122a52, #1d4ed8) !important;
+    color: #fff !important;
+}
+
+/* ── STATS ── */
+.stat-mini {
+    border-radius: 8px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.1);
+}
+.stat-mini i { font-size: 1.8rem; opacity: .8; }
+.stat-mini .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
+.stat-mini .stat-label { font-size: .78rem; opacity: .9; }
+
+/* ── BADGES DE ESTADO ── */
+.badge-recibido    { background:#dbeafe; color:#1e40af; border:1px solid #93c5fd; }
+.badge-diagnostico { background:#fef9c3; color:#854d0e; border:1px solid #fde047; }
+.badge-en_proceso  { background:#ffedd5; color:#9a3412; border:1px solid #fdba74; }
+.badge-listo       { background:#dcfce7; color:#166534; border:1px solid #86efac; }
+.badge-entregado   { background:#f3f4f6; color:#374151; border:1px solid #d1d5db; }
+.badge-cancelado   { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+
+.badge-estado {
+    font-size: .75rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+/* ── BADGE PRIORIDAD ── */
+.badge-prioridad-alta   { background:#fee2e2; color:#991b1b; border:1px solid #fca5a5; }
+.badge-prioridad-normal { background:#fef9c3; color:#854d0e; border:1px solid #fde047; }
+.badge-prioridad-media  { background:#fef9c3; color:#854d0e; border:1px solid #fde047; }
+.badge-prioridad-baja   { background:#dcfce7; color:#166534; border:1px solid #86efac; }
+.badge-prioridad {
+    font-size: .72rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+    display: inline-block;
+}
+
+/* ── ZONA UPLOAD FOTOS ── */
+.zona-fotos {
+    border: 2px dashed #93c5fd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    background: #eff6ff;
+    cursor: pointer;
+    transition: all .2s;
+}
+.zona-fotos:hover { border-color: #2563eb; background: #dbeafe; }
+.zona-fotos i { font-size: 2rem; color: #2563eb; }
+.zona-fotos p { margin: 6px 0 0; color: #64748b; font-size: .85rem; }
+
+/* Zona fotos compacta (columna derecha del modal) */
+.zona-fotos-compact {
+    border: 2px dashed #93c5fd;
+    border-radius: 8px;
+    padding: 12px 8px;
+    text-align: center;
+    background: #eff6ff;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 90px;
+}
+.zona-fotos-compact:hover { border-color: #2563eb; background: #dbeafe; }
+
+/* ── PREVIEW FOTOS ── */
+.preview-fotos { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+.preview-foto-item {
+    position: relative;
+    width: 58px; height: 58px;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 2px solid #93c5fd;
+}
+.preview-foto-item img { width: 100%; height: 100%; object-fit: cover; }
+.preview-foto-item .btn-remove-foto {
+    position: absolute; top: 2px; right: 2px;
+    background: rgba(220,38,38,.85);
+    color: #fff; border: none;
+    border-radius: 50%; width: 18px; height: 18px;
+    font-size: .6rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0;
+}
+
+/* ── TIMELINE HISTORIAL ── */
+.timeline-rec { list-style: none; padding: 0; margin: 0; }
+.timeline-rec li {
+    position: relative;
+    padding: 0 0 16px 28px;
+    border-left: 2px solid #dbeafe;
+}
+.timeline-rec li:last-child { border-left: 2px solid transparent; }
+.timeline-rec li::before {
+    content: '';
+    position: absolute;
+    left: -7px; top: 4px;
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #2563eb;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #2563eb;
+}
+.timeline-rec .tl-fecha { font-size: .75rem; color: #94a3b8; }
+.timeline-rec .tl-estado { font-weight: 700; font-size: .88rem; color: #1e40af; }
+.timeline-rec .tl-desc { font-size: .85rem; color: #475569; }
+
+/* ── FICHA EQUIPO ── */
+.ficha-equipo {
+    background: linear-gradient(135deg, #eff6ff, #dbeafe);
+    border: 1px solid #93c5fd;
+    border-radius: 10px;
+    padding: 16px;
+}
+.ficha-equipo .ficha-titulo {
+    font-weight: 700;
+    color: #1e40af;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+.ficha-equipo .ficha-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+    font-size: .85rem;
+}
+.ficha-equipo .ficha-label { color: #64748b; font-weight: 600; min-width: 110px; }
+.ficha-equipo .ficha-valor { color: #1e293b; }
+
+/* ── NÚMERO DE ORDEN ── */
+.num-orden {
+    font-family: monospace;
+    font-weight: 700;
+    color: #1e40af;
+    background: #dbeafe;
+    border: 1px solid #93c5fd;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: .85rem;
+}
+
+/* ── SECCIÓN FOTOS EXISTENTES ── */
+.fotos-existentes { display: flex; flex-wrap: wrap; gap: 8px; }
+.foto-existente {
+    width: 80px; height: 80px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #93c5fd;
+    cursor: pointer;
+    transition: transform .2s;
+}
+.foto-existente:hover { transform: scale(1.05); }
+.foto-existente img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ══════════════════════════════════════════════════════════
+   NUEVO MODAL RECEPCIÓN — Diseño horizontal 2 columnas
+   ══════════════════════════════════════════════════════════ */
+
+/* Sección títulos dentro del modal */
+.rec-section-title {
+    font-weight: 700;
+    color: #1e40af;
+    font-size: .88rem;
+    border-bottom: 2px solid #dbeafe;
+    padding-bottom: 6px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Labels compactos */
+.rec-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: .8rem;
+    margin-bottom: 3px;
+    display: block;
+}
+
+/* Input group con ícono azul */
+.rec-input-group {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.rec-input-group .rec-ig-icon {
+    background: #2563eb;
+    color: #fff;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    font-size: .85rem;
+    flex-shrink: 0;
+}
+.rec-input-group .form-control {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    flex: 1;
+}
+.rec-input-group .form-control:focus {
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+.rec-input-group:focus-within {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 .15rem rgba(37,99,235,.2) !important;
+}
+
+/* Select cliente */
+.rec-select-cliente {
+    border-radius: 6px !important;
+    border: 1px solid #d1d5db !important;
+    font-size: .85rem !important;
+}
+.rec-select-cliente:focus {
+    border-color: #2563eb !important;
+    box-shadow: 0 0 0 .15rem rgba(37,99,235,.2) !important;
+}
+
+/* Botón DNI */
+.rec-btn-dni {
+    background: #1e40af !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px !important;
+    font-weight: 600 !important;
+    font-size: .82rem !important;
+    white-space: nowrap;
+    padding: 4px 12px !important;
+}
+.rec-btn-dni:hover {
+    background: #1d4ed8 !important;
+    color: #fff !important;
+}
+
+/* Chip cliente seleccionado */
+.rec-chip-cliente {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #dbeafe;
+    border: 1px solid #93c5fd;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-weight: 600;
+    color: #1e40af;
+    font-size: .88rem;
+}
+.rec-chip-remove {
+    background: none;
+    border: none;
+    color: #dc2626;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+    font-size: .85rem;
+    line-height: 1;
+}
+.rec-chip-remove:hover { color: #991b1b; }
+
+/* Panel API DNI */
+.rec-panel-api {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 14px;
+}
+
+/* Resultado API */
+.rec-resultado-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+}
+.rec-resultado-nombre {
+    font-weight: 700;
+    font-size: .95rem;
+    color: #1e293b;
+}
+.rec-resultado-dato {
+    font-size: .82rem;
+    color: #475569;
+    margin-top: 4px;
+}
+
+/* Caja de resumen (columna derecha) */
+.rec-info-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px 14px;
+}
+.rec-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .82rem;
+    padding: 4px 0;
+    border-bottom: 1px solid #f1f5f9;
+    gap: 8px;
+}
+.rec-info-row:last-child { border-bottom: none; }
+.rec-info-row span:first-child { color: #64748b; font-weight: 600; white-space: nowrap; }
+.rec-info-row span:last-child  { color: #1e293b; text-align: right; font-size: .8rem; max-width: 60%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Modal content sin bordes redondeados extra */
+.modal-rec-nuevo { border-radius: 12px !important; overflow: hidden; }
+
+/* ══════════════════════════════════════════════════════════
+   CAMPO SELECTOR DE CLIENTE (clickeable, igual que ventas)
+   ══════════════════════════════════════════════════════════ */
+.rec-campo-selector {
+    background: #fff;
+    cursor: pointer;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: .88rem;
+    transition: border-color .2s, background .2s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 34px;
+    gap: 8px;
+}
+.rec-campo-selector:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+.rec-campo-selector.rec-seleccionado {
+    border-color: #166534;
+    background: #f0fdf4;
+}
+.rec-campo-selector .rec-placeholder {
+    color: #aaa;
+    font-style: italic;
+    font-size: .83rem;
+    flex: 1;
+}
+.rec-campo-selector .rec-selected {
+    color: #166534;
+    font-weight: 700;
+    font-size: .88rem;
+    flex: 1;
+}
+
+/* Botón limpiar cliente */
+.rec-btn-limpiar-cli {
+    flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   ITEMS DE LA LISTA DE CLIENTES (modal selector)
+   ══════════════════════════════════════════════════════════ */
+.rec-item-selector {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: all .15s;
+    background: #fff;
+}
+.rec-item-selector:hover {
+    background: #dbeafe;
+    border-color: #2563eb;
+    transform: translateX(3px);
+    box-shadow: 0 2px 8px rgba(37,99,235,.15);
+}
+.rec-item-avatar {
+    width: 38px;
+    height: 38px;
+    background: #dbeafe;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #1e40af;
+    font-size: .85rem;
+}
+.rec-item-nombre {
+    font-weight: 700;
+    font-size: .9rem;
+    color: #1e293b;
+}
+.rec-item-sub {
+    font-size: .75rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   TABS DNI / RUC en modal de búsqueda
+   ══════════════════════════════════════════════════════════ */
+.rec-doc-tabs {
+    display: flex;
+    gap: 0;
+    border: 2px solid #bfdbfe;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.rec-doc-tab {
+    flex: 1;
+    padding: 9px 12px;
+    font-size: .82rem;
+    font-weight: 600;
+    border: none;
+    background: #eff6ff;
+    color: #64748b;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+}
+.rec-doc-tab:first-child {
+    border-right: 1px solid #bfdbfe;
+}
+.rec-doc-tab.activo {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    color: #fff;
+}
+.rec-doc-tab:hover:not(.activo) {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+/* Avatar empresa en lista de clientes */
+.rec-item-avatar-empresa {
+    background: #dbeafe !important;
+    color: #1e40af !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   MODAL DETALLE DE ORDEN — Rediseño
+   ══════════════════════════════════════════════════════════ */
+
+/* Badge número de orden en el header */
+.det-num-orden-badge {
+    display: inline-block;
+    background: rgba(255,255,255,.2);
+    color: #fff;
+    font-family: monospace;
+    font-weight: 700;
+    font-size: .95rem;
+    padding: 2px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,.35);
+    margin-top: 4px;
+    letter-spacing: 1px;
+}
+
+/* Banda de estado horizontal */
+.det-banda-estado {
+    display: flex;
+    align-items: stretch;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 10px 20px;
+    gap: 0;
+    flex-wrap: wrap;
+}
+.det-banda-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 4px 16px;
+    gap: 3px;
+    flex: 1;
+    min-width: 110px;
+}
+.det-banda-label {
+    font-size: .7rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
+.det-banda-valor {
+    font-size: .85rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+.det-banda-sep {
+    width: 1px;
+    background: #cbd5e1;
+    margin: 4px 0;
+    align-self: stretch;
+}
+
+/* Fichas cliente / equipo */
+.det-ficha {
+    border-radius: 10px;
+    overflow: hidden;
+    height: 100%;
+    border: 1px solid #e2e8f0;
+}
+.det-ficha-cliente { border-color: #bfdbfe; }
+.det-ficha-equipo  { border-color: #c7d2fe; }
+
+.det-ficha-header {
+    padding: 8px 14px;
+    font-weight: 700;
+    font-size: .88rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.det-ficha-cliente .det-ficha-header {
+    background: linear-gradient(90deg, #dbeafe, #eff6ff);
+    color: #1e40af;
+    border-bottom: 1px solid #bfdbfe;
+}
+.det-ficha-equipo .det-ficha-header {
+    background: linear-gradient(90deg, #e0e7ff, #eef2ff);
+    color: #3730a3;
+    border-bottom: 1px solid #c7d2fe;
+}
+
+.det-ficha-body {
+    padding: 10px 14px;
+    background: #fff;
+}
+.det-ficha-row {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 7px;
+}
+.det-ficha-row:last-child { margin-bottom: 0; }
+.det-ficha-lbl {
+    font-size: .7rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    margin-bottom: 1px;
+}
+.det-ficha-val {
+    font-size: .88rem;
+    color: #1e293b;
+    word-break: break-word;
+}
+
+/* Cajas de texto (estado físico / problema) */
+.det-texto-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    overflow: hidden;
+    height: 100%;
+}
+.det-texto-box-problema {
+    border-color: #fde68a;
+    background: #fffbeb;
+}
+.det-texto-label {
+    font-size: .78rem;
+    font-weight: 700;
+    color: #475569;
+    padding: 7px 12px 5px;
+    border-bottom: 1px solid #e2e8f0;
+    background: rgba(0,0,0,.02);
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+.det-texto-box-problema .det-texto-label {
+    border-color: #fde68a;
+    color: #92400e;
+    background: #fef3c7;
+}
+.det-texto-contenido {
+    padding: 10px 12px;
+    font-size: .88rem;
+    color: #334155;
+    min-height: 52px;
+    line-height: 1.5;
+}
+
+/* Sección fotos en modal detalle */
+.det-fotos-seccion {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+}
+.det-fotos-seccion .fotos-existentes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+}
+.det-fotos-seccion .foto-existente {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #93c5fd;
+    cursor: pointer;
+    transition: transform .2s, box-shadow .2s;
+}
+.det-fotos-seccion .foto-existente:hover {
+    transform: scale(1.06);
+    box-shadow: 0 4px 14px rgba(37,99,235,.25);
+}
+.det-fotos-seccion .foto-existente img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}

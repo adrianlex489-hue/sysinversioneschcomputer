@@ -1,5 +1,5 @@
 ﻿/* ============================================================
-   historial_ventas.css — Historial de Ventas | Botica 2026
+   historial_ventas.css — Historial de Ventas | SysInversiones CH Computer 2026
    ============================================================ */
 :root {
     --hist-vta-verde:       #1a7a4a;
@@ -120,4 +120,13 @@
     border-radius: 6px;
     padding: 10px 14px;
     font-size: .88rem;
+}
+
+/* ── BOTÓN EXPORTAR ── */
+.btn-export-hvta {
+    transition: background .2s, transform .15s;
+}
+.btn-export-hvta:hover {
+    background: rgba(255,255,255,.28) !important;
+    transform: translateY(-1px);
 }

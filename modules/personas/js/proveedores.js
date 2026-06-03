@@ -213,4 +213,221 @@ $(function () {
         $('#sunat_result_crear').removeClass('show');
     });
 
+    // ══════════════════════════════════════════════════════════════════════════
+    // IMPORTACIÓN DESDE EXCEL / CSV
+    // ══════════════════════════════════════════════════════════════════════════
+
+    function resetProvImport() {
+        $('#provImportStep1').show();
+        $('#provImportStep2').hide();
+        $('#provImportStep3').hide();
+        $('#provImportFileInfo').hide();
+        $('#provImportDropZone').show();
+        $('#provImportBtnProcesar').hide();
+        $('#provImportBtnRecargar').hide();
+        $('#provImportBtnCerrar').show();
+        $('#provImportDropZone').css('border-color', '#cbd5e1').css('background', '#f8fafc');
+        $('#provImportDropIcon').css('color', '#94a3b8');
+    }
+
+    // Abrir modal
+    $('#btnImportarProveedores').on('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        $(this).closest('.dropdown').removeClass('show');
+        $(this).closest('.dropdown-menu').removeClass('show');
+        resetProvImport();
+        setTimeout(function () {
+            const orig = $.fn.modal.Constructor.prototype.enforceFocus;
+            $.fn.modal.Constructor.prototype.enforceFocus = function () {};
+            $('#modalImportarProveedores').modal('show');
+            $('#modalImportarProveedores').one('hidden.bs.modal', function () {
+                $.fn.modal.Constructor.prototype.enforceFocus = orig;
+            });
+        }, 150);
+    });
+
+    // Click zona / botón seleccionar
+    $(document).on('click', '#provImportDropZone', function (e) {
+        if ($(e.target).is('#provImportBtnSeleccionar') || $(e.target).closest('#provImportBtnSeleccionar').length) return;
+        document.getElementById('provImportFileInput').click();
+    });
+    $(document).on('click', '#provImportBtnSeleccionar', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        document.getElementById('provImportFileInput').click();
+    });
+
+    // Drag & Drop
+    $('#provImportDropZone').on('dragover', function (e) {
+        e.preventDefault();
+        $(this).css('border-color', '#1a5276').css('background', '#eff6ff');
+        $('#provImportDropIcon').css('color', '#1a5276');
+    }).on('dragleave', function () {
+        $(this).css('border-color', '#cbd5e1').css('background', '#f8fafc');
+        $('#provImportDropIcon').css('color', '#94a3b8');
+    }).on('drop', function (e) {
+        e.preventDefault();
+        $(this).css('border-color', '#cbd5e1').css('background', '#f8fafc');
+        const files = e.originalEvent.dataTransfer.files;
+        if (files.length > 0) provProcesarArchivo(files[0]);
+    });
+
+    // Selección por input
+    $('#provImportFileInput').on('change', function () {
+        if (this.files.length > 0) provProcesarArchivo(this.files[0]);
+    });
+
+    function provProcesarArchivo(file) {
+        const ext = file.name.split('.').pop().toLowerCase();
+        if (!['xlsx', 'xls', 'csv'].includes(ext)) {
+            Swal.fire({ icon: 'warning', title: 'Formato no válido', text: 'Solo se aceptan .xlsx, .xls o .csv', confirmButtonColor: '#1a5276' });
+            return;
+        }
+        if (file.size > 5 * 1024 * 1024) {
+            Swal.fire({ icon: 'warning', title: 'Archivo muy grande', text: 'El archivo no debe superar 5 MB.', confirmButtonColor: '#1a5276' });
+            return;
+        }
+        $('#provImportFileName').text(file.name);
+        $('#provImportFileSize').text(provFormatBytes(file.size));
+        $('#provImportFileInfo').show();
+        $('#provImportDropZone').hide();
+        $('#provImportBtnProcesar').show();
+        $('#provImportBtnProcesar').data('file', file);
+    }
+
+    // Quitar archivo
+    $(document).on('click', '#provImportBtnQuitar', function () {
+        $('#provImportFileInput').val('');
+        $('#provImportFileInfo').hide();
+        $('#provImportDropZone').show();
+        $('#provImportBtnProcesar').hide();
+    });
+
+    // Procesar importación
+    $(document).on('click', '#provImportBtnProcesar', function () {
+        const file = $(this).data('file');
+        if (!file) return;
+        const formData = new FormData();
+        formData.append('archivo', file);
+
+        $('#provImportStep1').hide();
+        $('#provImportStep2').show();
+        $('#provImportBtnProcesar').hide();
+        $('#provImportBtnCerrar').hide();
+
+        $.ajax({
+            url: 'ajax_proveedores_import.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+        })
+        .done(function (res) {
+            $('#provImportStep2').hide();
+            $('#provImportStep3').show();
+            $('#provImportBtnCerrar').show();
+
+            if (!res.ok) {
+                $('#provImportResultado').html(`
+                    <div class="alert alert-danger border-0" style="border-radius:8px;">
+                        <i class="fas fa-times-circle mr-2"></i><strong>Error:</strong> ${res.error || 'Error desconocido.'}
+                    </div>`);
+                return;
+            }
+
+            let html = `
+                <div class="row text-center mb-3">
+                    <div class="col-4">
+                        <div style="background:#f0fdf4;border-radius:10px;padding:16px 8px;border:1px solid #bbf7d0;">
+                            <div style="font-size:1.8rem;font-weight:700;color:#166534;">${res.insertados}</div>
+                            <div style="font-size:.8rem;color:#166534;">Importados</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div style="background:#fef9c3;border-radius:10px;padding:16px 8px;border:1px solid #fde047;">
+                            <div style="font-size:1.8rem;font-weight:700;color:#854d0e;">${res.omitidos}</div>
+                            <div style="font-size:.8rem;color:#854d0e;">Omitidos</div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div style="background:#eff6ff;border-radius:10px;padding:16px 8px;border:1px solid #bfdbfe;">
+                            <div style="font-size:1.8rem;font-weight:700;color:#1e40af;">${res.insertados + res.omitidos}</div>
+                            <div style="font-size:.8rem;color:#1e40af;">Total leídos</div>
+                        </div>
+                    </div>
+                </div>`;
+
+            if (res.insertados > 0) {
+                html += `<div class="alert alert-success border-0 mb-2" style="border-radius:8px;font-size:.88rem;">
+                    <i class="fas fa-check-circle mr-2"></i>
+                    <strong>${res.insertados}</strong> proveedor(es) importados correctamente.
+                </div>`;
+                $('#provImportBtnRecargar').show();
+            }
+
+            if (res.errores && res.errores.length > 0) {
+                const totalErr = res.total_errores || res.errores.length;
+                html += `<div class="alert alert-warning border-0 mb-2" style="border-radius:8px;font-size:.85rem;">
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    <strong>${totalErr}</strong> fila(s) con advertencias:
+                    <ul class="mb-0 mt-1 pl-3" style="max-height:120px;overflow-y:auto;">
+                        ${res.errores.map(e => `<li>${e}</li>`).join('')}
+                        ${totalErr > res.errores.length ? `<li class="text-muted">... y ${totalErr - res.errores.length} más.</li>` : ''}
+                    </ul>
+                </div>`;
+            }
+
+            $('#provImportResultado').html(html);
+        })
+        .fail(function () {
+            $('#provImportStep2').hide();
+            $('#provImportStep3').show();
+            $('#provImportBtnCerrar').show();
+            $('#provImportResultado').html(`
+                <div class="alert alert-danger border-0" style="border-radius:8px;">
+                    <i class="fas fa-times-circle mr-2"></i>Error de conexión. Intenta nuevamente.
+                </div>`);
+        });
+    });
+
+    // Recargar tras importación exitosa
+    $('#provImportBtnRecargar').on('click', function () {
+        window.location.href = 'proveedores.php';
+    });
+
+    // Reset al cerrar
+    $('#modalImportarProveedores').on('hidden.bs.modal', function () {
+        resetProvImport();
+        $('#provImportFileInput').val('');
+    });
+
+    function provFormatBytes(bytes) {
+        if (bytes < 1024) return bytes + ' B';
+        if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+        return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // EXPORTACIÓN — CSV / Excel / PDF
+    // ══════════════════════════════════════════════════════════════════════════
+
+    // Detecta qué tab está activo para pasar el filtro de estado
+    function getEstadoActivo() {
+        return $('#tab-inactivos-prov').hasClass('active') ? 'inactivo' : 'activo';
+    }
+
+    $('#btn-exportar-csv-prov').on('click', function () {
+        window.location.href = 'ajax_proveedores_export.php?exportar=csv&estado=' + getEstadoActivo();
+    });
+
+    $('#btn-exportar-excel-prov').on('click', function () {
+        window.location.href = 'ajax_proveedores_export.php?exportar=excel&estado=' + getEstadoActivo();
+    });
+
+    $('#btn-exportar-pdf-prov').on('click', function () {
+        window.open('proveedores_pdf.php?estado=' + getEstadoActivo(), '_blank');
+    });
+
 });

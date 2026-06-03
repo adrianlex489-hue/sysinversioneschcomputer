@@ -1,0 +1,416 @@
+/* ============================================================
+   reporte_cajas.css — Reporte Consolidado de Cajas
+   SysInversiones CH Computer 2026
+   ============================================================ */
+
+/* ── KPIs ── */
+.rc-kpi {
+    border-radius: 12px;
+    padding: 16px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.15);
+    transition: transform .2s;
+    border-left: 4px solid var(--kc, #0ea5e9);
+}
+.rc-kpi:hover { transform: translateY(-2px); }
+.rc-kpi i { font-size: 1.8rem; opacity: .8; flex-shrink: 0; }
+.rc-kpi-val { font-size: 1.25rem; font-weight: 800; font-family: monospace; line-height: 1; }
+.rc-kpi-lbl { font-size: .72rem; opacity: .85; margin-top: 3px; }
+
+/* ── FILTROS ── */
+.rc-filtros-card {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px 22px 18px;
+    box-shadow: 0 2px 16px rgba(0,0,0,.08);
+    border: 1px solid #e2e8f0;
+}
+
+/* Header del filtro: título + badge período activo */
+.rc-filtros-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f1f5f9;
+}
+.rc-filtros-titulo {
+    font-size: .82rem;
+    font-weight: 700;
+    color: #0369a1;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+    display: flex;
+    align-items: center;
+}
+.rc-filtros-periodo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: linear-gradient(135deg, #0c1a3a, #0f3460);
+    color: #fff;
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: .75rem;
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+.rc-filtros-sep { opacity: .5; margin: 0 2px; }
+
+/* Fila de campos */
+.rc-filtros-campos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-end;
+}
+.rc-filtros-grupo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+.rc-filtros-grupo-label {
+    font-size: .7rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+}
+
+/* Rango de fechas unificado */
+.rc-filtros-rango {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0 10px;
+    transition: border-color .15s, box-shadow .15s;
+}
+.rc-filtros-rango:focus-within {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14,165,233,.12);
+}
+.rc-filtros-rango-sep {
+    color: #94a3b8;
+    font-size: .75rem;
+    flex-shrink: 0;
+}
+
+/* Input con icono */
+.rc-filtros-input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.rc-filtros-input-icon {
+    position: absolute;
+    left: 10px;
+    color: #94a3b8;
+    font-size: .75rem;
+    pointer-events: none;
+    z-index: 1;
+}
+.rc-filtros-input {
+    height: 36px;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0 10px 0 30px;
+    font-size: .82rem;
+    color: #1e293b;
+    background: #f8fafc;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+    min-width: 130px;
+}
+/* Dentro del rango, los inputs no tienen borde propio */
+.rc-filtros-rango .rc-filtros-input-wrap .rc-filtros-input {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+    padding-left: 26px;
+    min-width: 120px;
+}
+.rc-filtros-input:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14,165,233,.12);
+    background: #fff;
+}
+.rc-filtros-select {
+    padding-right: 28px;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    cursor: pointer;
+}
+
+/* Botones de acción */
+.rc-btn-aplicar {
+    height: 36px;
+    padding: 0 18px;
+    background: linear-gradient(135deg, #0c1a3a, #0ea5e9);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: .82rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: opacity .15s, transform .15s;
+    white-space: nowrap;
+}
+.rc-btn-aplicar:hover { opacity: .9; transform: translateY(-1px); }
+.rc-btn-limpiar {
+    height: 36px;
+    width: 36px;
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: .82rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all .15s;
+}
+.rc-btn-limpiar:hover { background: #fee2e2; color: #dc2626; border-color: #fca5a5; text-decoration: none; }
+
+/* Chips de período rápido */
+.rc-chips-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    padding-top: 12px;
+    padding-bottom: 4px;
+    border-top: 1px solid #f1f5f9;
+}
+.rc-chips-label {
+    font-size: .72rem;
+    font-weight: 700;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    margin-right: 2px;
+}
+.rc-label {
+    font-size: .75rem;
+    font-weight: 700;
+    color: #64748b;
+    margin-bottom: 4px;
+    display: block;
+}
+.rc-chip {
+    display: inline-block;
+    padding: 3px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #cbd5e1;
+    background: #fff;
+    color: #475569;
+    font-size: .75rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all .15s;
+}
+.rc-chip:hover, .rc-chip.activo {
+    background: linear-gradient(135deg, #0c1a3a, #0ea5e9);
+    border-color: #0ea5e9;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* ── DESGLOSE CARD (usado en detalle_caja_reporte) ── */
+.rc-desglose-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+    height: 100%;
+}
+.rc-desglose-body { padding: 8px 0; }
+.rc-desglose-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    border-bottom: 1px solid #f8fafc;
+    transition: background .15s;
+}
+.rc-desglose-item:hover { background: #f8fafc; }
+.rc-desglose-item:last-child { border-bottom: none; }
+.rc-desglose-icon {
+    width: 36px; height: 36px;
+    border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .85rem; flex-shrink: 0;
+}
+.rc-desglose-lbl { font-size: .82rem; font-weight: 600; color: #1e293b; }
+.rc-desglose-val { font-size: .85rem; font-weight: 800; font-family: monospace; margin-top: 1px; }
+.rc-desglose-val.ing { color: #059669; }
+.rc-desglose-val.eg  { color: #dc2626; }
+
+/* ── RESUMEN CARD ── */
+.rc-resumen-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+.rc-desglose-hdr {
+    background: linear-gradient(90deg, #0c1a3a, #0f3460);
+    color: #fff;
+    padding: 11px 16px;
+    font-size: .82rem;
+    font-weight: 700;
+}
+.rc-resumen-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: .83rem;
+    color: #475569;
+}
+.rc-resumen-row:last-child { border-bottom: none; }
+
+/* ── TABLA ── */
+.rc-tabla-wrap {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0,0,0,.07);
+}
+.rc-tabla-hdr {
+    background: linear-gradient(90deg, #0c1a3a, #0f3460);
+    color: #fff;
+    padding: 13px 20px;
+    font-size: .85rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+.rc-buscar-input {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.3);
+    color: #fff;
+    border-radius: 8px;
+    padding: 4px 12px;
+    font-size: .78rem;
+    outline: none;
+    width: 200px;
+}
+.rc-buscar-input::placeholder { color: rgba(255,255,255,.5); }
+.rc-buscar-input:focus { background: rgba(255,255,255,.2); }
+
+/* ── BADGES ── */
+.rc-dur-badge {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #7dd3fc;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: .72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* columnas numéricas — sin salto de línea */
+.table-cx td { white-space: nowrap; }
+
+/* ── MODAL SELECTOR CAJERO ── */
+.rc-modal-cajero-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f8fafc;
+    transition: background .12s;
+}
+.rc-modal-cajero-item:hover { background: #f0f9ff; }
+.rc-modal-cajero-item:last-child { border-bottom: none; }
+.rc-modal-cajero-activo { background: #e0f2fe !important; }
+.rc-modal-cajero-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    color: #fff;
+    font-size: .82rem;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    letter-spacing: .5px;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
+.rc-modal-cajero-info { flex: 1; min-width: 0; }
+.rc-modal-cajero-nombre {
+    font-size: .88rem;
+    font-weight: 700;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.rc-modal-cajero-sub { font-size: .72rem; color: #94a3b8; margin-top: 3px; }
+.rc-modal-cajero-check { color: #0ea5e9; font-size: 1.1rem; flex-shrink: 0; }
+
+/* Trigger botón cajero en filtros */
+.rc-cajero-trigger {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    height: 38px;
+    min-width: 220px;
+    background: #f8fafc;
+    border: 1.5px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 0 12px 0 8px;
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s;
+    text-align: left;
+    font-size: .82rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+.rc-cajero-trigger:hover,
+.rc-cajero-trigger:focus {
+    border-color: #0ea5e9;
+    box-shadow: 0 0 0 3px rgba(14,165,233,.12);
+    background: #fff;
+    outline: none;
+}
+.rc-cajero-avatar {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#0c1a3a,#0ea5e9);
+    color: #fff;
+    font-size: .65rem;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+}
+.rc-cajero-avatar-all {
+    background: linear-gradient(135deg,#475569,#94a3b8);
+    font-size: .72rem;
+}
+
+/* ── BOTÓN EXPORTAR HOVER ── */
+#btnExportarReporte:hover { opacity: .85; }

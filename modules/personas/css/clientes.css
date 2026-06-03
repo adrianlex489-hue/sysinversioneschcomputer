@@ -1,162 +1,132 @@
 /* ============================================================
-   clientes.css — Módulo Gestión de Clientes | Botica 2026
+   clientes.css — Módulo Gestión de Clientes | SysInversiones 2026
    ============================================================ */
 
-:root {
-    --botica-verde:       #1a7a4a;
-    --botica-verde-claro: #27ae60;
-    --botica-celeste:     #2980b9;
-    --botica-rojo:        #e74c3c;
-    --botica-naranja:     #e67e22;
-}
-
 /* ── CABECERA DE PÁGINA ── */
-.page-header-botica {
-    background: linear-gradient(135deg, #1a7a4a 0%, #27ae60 100%);
-    color: #fff;
-    padding: 18px 24px;
+.page-header-cli {
+    background: linear-gradient(135deg, #1a7a4a, #27ae60) !important;
+    color: #fff !important;
+    padding: 15px 20px;
     border-radius: 10px;
     margin-bottom: 20px;
-    box-shadow: 0 4px 15px rgba(26,122,74,.25);
+    box-shadow: 0 3px 12px rgba(26,122,74,.25);
 }
-.page-header-botica h4 { margin: 0; font-weight: 700; font-size: 1.2rem; }
-.page-header-botica small { opacity: .85; font-size: .82rem; }
+.page-header-cli h4  { margin: 0; font-weight: 700; font-size: 1.2rem; color: #fff !important; }
+.page-header-cli small { opacity: .85; font-size: .82rem; color: rgba(255,255,255,.9) !important; }
+.page-header-cli .btn-light {
+    background: rgba(255,255,255,.15) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,.4) !important;
+    font-weight: 600;
+}
+.page-header-cli .btn-light:hover {
+    background: rgba(255,255,255,.28) !important;
+}
 
-/* ── TARJETAS ── */
-.card {
-    border: none;
-    border-radius: 10px;
-    box-shadow: 0 2px 12px rgba(0,0,0,.07);
-}
-.card-header-botica {
-    background: linear-gradient(90deg, #1a7a4a, #27ae60);
-    color: #fff;
+/* ── CARD ── */
+.card { border: none !important; border-radius: 10px !important; box-shadow: 0 2px 12px rgba(0,0,0,.07) !important; }
+
+/* ── CARD HEADER VERDE ── */
+.card-header-cli {
+    background: linear-gradient(90deg, #1a7a4a, #27ae60) !important;
+    color: #fff !important;
     border-radius: 10px 10px 0 0 !important;
-    padding: 12px 18px;
+    padding: 12px 18px !important;
+    border-bottom: none !important;
 }
-.card-header-botica h6 { margin: 0; font-weight: 700; font-size: .95rem; }
-
-/* ── TABS ── */
-.nav-tabs-botica .nav-link {
-    color: #555;
-    border: none;
-    border-bottom: 3px solid transparent;
-    font-weight: 600;
-    padding: 10px 20px;
-    transition: all .2s;
+.card-header-cli h6 {
+    margin: 0 !important;
+    font-weight: 700 !important;
+    font-size: .95rem !important;
+    color: #fff !important;
 }
-.nav-tabs-botica .nav-link:hover { color: var(--botica-verde); }
-.nav-tabs-botica .nav-link.active {
-    color: var(--botica-verde);
-    border-bottom: 3px solid var(--botica-verde);
-    background: transparent;
-}
-
-/* ── BOTONES ── */
-.btn-botica-primary {
-    background: linear-gradient(135deg, #1a7a4a, #27ae60);
-    color: #fff;
-    border: none;
-    border-radius: 7px;
-    font-weight: 600;
-    transition: all .2s;
-}
-.btn-botica-primary:hover {
-    background: linear-gradient(135deg, #145a32, #1e8449);
-    color: #fff;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(26,122,74,.3);
-}
-.btn-botica-danger {
-    background: linear-gradient(135deg, #922b21, #e74c3c);
-    color: #fff;
-    border: none;
-    border-radius: 7px;
-    font-weight: 600;
-    transition: all .2s;
-}
-.btn-botica-danger:hover {
-    background: linear-gradient(135deg, #7b241c, #c0392b);
-    color: #fff;
-    transform: translateY(-1px);
-}
+.card-header-cli .nav-link { color: rgba(255,255,255,.8) !important; font-weight: 600; border: none !important; }
+.card-header-cli .nav-link.active { color: #fff !important; background: rgba(255,255,255,0.2) !important; border-radius: 5px; }
 
 /* ── TABLA ── */
 .table-clientes thead th {
-    background: #f8f9fa;
-    color: #495057;
-    font-weight: 700;
-    font-size: .82rem;
+    background: #f8f9fa !important;
+    color: #495057 !important;
+    font-weight: 700 !important;
+    font-size: .82rem !important;
     text-transform: uppercase;
     letter-spacing: .5px;
-    border-bottom: 2px solid var(--botica-verde);
+    border-bottom: 2px solid #1a7a4a !important;
 }
-.table-clientes tbody tr:hover { background: #f0faf4; }
-.table-clientes td { vertical-align: middle; font-size: .88rem; }
+.table-clientes tbody tr:hover { background: #eafaf1 !important; }
+.table-clientes td { vertical-align: middle !important; font-size: .88rem; }
 
 /* ── BADGE DNI ── */
 .badge-dni {
-    background: #e8f5e9;
+    background: #d5f5e3;
     color: #1a7a4a;
-    border: 1px solid #a5d6a7;
+    border: 1px solid #82e0aa;
     font-size: .78rem;
     padding: 3px 8px;
     border-radius: 20px;
     font-weight: 600;
-}
-.badge-activo   { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-.badge-inactivo { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-
-/* ── MODAL ── */
-.modal-header-botica {
-    background: linear-gradient(135deg, #1a7a4a, #27ae60);
-    color: #fff;
-    border-radius: 10px 10px 0 0;
-}
-.modal-header-botica .close { color: #fff; opacity: .8; }
-.modal-header-botica .close:hover { opacity: 1; }
-.modal-content { border: none; border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,.15); }
-
-/* ── CAMPO DNI CON BOTÓN RENIEC ── */
-.input-dni-group .btn-reniec {
-    background: linear-gradient(135deg, #1a5276, #2980b9);
-    color: #fff;
-    border: none;
-    font-weight: 600;
-    font-size: .82rem;
+    font-family: monospace;
+    display: inline-block;
     white-space: nowrap;
 }
-.input-dni-group .btn-reniec:hover {
-    background: linear-gradient(135deg, #154360, #1a6fa0);
-    color: #fff;
+
+/* ── MODAL HEADER — Crear (verde) / Editar (amarillo) ── */
+.modal-header-cli,
+#modalCrearCliente .modal-header {
+    background: linear-gradient(135deg, #1a7a4a, #27ae60) !important;
+    color: #fff !important;
+    border-radius: 10px 10px 0 0 !important;
+    border-bottom: none !important;
 }
-.input-dni-group .btn-reniec .spinner-border { width: 14px; height: 14px; border-width: 2px; }
+#modalEditarCliente .modal-header {
+    background: linear-gradient(135deg, #b45309, #d97706) !important;
+    color: #fff !important;
+    border-radius: 10px 10px 0 0 !important;
+    border-bottom: none !important;
+}
+.modal-header-cli .modal-title,
+.modal-header-cli h5,
+#modalCrearCliente .modal-header .modal-title,
+#modalCrearCliente .modal-header h5,
+#modalEditarCliente .modal-header .modal-title,
+#modalEditarCliente .modal-header h5 { color: #fff !important; }
+.modal-header-cli .close,
+#modalCrearCliente .modal-header .close,
+#modalEditarCliente .modal-header .close { color: #fff !important; opacity: .8 !important; text-shadow: none !important; }
+.modal-content { border: none !important; border-radius: 10px !important; box-shadow: 0 10px 40px rgba(0,0,0,.15) !important; }
+
+/* ── BOTÓN CONSULTAR RENIEC ── */
+.btn-reniec {
+    background: linear-gradient(135deg, #1a5276, #2980b9) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 600 !important;
+    font-size: .82rem !important;
+}
+.btn-reniec:hover { background: linear-gradient(135deg, #154360, #1a6fa0) !important; }
 
 /* ── RESULTADO RENIEC ── */
 .reniec-result {
-    background: #e8f5e9;
-    border: 1px solid #a5d6a7;
+    background: #d5f5e3;
+    border: 1px solid #82e0aa;
     border-radius: 8px;
     padding: 10px 14px;
     font-size: .85rem;
     display: none;
 }
-.reniec-result.show { display: block; }
+.reniec-result.show { display: block !important; }
 .reniec-result .reniec-nombre { font-weight: 700; color: #1a7a4a; font-size: .95rem; }
 
-/* ── FORM LABELS ── */
-.form-label-botica {
+/* ── BOTÓN GUARDAR VERDE ── */
+.btn-cli-primary {
+    background: linear-gradient(135deg, #1a7a4a, #27ae60) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 7px;
     font-weight: 600;
-    color: #495057;
-    font-size: .85rem;
-    margin-bottom: 4px;
-}
-.form-control:focus {
-    border-color: var(--botica-verde);
-    box-shadow: 0 0 0 .2rem rgba(26,122,74,.2);
 }
 
-/* ── STATS CARDS ── */
+/* ── STATS ── */
 .stat-mini {
     border-radius: 8px;
     padding: 14px 18px;
@@ -169,3 +139,217 @@
 .stat-mini i { font-size: 1.8rem; opacity: .8; }
 .stat-mini .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
 .stat-mini .stat-label { font-size: .78rem; opacity: .9; }
+
+/* ── STATS 5 TARJETAS CLIENTES ── */
+.stats-clientes-row { display: flex; flex-wrap: nowrap; gap: 0; }
+.stats-clientes-row .col { flex: 1 1 0; min-width: 0; padding: 0 6px; }
+.stat-nat-activo  { background: linear-gradient(135deg, #1a5276, #2563eb) !important; }
+.stat-nat-inactivo{ background: linear-gradient(135deg, #922b21, #e74c3c) !important; }
+.stat-jur-activo  { background: linear-gradient(135deg, #7b341e, #c05621) !important; }
+.stat-jur-inactivo{ background: linear-gradient(135deg, #6c3483, #9b59b6) !important; }
+.stat-total       { background: linear-gradient(135deg, #0e6655, #1abc9c) !important; }
+
+@media (max-width: 768px) {
+    .stats-clientes-row { flex-wrap: wrap; }
+    .stats-clientes-row .col { flex: 1 1 45%; }
+    .stat-mini .stat-value { font-size: 1.2rem; }
+    .stat-mini i { font-size: 1.4rem; }
+    .stat-mini { padding: 10px 12px; gap: 10px; }
+}
+
+/* ── FORM LABELS ── */
+.form-label-cli {
+    font-weight: 600;
+    color: #495057;
+    font-size: .85rem;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* ── MODAL CREAR / EDITAR CLIENTE — INPUT GROUPS ── */
+#modalCrearCliente .input-group-text,
+#modalEditarCliente .input-group-text {
+    background-color: #1a7a4a !important;
+    border-color: #1a7a4a !important;
+    color: #fff !important;
+}
+
+#modalCrearCliente .form-control,
+#modalCrearCliente .custom-select,
+#modalCrearCliente select.form-control,
+#modalEditarCliente .form-control,
+#modalEditarCliente .custom-select,
+#modalEditarCliente select.form-control {
+    border-color: #ced4da !important;
+    color: #495057 !important;
+}
+
+#modalCrearCliente .form-control:focus,
+#modalCrearCliente select.form-control:focus,
+#modalEditarCliente .form-control:focus,
+#modalEditarCliente select.form-control:focus {
+    border-color: #27ae60 !important;
+    box-shadow: 0 0 0 .2rem rgba(39,174,96,.2) !important;
+}
+
+/* ── BOTÓN GUARDAR VERDE (modal footer) ── */
+#modalCrearCliente .modal-footer .btn-cli-primary,
+#modalEditarCliente .modal-footer .btn-cli-primary {
+    background: linear-gradient(135deg, #1a7a4a, #27ae60) !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 600;
+    padding: .375rem .85rem;
+}
+#modalCrearCliente .modal-footer .btn-cli-primary:hover,
+#modalEditarCliente .modal-footer .btn-cli-primary:hover {
+    background: linear-gradient(135deg, #155f39, #1e8449) !important;
+}
+
+/* ── BOTÓN CANCELAR (modal footer) ── */
+#modalCrearCliente .modal-footer .btn-secondary,
+#modalEditarCliente .modal-footer .btn-secondary {
+    background: #6c757d !important;
+    color: #fff !important;
+    border: none !important;
+    font-weight: 600;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   TOGGLE PERSONA NATURAL / JURÍDICA
+   ══════════════════════════════════════════════════════════ */
+.cli-tipo-toggle {
+    display: flex;
+    gap: 0;
+    border: 2px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+.cli-tipo-btn {
+    flex: 1;
+    padding: 10px 16px;
+    font-size: .88rem;
+    font-weight: 600;
+    border: none;
+    background: #f8f9fa;
+    color: #6b7280;
+    cursor: pointer;
+    transition: all .2s;
+    text-align: center;
+}
+.cli-tipo-btn:first-child {
+    border-right: 1px solid #d1d5db;
+}
+.cli-tipo-btn.activo {
+    background: linear-gradient(135deg, #1a3a6b, #2563eb);
+    color: #fff;
+}
+.cli-tipo-btn:hover:not(.activo) {
+    background: #e9ecef;
+    color: #374151;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   BOTONES DE EXPORTACIÓN — CSV / Excel / PDF
+   ══════════════════════════════════════════════════════════ */
+
+.cli-export-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+
+.cli-export-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 13px !important;
+    font-size: .78rem !important;
+    font-weight: 700 !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer;
+    transition: filter .18s, transform .15s;
+    white-space: nowrap;
+    letter-spacing: .3px;
+    line-height: 1.4;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+.cli-export-btn:hover  { filter: brightness(1.13); transform: translateY(-1px); }
+.cli-export-btn:active { transform: translateY(0); filter: brightness(.95); }
+.cli-export-btn:focus  { outline: none !important; box-shadow: none !important; }
+.cli-export-btn i { font-size: .85rem; }
+
+/* CSV — gris neutro */
+.cli-export-csv,
+.cli-export-csv:hover,
+.cli-export-csv:focus {
+    background: #475569 !important;
+    color: #fff !important;
+}
+
+/* Excel — verde Microsoft */
+.cli-export-excel,
+.cli-export-excel:hover,
+.cli-export-excel:focus {
+    background: #217346 !important;
+    color: #fff !important;
+}
+
+/* PDF — rojo Adobe */
+.cli-export-pdf,
+.cli-export-pdf:hover,
+.cli-export-pdf:focus {
+    background: #dc2626 !important;
+    color: #fff !important;
+}
+
+/* Separadores entre botones */
+.cli-export-group .cli-export-btn + .cli-export-btn {
+    border-left: 1px solid rgba(255,255,255,.2) !important;
+}
+
+@media (max-width: 480px) {
+    .cli-export-btn span { display: none; }
+    .cli-export-btn { padding: 6px 10px !important; }
+}
+
+/* ── FILAS INACTIVAS — compatible con modo oscuro ── */
+tr.row-inactivo {
+    background-color: #f8f9fa !important;
+    opacity: .82;
+}
+tr.row-inactivo td {
+    color: #6c757d !important;
+}
+tr.row-inactivo:hover {
+    background-color: #e9ecef !important;
+    opacity: 1;
+}
+
+/* Modo oscuro (AdminLTE dark-mode / data-theme=dark) */
+[data-theme="dark"] tr.row-inactivo,
+.dark-mode tr.row-inactivo {
+    background-color: rgba(255,255,255,.06) !important;
+    opacity: 1;
+}
+[data-theme="dark"] tr.row-inactivo td,
+.dark-mode tr.row-inactivo td {
+    color: #9ca3af !important;
+}
+[data-theme="dark"] tr.row-inactivo:hover,
+.dark-mode tr.row-inactivo:hover {
+    background-color: rgba(255,255,255,.1) !important;
+}
+[data-theme="dark"] tr.row-inactivo td.text-muted,
+.dark-mode tr.row-inactivo td.text-muted {
+    color: #9ca3af !important;
+}

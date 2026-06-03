@@ -1,0 +1,638 @@
+/* ============================================================
+   catalogo_servicios.css — Catálogo de Servicios Técnicos
+   SysInversiones CH Computer 2026
+   ============================================================ */
+
+/* ── CABECERA ── */
+.page-header-srv {
+    background: linear-gradient(135deg, #1a3a6b, #2563eb);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(37,99,235,.25);
+}
+.page-header-srv h4  { margin: 0; font-weight: 700; font-size: 1.2rem; color: #fff; }
+.page-header-srv small { opacity: .85; font-size: .82rem; color: rgba(255,255,255,.9); }
+.page-header-srv .btn-light {
+    background: rgba(255,255,255,.15) !important;
+    color: #fff !important;
+    border: 1px solid rgba(255,255,255,.4) !important;
+    font-weight: 600;
+}
+.page-header-srv .btn-light:hover { background: rgba(255,255,255,.28) !important; }
+
+/* ── STATS ── */
+.srv-stat {
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.12);
+}
+.srv-stat i { font-size: 1.8rem; opacity: .8; }
+.srv-stat-val { font-size: 1.4rem; font-weight: 700; line-height: 1; }
+.srv-stat-lbl { font-size: .78rem; opacity: .9; margin-top: 2px; }
+
+/* ── CARD HEADER ── */
+.srv-card-header {
+    background: linear-gradient(90deg, #1a3a6b, #2563eb);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+    padding: 12px 18px;
+    border-bottom: none;
+}
+.srv-card-header .nav-link { color: rgba(255,255,255,.75) !important; border: none !important; }
+.srv-card-header .nav-link.active { color: #fff !important; background: rgba(255,255,255,.2) !important; border-radius: 5px; }
+
+/* ── TABLA ── */
+.table-srv thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 2px solid #2563eb;
+}
+.table-srv tbody tr:hover { background: #eff6ff !important; }
+.table-srv td { vertical-align: middle; font-size: .88rem; }
+
+/* ── ELEMENTOS DE TABLA ── */
+.srv-num {
+    font-family: monospace;
+    font-weight: 700;
+    color: #64748b;
+    font-size: .82rem;
+}
+.srv-nombre {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: .9rem;
+}
+.srv-precio {
+    font-weight: 700;
+    color: #065f46;
+    font-size: .92rem;
+}
+
+/* ── BADGES TIPO ── */
+.srv-badge-tipo {
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    display: inline-block;
+    white-space: nowrap;
+}
+.srv-tipo-catalogo {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #93c5fd;
+}
+.srv-tipo-personalizado {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+}
+
+/* ── BADGES EQUIPO ── */
+.srv-badge-equipo {
+    display: inline-block;
+    background: #f0fdf4;
+    color: #166534;
+    border: 1px solid #86efac;
+    font-size: .7rem;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 12px;
+    margin: 1px 2px;
+}
+
+/* ── MODAL ── */
+.srv-modal { border: none; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,.15); }
+.srv-modal-header {
+    background: linear-gradient(135deg, #1a3a6b, #2563eb);
+    color: #fff;
+    border-bottom: none;
+    padding: 14px 20px;
+}
+.srv-modal-header .modal-title { color: #fff; font-size: .95rem; }
+.srv-modal-header .close { color: #fff; opacity: .8; text-shadow: none; }
+
+.srv-modal-header-edit {
+    background: linear-gradient(135deg, #92400e, #f59e0b);
+    color: #fff;
+    border-bottom: none;
+    padding: 14px 20px;
+}
+.srv-modal-header-edit .modal-title { color: #fff; font-size: .95rem; }
+.srv-modal-header-edit .close { color: #fff; opacity: .8; text-shadow: none; }
+
+/* ── FORM LABELS ── */
+.srv-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: .82rem;
+    margin-bottom: 4px;
+    display: block;
+}
+
+/* ── INPUT GROUP ── */
+.srv-input-group {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    overflow: hidden;
+}
+.srv-ig-icon {
+    background: #2563eb;
+    color: #fff;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    font-size: .82rem;
+    flex-shrink: 0;
+}
+.srv-input-group .form-control {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+.srv-input-group:focus-within {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 .15rem rgba(37,99,235,.2);
+}
+
+/* ── CHIPS DE TIPOS DE EQUIPO ── */
+.srv-tipos-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+.srv-tipo-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    margin: 0;
+    padding: 5px 12px;
+    border: 1.5px solid #d1d5db;
+    border-radius: 20px;
+    background: #fff;
+    font-size: .8rem;
+    font-weight: 600;
+    color: #374151;
+    transition: all .15s;
+    user-select: none;
+}
+.srv-tipo-chip:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+    background: #eff6ff;
+}
+.srv-tipo-chip input[type="checkbox"] {
+    display: none;
+}
+.srv-tipo-chip:has(input:checked) {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    border-color: #1e40af;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(37,99,235,.3);
+}
+
+/* ── BOTONES ── */
+.btn-srv-primary {
+    background: linear-gradient(135deg, #1a3a6b, #2563eb) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px;
+    font-weight: 600;
+}
+.btn-srv-primary:hover { background: linear-gradient(135deg, #122a52, #1d4ed8) !important; }
+
+.btn-srv-edit {
+    background: linear-gradient(135deg, #92400e, #f59e0b) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 6px;
+    font-weight: 600;
+}
+.btn-srv-edit:hover { background: linear-gradient(135deg, #78350f, #d97706) !important; }
+
+/* ── MODAL VER DETALLE ── */
+.srv-detalle-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px;
+}
+.srv-detalle-nombre {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 4px;
+}
+.srv-detalle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid #f1f5f9;
+    gap: 12px;
+}
+.srv-detalle-row:last-child { border-bottom: none; }
+.srv-detalle-lbl {
+    font-size: .75rem;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+    white-space: nowrap;
+}
+.srv-detalle-val {
+    font-size: .88rem;
+    color: #1e293b;
+    font-weight: 500;
+    text-align: right;
+}
+.srv-precio-grande {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #065f46;
+}
+.srv-descripcion-box {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-size: .88rem;
+    color: #334155;
+    min-height: 40px;
+    line-height: 1.5;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   MODAL FILTRO POR TIPO DE EQUIPO
+══════════════════════════════════════════════════════════ */
+
+/* Chips de selección de tipo */
+.filtro-equipo-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 18px;
+    background: #f1f5f9;
+    border-bottom: 1px solid #e2e8f0;
+}
+.filtro-equipo-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1.5px solid #cbd5e1;
+    background: #fff;
+    color: #475569;
+    font-size: .82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+}
+.filtro-equipo-chip:hover {
+    border-color: #2563eb;
+    color: #2563eb;
+    background: #eff6ff;
+}
+.filtro-equipo-chip.activo {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    border-color: #1e40af;
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(37,99,235,.3);
+}
+.filtro-chip-count {
+    background: rgba(255,255,255,.25);
+    color: inherit;
+    font-size: .7rem;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 10px;
+    min-width: 22px;
+    text-align: center;
+}
+.filtro-equipo-chip.activo .filtro-chip-count {
+    background: rgba(255,255,255,.3);
+    color: #fff;
+}
+
+/* Título del tipo activo */
+.filtro-equipo-titulo {
+    padding: 12px 18px 8px;
+    font-size: .88rem;
+    font-weight: 600;
+    color: #1e293b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid #f1f5f9;
+}
+.filtro-total-badge {
+    background: #dbeafe;
+    color: #1e40af;
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 4px;
+}
+
+/* Contenedor de la lista */
+.filtro-servicios-lista {
+    padding: 14px 18px;
+    max-height: 420px;
+    overflow-y: auto;
+}
+
+/* Grid de tarjetas de servicio */
+.filtro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 10px;
+}
+
+/* Tarjeta individual de servicio */
+.filtro-srv-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    transition: box-shadow .15s, border-color .15s;
+}
+.filtro-srv-card:hover {
+    border-color: #93c5fd;
+    box-shadow: 0 3px 12px rgba(37,99,235,.1);
+}
+.filtro-srv-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 5px;
+}
+.filtro-srv-nombre {
+    font-weight: 700;
+    font-size: .88rem;
+    color: #1e293b;
+    flex: 1;
+}
+.filtro-srv-precio {
+    font-weight: 800;
+    font-size: .95rem;
+    color: #065f46;
+    white-space: nowrap;
+}
+.filtro-srv-desc {
+    font-size: .78rem;
+    color: #64748b;
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+.filtro-srv-footer {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+/* Estado vacío */
+.filtro-vacio {
+    text-align: center;
+    color: #94a3b8;
+    padding: 30px 20px;
+    font-size: .88rem;
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   MODAL CREAR — Nuevo diseño
+══════════════════════════════════════════════════════════ */
+
+.srv-modal-header-nuevo {
+    background: linear-gradient(135deg, #1a3a6b 0%, #2563eb 60%, #1d4ed8 100%);
+    padding: 18px 20px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+}
+.srv-modal-header-nuevo::before {
+    content: '';
+    position: absolute;
+    top: -30px; right: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.07);
+    pointer-events: none;
+}
+.srv-modal-header-nuevo .modal-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 1rem;
+    margin: 0;
+}
+.srv-modal-header-icon {
+    width: 46px; height: 46px;
+    background: rgba(255,255,255,.18);
+    border: 1.5px solid rgba(255,255,255,.3);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    color: #fff;
+}
+
+/* Secciones del formulario */
+.srv-form-section {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px 16px;
+}
+.srv-form-section-title {
+    font-size: .78rem;
+    font-weight: 800;
+    color: #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #dbeafe;
+}
+
+/* Selector de tipo (radio buttons estilizados) */
+.srv-tipo-selector {
+    display: flex;
+    gap: 0;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 58px;
+}
+.srv-tipo-radio-label {
+    flex: 1;
+    margin: 0;
+    cursor: pointer;
+    position: relative;
+}
+.srv-tipo-radio-label input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.srv-tipo-radio-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    width: 100%;
+    height: 100%;
+    min-height: 58px;
+    padding: 8px 6px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: .78rem;
+    font-weight: 600;
+    line-height: 1.2;
+    transition: all .15s;
+    cursor: pointer;
+    border-right: 1px solid #d1d5db;
+}
+.srv-tipo-radio-label:last-child .srv-tipo-radio-btn {
+    border-right: none;
+}
+.srv-tipo-radio-btn i {
+    font-size: .9rem;
+    margin-bottom: 2px;
+}
+.srv-tipo-radio-btn small {
+    font-size: .65rem;
+    font-weight: 400;
+    opacity: .7;
+}
+.srv-tipo-radio-label input[type="radio"]:checked + .srv-tipo-radio-btn {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    color: #fff;
+}
+.srv-tipo-radio-label input[type="radio"]:checked + .srv-tipo-radio-btn small {
+    opacity: .85;
+}
+.srv-tipo-radio-label:hover .srv-tipo-radio-btn {
+    background: #eff6ff;
+    color: #2563eb;
+}
+.srv-tipo-radio-label input[type="radio"]:checked + .srv-tipo-radio-btn:hover {
+    background: linear-gradient(135deg, #1e40af, #2563eb);
+    color: #fff;
+}
+
+/* Chips con ícono */
+.srv-tipo-chip i {
+    font-size: .75rem;
+    margin-right: 3px;
+}
+/* ══════════════════════════════════════════════════════════
+   MODAL VER DETALLE — Nuevo diseño
+══════════════════════════════════════════════════════════ */
+
+.srv-ver-header {
+    background: linear-gradient(135deg, #1a3a6b 0%, #2563eb 55%, #7c3aed 100%);
+    padding: 22px 20px 20px;
+    position: relative;
+    overflow: hidden;
+}
+.srv-ver-icono {
+    width: 52px; height: 52px;
+    background: rgba(255,255,255,.18);
+    border: 1.5px solid rgba(255,255,255,.3);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 1.3rem;
+    color: #fff;
+}
+.srv-ver-nombre {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.2;
+}
+.srv-ver-precio-badge {
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 10px;
+    padding: 8px 14px;
+    text-align: center;
+    color: #fff;
+    flex-shrink: 0;
+    backdrop-filter: blur(4px);
+}
+
+/* Cards del body */
+.srv-ver-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.srv-ver-card-title {
+    font-size: .7rem;
+    font-weight: 800;
+    color: #2563eb;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Stats del ver detalle */
+.srv-ver-stat {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,.04);
+    height: 100%;
+}
+.srv-ver-stat-val {
+    font-size: 1.1rem;
+    font-weight: 800;
+    color: #1e293b;
+    line-height: 1;
+}
+.srv-ver-stat-lbl {
+    font-size: .7rem;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+/* ── BOTÓN EXPORTAR ── */
+#btnExportarSrv:hover {
+    background: rgba(255,255,255,.28) !important;
+    transform: translateY(-1px);
+}

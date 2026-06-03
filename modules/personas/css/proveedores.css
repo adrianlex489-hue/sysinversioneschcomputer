@@ -137,3 +137,105 @@
 .stat-mini i { font-size: 1.8rem; opacity: .8; }
 .stat-mini .stat-value { font-size: 1.5rem; font-weight: 700; line-height: 1; }
 .stat-mini .stat-label { font-size: .78rem; opacity: .9; }
+
+
+/* ══════════════════════════════════════════════════════════
+   BOTONES DE EXPORTACIÓN — CSV / Excel / PDF
+   ══════════════════════════════════════════════════════════ */
+
+.prov-export-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+
+.prov-export-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 13px !important;
+    font-size: .78rem !important;
+    font-weight: 700 !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer;
+    transition: filter .18s, transform .15s;
+    white-space: nowrap;
+    letter-spacing: .3px;
+    line-height: 1.4;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+.prov-export-btn:hover  { filter: brightness(1.13); transform: translateY(-1px); }
+.prov-export-btn:active { transform: translateY(0); filter: brightness(.95); }
+.prov-export-btn:focus  { outline: none !important; box-shadow: none !important; }
+.prov-export-btn i { font-size: .85rem; }
+
+/* CSV — gris neutro */
+.prov-export-csv,
+.prov-export-csv:hover,
+.prov-export-csv:focus {
+    background: #475569 !important;
+    color: #fff !important;
+}
+
+/* Excel — verde Microsoft */
+.prov-export-excel,
+.prov-export-excel:hover,
+.prov-export-excel:focus {
+    background: #217346 !important;
+    color: #fff !important;
+}
+
+/* PDF — rojo Adobe */
+.prov-export-pdf,
+.prov-export-pdf:hover,
+.prov-export-pdf:focus {
+    background: #dc2626 !important;
+    color: #fff !important;
+}
+
+.prov-export-group .prov-export-btn + .prov-export-btn {
+    border-left: 1px solid rgba(255,255,255,.2) !important;
+}
+
+@media (max-width: 480px) {
+    .prov-export-btn span { display: none; }
+    .prov-export-btn { padding: 6px 10px !important; }
+}
+
+/* ── FILAS INACTIVAS — compatible con modo oscuro ── */
+tr.row-inactivo {
+    background-color: #f8f9fa !important;
+    opacity: .82;
+}
+tr.row-inactivo td {
+    color: #6c757d !important;
+}
+tr.row-inactivo:hover {
+    background-color: #e9ecef !important;
+    opacity: 1;
+}
+
+/* Modo oscuro */
+[data-theme="dark"] tr.row-inactivo,
+.dark-mode tr.row-inactivo {
+    background-color: rgba(255,255,255,.06) !important;
+    opacity: 1;
+}
+[data-theme="dark"] tr.row-inactivo td,
+.dark-mode tr.row-inactivo td {
+    color: #9ca3af !important;
+}
+[data-theme="dark"] tr.row-inactivo:hover,
+.dark-mode tr.row-inactivo:hover {
+    background-color: rgba(255,255,255,.1) !important;
+}
+[data-theme="dark"] tr.row-inactivo td.text-muted,
+.dark-mode tr.row-inactivo td.text-muted {
+    color: #9ca3af !important;
+}

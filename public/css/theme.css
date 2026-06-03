@@ -1,0 +1,400 @@
+/* ============================================================
+   theme.css | SysInversiones CH Computer
+   CSS global de tema oscuro/claro — se aplica a todo el sistema
+   Cargado desde includes/header.php
+   ============================================================ */
+
+/* ── VARIABLES ─────────────────────────────────────────────── */
+:root, [data-theme="dark"] {
+  --sys-bg:       #0b0f1a;
+  --sys-bg2:      #111827;
+  --sys-bg3:      #1a2235;
+  --sys-card:     #111827;
+  --sys-border:   rgba(255,255,255,.07);
+  --sys-border2:  rgba(255,255,255,.13);
+  --sys-text1:    #f1f5f9;
+  --sys-text2:    #94a3b8;
+  --sys-text3:    #64748b;
+  --sys-shadow:   0 4px 24px rgba(0,0,0,.5);
+  --sys-accent:   #3b82f6;
+}
+[data-theme="light"] {
+  --sys-bg:       #f0f4f8;
+  --sys-bg2:      #ffffff;
+  --sys-bg3:      #f8fafc;
+  --sys-card:     #ffffff;
+  --sys-border:   rgba(0,0,0,.08);
+  --sys-border2:  rgba(0,0,0,.14);
+  --sys-text1:    #0f172a;
+  --sys-text2:    #475569;
+  --sys-text3:    #94a3b8;
+  --sys-shadow:   0 2px 12px rgba(0,0,0,.08);
+  --sys-accent:   #2563eb;
+}
+
+/* ── TRANSICIÓN GLOBAL ─────────────────────────────────────── */
+*, *::before, *::after {
+  transition: background-color .25s ease, border-color .2s ease, color .15s ease;
+}
+
+/* ── BODY & WRAPPER ────────────────────────────────────────── */
+[data-theme="dark"] body,
+[data-theme="dark"] .content-wrapper {
+  background: var(--sys-bg) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="light"] body,
+[data-theme="light"] .content-wrapper {
+  background: var(--sys-bg) !important;
+  color: var(--sys-text1) !important;
+}
+
+/* ── NAVBAR ────────────────────────────────────────────────── */
+[data-theme="dark"] .main-header.navbar {
+  background: var(--sys-bg2) !important;
+  border-bottom-color: var(--sys-border) !important;
+  box-shadow: var(--sys-shadow) !important;
+}
+[data-theme="dark"] .main-header .nav-link,
+[data-theme="dark"] .main-header .navbar-text {
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] .main-header .nav-link[data-widget="pushmenu"] {
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] .main-header .nav-link[data-widget="pushmenu"]:hover {
+  color: var(--sys-accent) !important;
+}
+[data-theme="dark"] .main-header {
+  border-bottom: 1px solid var(--sys-border) !important;
+}
+
+/* ── FOOTER ────────────────────────────────────────────────── */
+[data-theme="dark"] .main-footer,
+[data-theme="dark"] .sys-footer {
+  background: var(--sys-bg2) !important;
+  border-top: 1px solid var(--sys-border) !important;
+  color: var(--sys-text3) !important;
+}
+[data-theme="dark"] .main-footer strong,
+[data-theme="dark"] .sys-footer strong {
+  color: var(--sys-text2) !important;
+}
+[data-theme="light"] .main-footer,
+[data-theme="light"] .sys-footer {
+  background: #ffffff !important;
+  border-top: 2px solid #1a3a6b !important;
+  color: #475569 !important;
+}
+
+/* ── CARDS ─────────────────────────────────────────────────── */
+[data-theme="dark"] .card,
+[data-theme="dark"] .card-body,
+[data-theme="dark"] .card-header,
+[data-theme="dark"] .card-footer {
+  background: var(--sys-card) !important;
+  border-color: var(--sys-border) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .card-header {
+  border-bottom-color: var(--sys-border) !important;
+}
+[data-theme="dark"] .card {
+  box-shadow: var(--sys-shadow) !important;
+}
+
+/* ── TABLAS ────────────────────────────────────────────────── */
+[data-theme="dark"] .table,
+[data-theme="dark"] .table td,
+[data-theme="dark"] .table th {
+  color: var(--sys-text1) !important;
+  border-color: var(--sys-border) !important;
+}
+[data-theme="dark"] .table thead th {
+  background: var(--sys-bg3) !important;
+  color: var(--sys-text2) !important;
+  border-bottom-color: var(--sys-border2) !important;
+}
+[data-theme="dark"] .table-hover tbody tr:hover {
+  background: rgba(255,255,255,.04) !important;
+}
+[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+  background: rgba(255,255,255,.02) !important;
+}
+[data-theme="dark"] .table-bordered {
+  border-color: var(--sys-border) !important;
+}
+[data-theme="dark"] .thead-light th {
+  background: var(--sys-bg3) !important;
+  color: var(--sys-text2) !important;
+  border-color: var(--sys-border) !important;
+}
+
+/* ── FORMULARIOS ───────────────────────────────────────────── */
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .custom-select,
+[data-theme="dark"] select.form-control {
+  background: var(--sys-bg3) !important;
+  border-color: var(--sys-border2) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .form-control:focus,
+[data-theme="dark"] .custom-select:focus {
+  background: var(--sys-bg3) !important;
+  border-color: var(--sys-accent) !important;
+  color: var(--sys-text1) !important;
+  box-shadow: 0 0 0 .2rem rgba(59,130,246,.2) !important;
+}
+[data-theme="dark"] .form-control::placeholder {
+  color: var(--sys-text3) !important;
+}
+[data-theme="dark"] .input-group-text {
+  background: var(--sys-bg3) !important;
+  border-color: var(--sys-border2) !important;
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] label,
+[data-theme="dark"] .form-label-cli,
+[data-theme="dark"] .form-label-prov {
+  color: var(--sys-text2) !important;
+}
+
+/* ── MODALES ───────────────────────────────────────────────── */
+[data-theme="dark"] .modal-content {
+  background: var(--sys-bg2) !important;
+  border-color: var(--sys-border2) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .modal-header {
+  border-bottom-color: var(--sys-border) !important;
+}
+[data-theme="dark"] .modal-footer {
+  border-top-color: var(--sys-border) !important;
+  background: var(--sys-bg2) !important;
+}
+[data-theme="dark"] .modal-body {
+  background: var(--sys-bg2) !important;
+}
+[data-theme="dark"] .modal-title {
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .close {
+  color: var(--sys-text2) !important;
+  text-shadow: none !important;
+}
+
+/* ── DROPDOWNS ─────────────────────────────────────────────── */
+[data-theme="dark"] .dropdown-menu {
+  background: var(--sys-bg2) !important;
+  border-color: var(--sys-border2) !important;
+  box-shadow: 0 8px 32px rgba(0,0,0,.5) !important;
+}
+[data-theme="dark"] .dropdown-item {
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:focus {
+  background: rgba(255,255,255,.06) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .dropdown-divider {
+  border-color: var(--sys-border) !important;
+}
+[data-theme="dark"] .dropdown-header {
+  color: var(--sys-text3) !important;
+}
+
+/* ── BOTONES ───────────────────────────────────────────────── */
+[data-theme="dark"] .btn-secondary {
+  background: var(--sys-bg3) !important;
+  border-color: var(--sys-border2) !important;
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] .btn-secondary:hover {
+  background: rgba(255,255,255,.1) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .btn-light {
+  background: var(--sys-bg3) !important;
+  border-color: var(--sys-border2) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .btn-light:hover {
+  background: rgba(255,255,255,.1) !important;
+}
+[data-theme="dark"] .btn-outline-secondary {
+  border-color: var(--sys-border2) !important;
+  color: var(--sys-text2) !important;
+}
+
+/* ── BADGES ────────────────────────────────────────────────── */
+[data-theme="dark"] .badge-light {
+  background: var(--sys-bg3) !important;
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] .badge-secondary {
+  background: var(--sys-bg3) !important;
+  color: var(--sys-text2) !important;
+}
+
+/* ── ALERTS ────────────────────────────────────────────────── */
+[data-theme="dark"] .alert-info {
+  background: rgba(59,130,246,.1) !important;
+  border-color: rgba(59,130,246,.25) !important;
+  color: #93c5fd !important;
+}
+[data-theme="dark"] .alert-warning {
+  background: rgba(245,158,11,.1) !important;
+  border-color: rgba(245,158,11,.25) !important;
+  color: #fcd34d !important;
+}
+[data-theme="dark"] .alert-danger {
+  background: rgba(239,68,68,.1) !important;
+  border-color: rgba(239,68,68,.25) !important;
+  color: #fca5a5 !important;
+}
+[data-theme="dark"] .alert-success {
+  background: rgba(16,185,129,.1) !important;
+  border-color: rgba(16,185,129,.25) !important;
+  color: #6ee7b7 !important;
+}
+
+/* ── DATATABLES ────────────────────────────────────────────── */
+[data-theme="dark"] .dataTables_wrapper .dataTables_length,
+[data-theme="dark"] .dataTables_wrapper .dataTables_filter,
+[data-theme="dark"] .dataTables_wrapper .dataTables_info,
+[data-theme="dark"] .dataTables_wrapper .dataTables_paginate {
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] .dataTables_wrapper .dataTables_filter input,
+[data-theme="dark"] .dataTables_wrapper .dataTables_length select {
+  background: var(--sys-bg3) !important;
+  border-color: var(--sys-border2) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  background: rgba(255,255,255,.06) !important;
+  border-color: var(--sys-border2) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+[data-theme="dark"] .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  background: var(--sys-accent) !important;
+  border-color: var(--sys-accent) !important;
+  color: #fff !important;
+}
+
+/* ── CONTENT HEADER ────────────────────────────────────────── */
+[data-theme="dark"] .content-header {
+  background: var(--sys-bg2) !important;
+  border-bottom: 1px solid var(--sys-border) !important;
+}
+[data-theme="dark"] .content-header h1,
+[data-theme="dark"] .content-header h4,
+[data-theme="dark"] .content-header h5 {
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .breadcrumb {
+  background: transparent !important;
+}
+[data-theme="dark"] .breadcrumb-item,
+[data-theme="dark"] .breadcrumb-item a {
+  color: var(--sys-text2) !important;
+}
+[data-theme="dark"] .breadcrumb-item.active {
+  color: var(--sys-text3) !important;
+}
+
+/* ── TABS ──────────────────────────────────────────────────── */
+[data-theme="dark"] .nav-tabs {
+  border-bottom-color: var(--sys-border) !important;
+}
+[data-theme="dark"] .nav-tabs .nav-link {
+  color: var(--sys-text2) !important;
+  border-color: transparent !important;
+}
+[data-theme="dark"] .nav-tabs .nav-link:hover {
+  border-color: var(--sys-border) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .nav-tabs .nav-link.active {
+  background: var(--sys-card) !important;
+  border-color: var(--sys-border2) var(--sys-border2) var(--sys-card) !important;
+  color: var(--sys-text1) !important;
+}
+[data-theme="dark"] .tab-content {
+  background: var(--sys-card) !important;
+}
+
+/* ── SMALL BOX (AdminLTE) ──────────────────────────────────── */
+[data-theme="dark"] .small-box {
+  box-shadow: var(--sys-shadow) !important;
+}
+
+/* ── PAGE HEADER CUSTOM ────────────────────────────────────── */
+[data-theme="dark"] .page-header-cli,
+[data-theme="dark"] .page-header-prov {
+  background: var(--sys-bg2) !important;
+  border-bottom: 1px solid var(--sys-border) !important;
+}
+[data-theme="dark"] .page-header-cli h4,
+[data-theme="dark"] .page-header-prov h4 {
+  color: var(--sys-text1) !important;
+}
+
+/* ── PANEL TIPO (clientes tabs) ────────────────────────────── */
+[data-theme="dark"] .panel-tipo {
+  background: var(--sys-card) !important;
+}
+
+/* ── STAT MINI ─────────────────────────────────────────────── */
+[data-theme="dark"] .stat-mini,
+[data-theme="dark"] .stat-mini-hist,
+[data-theme="dark"] .stat-mini-hist-vta {
+  box-shadow: var(--sys-shadow) !important;
+}
+
+/* ── SCROLLBAR ─────────────────────────────────────────────── */
+[data-theme="dark"] ::-webkit-scrollbar { width: 6px; height: 6px; }
+[data-theme="dark"] ::-webkit-scrollbar-track { background: var(--sys-bg); }
+[data-theme="dark"] ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.12); border-radius: 99px; }
+[data-theme="dark"] ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,.2); }
+
+/* ── TEXTO MUTED ───────────────────────────────────────────── */
+[data-theme="dark"] .text-muted { color: var(--sys-text3) !important; }
+[data-theme="dark"] .text-dark  { color: var(--sys-text1) !important; }
+
+/* ── LINKS ─────────────────────────────────────────────────── */
+[data-theme="dark"] a { color: #60a5fa; }
+[data-theme="dark"] a:hover { color: #93c5fd; }
+
+
+/* ── FILAS INACTIVAS — personas (clientes, proveedores, usuarios) ── */
+tr.row-inactivo {
+    background-color: #f1f3f5 !important;
+    opacity: .85;
+}
+tr.row-inactivo td {
+    color: #6c757d !important;
+}
+tr.row-inactivo:hover {
+    background-color: #e2e6ea !important;
+    opacity: 1;
+}
+
+[data-theme="dark"] tr.row-inactivo {
+    background-color: rgba(255,255,255,.05) !important;
+    opacity: 1;
+}
+[data-theme="dark"] tr.row-inactivo td {
+    color: #9ca3af !important;
+}
+[data-theme="dark"] tr.row-inactivo td.text-muted {
+    color: #9ca3af !important;
+}
+[data-theme="dark"] tr.row-inactivo:hover {
+    background-color: rgba(255,255,255,.09) !important;
+}

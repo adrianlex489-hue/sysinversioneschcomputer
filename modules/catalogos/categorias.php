@@ -1,6 +1,6 @@
 ﻿<?php
 // ============================================================
-// modules/catalogos/categorias.php | Botica 2026
+// modules/catalogos/categorias.php | SysInversiones CH Computer
 // Gestión de Categorías con estado activo/inactivo
 // ============================================================
 $ruta_base = '../../';
@@ -10,9 +10,9 @@ require_once $ruta_base . 'conf/permisos.php';
 
 if (!isset($pdo) || !($pdo instanceof PDO)) die('Error: Conexión BD no disponible.');
 if (!defined('ROL_ADMINISTRADOR')) define('ROL_ADMINISTRADOR', 1);
-if (!defined('ROL_CAJERO'))        define('ROL_CAJERO', 2);
-if (!defined('ROL_TRABAJADOR'))    define('ROL_TRABAJADOR', 3);
-verificar_acceso([ROL_ADMINISTRADOR, ROL_CAJERO, ROL_TRABAJADOR]);
+if (!defined('ROL_ASESOR_COMERCIAL'))        define('ROL_ASESOR_COMERCIAL', 2);
+if (!defined('ROL_TECNICO'))    define('ROL_TECNICO', 3);
+verificar_acceso([ROL_ADMINISTRADOR, ROL_ASESOR_COMERCIAL, ROL_TECNICO]);
 verificarPermiso($pdo, 'categorias');
 
 // ── Patrón PRG ────────────────────────────────────────────────────────────────
@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (empty($nombre)) {
                 redirigirCat('warning', 'Campo incompleto', 'El nombre de la categoría es obligatorio.');
             }
-            $sql = "INSERT INTO categorias (nombre_categoria, descripcion, estado) VALUES (?, ?, 1)";
+            $sql = "INSERT INTO categorias (nombre_categoria, descripcion, estado, fecha_registro) VALUES (?, ?, 1, NOW())";
             $pdo->prepare($sql)->execute([$nombre, $descripcion]);
             redirigirCat('success', '¡Registrada!', "La categoría $nombre fue registrada correctamente.");
 
@@ -100,7 +100,7 @@ include $ruta_base . 'includes/sidebar.php';
 ?>
 
 <!-- CSS del módulo -->
-<link rel="stylesheet" href="css/categorias.css">
+<link rel="stylesheet" href="css/categorias.css?v=<?= time() ?>">
 
 <div class="content-wrapper">
 
@@ -110,11 +110,28 @@ include $ruta_base . 'includes/sidebar.php';
             <div class="page-header-cat d-flex justify-content-between align-items-center flex-wrap">
                 <div>
                     <h4><i class="fas fa-tags mr-2"></i>Gestión de Categorías</h4>
-                    <small><i class="fas fa-map-marker-alt mr-1"></i>Botica 2026 &rsaquo; Catálogos &rsaquo; Categorías</small>
+                    <small><i class="fas fa-map-marker-alt mr-1"></i>SysInversiones CH Computer &rsaquo; Catálogos &rsaquo; Categorías</small>
                 </div>
-                <button class="btn btn-light font-weight-bold" data-toggle="modal" data-target="#modalCrearCategoria">
-                    <i class="fas fa-plus-circle mr-1"></i> Nueva Categoría
-                </button>
+                <div class="d-flex align-items-center flex-wrap" style="gap:8px;">
+                    <!-- Botones de exportación -->
+                    <div class="cat-export-group">
+                        <button id="btn-exportar-csv-cat" class="cat-export-btn cat-export-csv" title="Exportar a CSV">
+                            <i class="fas fa-file-csv"></i>
+                            <span>CSV</span>
+                        </button>
+                        <button id="btn-exportar-excel-cat" class="cat-export-btn cat-export-excel" title="Exportar a Excel">
+                            <i class="fas fa-file-excel"></i>
+                            <span>Excel</span>
+                        </button>
+                        <button id="btn-exportar-pdf-cat" class="cat-export-btn cat-export-pdf" title="Exportar a PDF">
+                            <i class="fas fa-file-pdf"></i>
+                            <span>PDF</span>
+                        </button>
+                    </div>
+                    <button class="btn btn-light font-weight-bold" data-toggle="modal" data-target="#modalCrearCategoria">
+                        <i class="fas fa-plus-circle mr-1"></i> Nueva Categoría
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -144,7 +161,7 @@ include $ruta_base . 'includes/sidebar.php';
                 </div>
                 <div class="col-md-4 col-6 mb-2">
                     <div class="stat-mini-cat" style="background:linear-gradient(135deg,#1a7a4a,#27ae60);">
-                        <i class="fas fa-capsules"></i>
+                        <i class="fas fa-boxes"></i>
                         <div>
                             <div class="stat-value"><?= $total_productos ?></div>
                             <div class="stat-label">Productos asociados</div>
@@ -223,7 +240,7 @@ include $ruta_base . 'includes/sidebar.php';
                                             </td>
                                             <td class="text-center">
                                                 <span class="badge-productos">
-                                                    <i class="fas fa-capsules mr-1"></i><?= $c['total_productos'] ?>
+                                                    <i class="fas fa-box mr-1"></i><?= $c['total_productos'] ?>
                                                 </span>
                                             </td>
                                             <td class="text-center">
@@ -289,7 +306,7 @@ include $ruta_base . 'includes/sidebar.php';
                                             </td>
                                             <td class="text-center">
                                                 <span class="badge-productos">
-                                                    <i class="fas fa-capsules mr-1"></i><?= $c['total_productos'] ?>
+                                                    <i class="fas fa-box mr-1"></i><?= $c['total_productos'] ?>
                                                 </span>
                                             </td>
                                             <td class="text-center">
@@ -348,7 +365,7 @@ include $ruta_base . 'includes/sidebar.php';
                         <label class="form-label-cat"><i class="fas fa-tag mr-1 text-muted"></i>Nombre de la Categoría <span class="text-danger">*</span></label>
                         <div class="input-group input-group-sm">
                             <div class="input-group-prepend"><span class="input-group-text"><i class="fas fa-tags"></i></span></div>
-                            <input type="text" class="form-control" name="nombre_categoria" required maxlength="100" placeholder="Ej: MEDICAMENTOS">
+                            <input type="text" class="form-control" name="nombre_categoria" required maxlength="100" placeholder="Ej: LAPTOPS, PERIFÉRICOS, ACCESORIOS">
                         </div>
                     </div>
                     <div class="form-group">
@@ -411,68 +428,78 @@ include $ruta_base . 'includes/sidebar.php';
     </div>
 </div>
 
-<?php include $ruta_base . 'includes/footer.php'; ?>
-
 <!-- ══════════════════════════════════════════════════════════
      MODAL VER CATEGORÍA
 ══════════════════════════════════════════════════════════ -->
 <div class="modal fade" id="modalVerCategoria" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="border-radius:14px;overflow:hidden;">
+    <div class="modal-dialog" style="max-width:460px;">
+        <div class="modal-content" style="border:none;border-radius:16px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.22);">
 
-            <!-- Cabecera -->
-            <div style="background:linear-gradient(135deg,#1a5276,#2980b9);padding:20px 24px;position:relative;">
-                <button type="button" class="close" data-dismiss="modal"
-                    style="position:absolute;top:12px;right:16px;color:#fff;opacity:.8;font-size:1.4rem;">&times;</button>
-                <div class="d-flex align-items-center gap-3">
-                    <div style="width:52px;height:52px;background:rgba(255,255,255,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                        <i class="fas fa-tags" style="font-size:1.5rem;color:#fff;"></i>
+            <!-- HEADER -->
+            <div style="background:linear-gradient(135deg,#1a3a5c 0%,#1a5276 50%,#2471a3 100%);padding:24px 22px 20px;position:relative;overflow:hidden;">
+                <!-- Decoración geométrica -->
+                <div style="position:absolute;top:-30px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.07);pointer-events:none;"></div>
+                <div style="position:absolute;bottom:-20px;right:60px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.05);pointer-events:none;"></div>
+                <div style="position:absolute;top:10px;left:45%;width:40px;height:40px;border-radius:50%;background:rgba(41,128,185,.35);pointer-events:none;"></div>
+
+                <!-- Botón cerrar -->
+                <button type="button" data-dismiss="modal"
+                    style="position:absolute;top:12px;right:14px;background:rgba(255,255,255,.12);border:none;color:#fff;width:30px;height:30px;border-radius:50%;font-size:.85rem;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s;z-index:3;"
+                    onmouseover="this.style.background='rgba(231,76,60,.75)'" onmouseout="this.style.background='rgba(255,255,255,.12)'">
+                    <i class="fas fa-times"></i>
+                </button>
+
+                <div style="display:flex;align-items:center;gap:14px;position:relative;z-index:2;">
+                    <!-- Ícono -->
+                    <div style="width:54px;height:54px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                        <i class="fas fa-layer-group" style="font-size:1.4rem;color:#fff;"></i>
                     </div>
                     <div>
-                        <h5 id="ver_cat_nombre" style="color:#fff;font-weight:700;margin:0;font-size:1.05rem;"></h5>
-                        <div class="mt-1">
-                            <span id="ver_cat_badge_estado" style="font-size:.75rem;padding:2px 10px;border-radius:20px;"></span>
+                        <div style="font-size:.68rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1.8px;font-weight:700;margin-bottom:5px;">
+                            <i class="fas fa-sitemap mr-1"></i>Categoría de Producto
+                        </div>
+                        <h5 id="ver_cat_nombre" style="color:#fff;font-weight:800;margin:0;font-size:1.15rem;letter-spacing:-.2px;line-height:1.2;"></h5>
+                        <div style="margin-top:8px;">
+                            <span id="ver_cat_badge_estado" style="font-size:.7rem;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:.3px;"></span>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="modal-body" style="padding:20px 24px;">
+            <!-- BODY -->
+            <div style="padding:20px;background:#f4f7fb;">
 
                 <!-- Descripción -->
-                <div class="d-flex align-items-start gap-3 mb-3">
-                    <div style="width:34px;height:34px;background:#e3f2fd;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                        <i class="fas fa-align-left" style="color:#1a5276;font-size:.8rem;"></i>
+                <div style="background:#fff;border-radius:12px;padding:14px 16px;margin-bottom:14px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.05);">
+                    <div style="font-size:.65rem;font-weight:800;color:#2980b9;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;">
+                        <i class="fas fa-align-left mr-1"></i>Descripción
                     </div>
-                    <div>
-                        <div style="font-size:.7rem;color:#999;text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Descripción</div>
-                        <div id="ver_cat_descripcion" style="font-size:.9rem;color:#2d3436;font-weight:500;margin-top:2px;"></div>
-                    </div>
+                    <div id="ver_cat_descripcion" style="font-size:.9rem;color:#2d3436;font-weight:500;line-height:1.55;"></div>
                 </div>
 
-                <hr class="my-3">
-
-                <!-- Productos y Fecha -->
-                <div class="row">
-                    <div class="col-6">
-                        <div class="d-flex align-items-start gap-3">
-                            <div style="width:34px;height:34px;background:#e8f5e9;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <i class="fas fa-capsules" style="color:#1a7a4a;font-size:.8rem;"></i>
+                <!-- Stats -->
+                <div class="row" style="margin:0 -5px;">
+                    <!-- Productos -->
+                    <div class="col-6" style="padding:0 5px;">
+                        <div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.05);display:flex;align-items:center;gap:12px;">
+                            <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#e8f5e9,#c8e6c9);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-boxes" style="color:#1a7a4a;font-size:.95rem;"></i>
                             </div>
                             <div>
-                                <div style="font-size:.7rem;color:#999;text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Productos activos</div>
-                                <div id="ver_cat_productos" style="font-size:1.2rem;color:#1a7a4a;font-weight:700;margin-top:2px;"></div>
+                                <div style="font-size:.62rem;font-weight:800;color:#999;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;">Productos</div>
+                                <div id="ver_cat_productos" style="font-size:1.1rem;font-weight:800;color:#1a7a4a;line-height:1;"></div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="d-flex align-items-start gap-3">
-                            <div style="width:34px;height:34px;background:#fff3e0;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                                <i class="fas fa-calendar-alt" style="color:#e67e22;font-size:.8rem;"></i>
+                    <!-- Fecha -->
+                    <div class="col-6" style="padding:0 5px;">
+                        <div style="background:#fff;border-radius:12px;padding:14px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.05);display:flex;align-items:center;gap:12px;">
+                            <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#e3f2fd,#bbdefb);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                                <i class="fas fa-calendar-check" style="color:#1a5276;font-size:.95rem;"></i>
                             </div>
                             <div>
-                                <div style="font-size:.7rem;color:#999;text-transform:uppercase;letter-spacing:.5px;font-weight:600;">Fecha de registro</div>
-                                <div id="ver_cat_fecha" style="font-size:.88rem;color:#2d3436;font-weight:500;margin-top:2px;"></div>
+                                <div style="font-size:.62rem;font-weight:800;color:#999;text-transform:uppercase;letter-spacing:.8px;margin-bottom:3px;">Registrada</div>
+                                <div id="ver_cat_fecha" style="font-size:.82rem;font-weight:700;color:#1a5276;line-height:1.3;"></div>
                             </div>
                         </div>
                     </div>
@@ -480,15 +507,24 @@ include $ruta_base . 'includes/sidebar.php';
 
             </div>
 
-            <div class="modal-footer" style="border-top:1px solid #f0f0f0;padding:12px 20px;">
-                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">
-                    <i class="fas fa-times mr-1"></i>Cerrar
+            <!-- FOOTER -->
+            <div style="padding:12px 20px;background:#fff;border-top:1px solid #eef1f5;display:flex;justify-content:flex-end;">
+                <button type="button" data-dismiss="modal"
+                    style="background:#f1f3f5;border:1px solid #dee2e6;color:#495057;font-size:.82rem;font-weight:600;padding:7px 20px;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:all .15s;"
+                    onmouseover="this.style.background='#e74c3c';this.style.borderColor='#e74c3c';this.style.color='#fff'"
+                    onmouseout="this.style.background='#f1f3f5';this.style.borderColor='#dee2e6';this.style.color='#495057'">
+                    <i class="fas fa-times"></i> Cerrar
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+<?php include $ruta_base . 'includes/footer.php'; ?>
+<script src="js/categorias.js?v=<?= time() ?>"></script>
 
-<script src="js/categorias.js"></script>
+
+
+
 
 

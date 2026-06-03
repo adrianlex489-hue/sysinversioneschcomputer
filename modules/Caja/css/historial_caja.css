@@ -1,0 +1,180 @@
+/* ============================================================
+   historial_caja.css | SysInversiones CH Computer 2026
+   Diseño moderno multicolor — Historial de Cajas
+   ============================================================ */
+
+/* ── PAGE HEADER ── */
+.hist-page-header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 45%, #7c3aed 100%);
+    color: #fff; padding: 18px 24px; border-radius: 14px;
+    margin-bottom: 24px; box-shadow: 0 6px 28px rgba(124,58,237,.3);
+    position: relative; overflow: hidden;
+}
+.hist-page-header::before {
+    content: ''; position: absolute; top: -50px; right: -30px;
+    width: 180px; height: 180px; border-radius: 50%;
+    background: rgba(255,255,255,.05);
+}
+.hist-page-header h4  { margin: 0; font-weight: 800; font-size: 1.25rem; color: #fff; }
+.hist-page-header small { opacity: .85; font-size: .82rem; }
+
+.btn-hist-back {
+    background: rgba(255,255,255,.15); color: #fff;
+    border: 1px solid rgba(255,255,255,.35); border-radius: 10px;
+    padding: 8px 18px; font-size: .82rem; font-weight: 600;
+    text-decoration: none; transition: all .2s;
+}
+.btn-hist-back:hover { background: rgba(255,255,255,.28); color: #fff; }
+
+/* ── STAT CARDS ── */
+.hist-stat-card {
+    border-radius: 16px; padding: 20px 20px; color: #fff;
+    display: flex; align-items: center; gap: 16px;
+    box-shadow: 0 6px 20px rgba(0,0,0,.15); position: relative; overflow: hidden;
+    transition: transform .2s;
+}
+.hist-stat-card:hover { transform: translateY(-3px); }
+.hist-stat-card::after {
+    content: ''; position: absolute; bottom: -20px; right: -20px;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(255,255,255,.08);
+}
+.hist-stat-card i { font-size: 2rem; opacity: .85; flex-shrink: 0; }
+.hist-stat-val { font-size: 1.5rem; font-weight: 800; line-height: 1; font-family: monospace; }
+.hist-stat-lbl { font-size: .75rem; opacity: .85; margin-top: 3px; font-weight: 600; }
+
+/* ── FILTROS ── */
+.hist-filtros { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.hist-filtros-label { font-weight: 700; font-size: .85rem; color: #475569; }
+.btn-hist-filtro {
+    background: #fff; border: 1.5px solid #e2e8f0; border-radius: 20px;
+    padding: 6px 18px; font-size: .8rem; font-weight: 600;
+    cursor: pointer; transition: all .2s; color: #475569;
+    box-shadow: 0 1px 4px rgba(0,0,0,.06);
+}
+.btn-hist-filtro.active {
+    background: linear-gradient(135deg, #7c3aed, #4f46e5);
+    border-color: transparent; color: #fff;
+    box-shadow: 0 3px 12px rgba(124,58,237,.35);
+}
+.btn-hist-filtro:hover:not(.active) { border-color: #7c3aed; color: #7c3aed; }
+
+/* ── TABLA CARD ── */
+.hist-tabla-card { border: none; border-radius: 16px; box-shadow: 0 2px 16px rgba(0,0,0,.08); overflow: hidden; }
+.hist-tabla-header {
+    background: linear-gradient(90deg, #0f172a, #312e81);
+    color: #fff; padding: 14px 20px; font-size: .88rem; font-weight: 700;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+.table-hist thead th {
+    background: #f8fafc; color: #475569; font-weight: 700;
+    font-size: .74rem; text-transform: uppercase; letter-spacing: .5px;
+    border-bottom: 2px solid #e2e8f0; padding: 10px 12px;
+}
+.table-hist tbody td { vertical-align: middle; font-size: .84rem; padding: 10px 12px; }
+.table-hist tbody tr { transition: background .15s; }
+.table-hist tbody tr:hover { background: #f5f3ff; }
+
+/* Número de caja */
+.hist-num {
+    font-family: monospace; font-weight: 800; color: #7c3aed;
+    background: #ede9fe; padding: 3px 10px; border-radius: 8px;
+    font-size: .82rem;
+}
+
+/* Badge nombre */
+.hist-nombre-badge {
+    background: linear-gradient(135deg, #ede9fe, #ddd6fe);
+    color: #5b21b6; border: 1px solid #c4b5fd;
+    padding: 4px 12px; border-radius: 20px; font-size: .78rem;
+    font-weight: 700; display: inline-block;
+    max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* Badges estado */
+.hist-badge-abierta {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    color: #065f46; border: 1px solid #86efac;
+    padding: 4px 12px; border-radius: 20px; font-size: .75rem;
+    font-weight: 700; display: inline-flex; align-items: center; gap: 4px;
+    animation: pulse-open 2s infinite;
+}
+@keyframes pulse-open { 0%,100%{opacity:1} 50%{opacity:.75} }
+
+.hist-badge-cerrada {
+    background: #f1f5f9; color: #475569; border: 1px solid #cbd5e1;
+    padding: 4px 12px; border-radius: 20px; font-size: .75rem;
+    font-weight: 700; display: inline-flex; align-items: center; gap: 4px;
+}
+
+/* Diferencia */
+.hist-dif-ok  { color: #059669; font-weight: 700; }
+.hist-dif-pos { color: #059669; font-weight: 700; }
+.hist-dif-neg { color: #dc2626; font-weight: 700; }
+
+/* ── MODAL DETALLE ── */
+.hist-modal-header {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a, #7c3aed);
+    color: #fff; padding: 18px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+
+/* Banda de info en modal */
+.det-caja-banda {
+    display: flex; flex-wrap: wrap;
+    background: linear-gradient(135deg, #f8fafc, #f0f4ff);
+    border-bottom: 2px solid #e0e7ff;
+}
+.det-caja-banda-item {
+    display: flex; flex-direction: column;
+    padding: 14px 20px; flex: 1; min-width: 120px;
+}
+.det-caja-banda-lbl {
+    font-size: .67rem; font-weight: 700; color: #94a3b8;
+    text-transform: uppercase; letter-spacing: .6px; margin-bottom: 4px;
+}
+.det-caja-banda-val { font-size: .9rem; font-weight: 700; color: #1e293b; }
+.det-caja-banda-sep { width: 1px; background: #e2e8f0; margin: 10px 0; }
+
+/* Secciones del modal */
+.det-caja-section { padding: 18px 22px; border-bottom: 1px solid #f1f5f9; }
+.det-caja-section:last-child { border-bottom: none; }
+.det-caja-section-title {
+    font-weight: 800; font-size: .85rem;
+    padding-bottom: 8px; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 2px solid;
+}
+.det-caja-section-title.verde  { color: #059669; border-color: #bbf7d0; }
+.det-caja-section-title.violeta{ color: #7c3aed; border-color: #ddd6fe; }
+.det-caja-section-title.azul   { color: #1d4ed8; border-color: #bfdbfe; }
+
+/* Tabla cuadre por canal */
+.det-cierre-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+.det-cierre-table thead th {
+    background: linear-gradient(90deg, #ede9fe, #ddd6fe);
+    color: #5b21b6; font-weight: 700; padding: 8px 14px;
+    border-bottom: 2px solid #c4b5fd; font-size: .75rem; text-transform: uppercase;
+}
+.det-cierre-table tbody td { padding: 9px 14px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+.det-cierre-table tbody tr:last-child td { border-bottom: none; }
+.det-cierre-table tbody tr:hover { background: #faf5ff; }
+
+/* Tabla movimientos en modal */
+.det-movs-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+.det-movs-table thead th {
+    background: linear-gradient(90deg, #0f172a, #1e3a8a);
+    color: #fff; font-weight: 700; padding: 8px 12px;
+    font-size: .73rem; text-transform: uppercase; letter-spacing: .4px;
+}
+.det-movs-table tbody td { padding: 8px 12px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+.det-movs-table tbody tr:hover { background: #f5f3ff; }
+
+/* Badges en modal */
+.badge-ingreso { background: linear-gradient(135deg,#dcfce7,#bbf7d0); color:#065f46; border:1px solid #86efac; padding:3px 10px; border-radius:20px; font-size:.7rem; font-weight:700; }
+.badge-egreso  { background: linear-gradient(135deg,#fee2e2,#fecaca); color:#7f1d1d; border:1px solid #fca5a5; padding:3px 10px; border-radius:20px; font-size:.7rem; font-weight:700; }
+.badge-ref-venta    { background:#dbeafe; color:#1e40af; border:1px solid #93c5fd; padding:2px 8px; border-radius:20px; font-size:.68rem; font-weight:700; }
+.badge-ref-compra   { background:#fef3c7; color:#92400e; border:1px solid #fcd34d; padding:2px 8px; border-radius:20px; font-size:.68rem; font-weight:700; }
+.badge-ref-servicio { background:#ede9fe; color:#5b21b6; border:1px solid #c4b5fd; padding:2px 8px; border-radius:20px; font-size:.68rem; font-weight:700; }
+.badge-ref-manual   { background:#f3f4f6; color:#374151; border:1px solid #d1d5db; padding:2px 8px; border-radius:20px; font-size:.68rem; font-weight:700; }

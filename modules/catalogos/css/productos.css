@@ -1,5 +1,5 @@
 /* ============================================================
-   productos.css — Módulo Gestión de Productos | Botica 2026
+   productos.css — Módulo Gestión de Productos | SysInversiones CH Computer
    ============================================================ */
 :root {
     --prod-verde:       #1a7a4a;
@@ -43,8 +43,139 @@
     font-size: .82rem; text-transform: uppercase; letter-spacing: .5px;
     border-bottom: 2px solid var(--prod-azul);
 }
-.table-productos tbody tr:hover { background: #eaf4fb; }
+.table-productos tbody tr { transition: background .15s, box-shadow .15s; }
+.table-productos tbody tr:hover {
+    background: #eaf4fb !important;
+    box-shadow: inset 4px 0 0 var(--prod-azul);
+}
 .table-productos td { vertical-align: middle; font-size: .88rem; }
+
+/* Filas coloreadas por estado de stock */
+.table-productos tbody tr.tr-agotado {
+    background: rgba(231,76,60,.06);
+}
+.table-productos tbody tr.tr-agotado:hover {
+    background: rgba(231,76,60,.12) !important;
+    box-shadow: inset 4px 0 0 var(--prod-rojo);
+}
+.table-productos tbody tr.tr-bajo {
+    background: rgba(243,156,18,.06);
+}
+.table-productos tbody tr.tr-bajo:hover {
+    background: rgba(243,156,18,.12) !important;
+    box-shadow: inset 4px 0 0 var(--prod-naranja);
+}
+
+/* Imagen en lista con zoom */
+.td-img-lista { padding: 6px !important; }
+.lista-img-wrap {
+    position: relative;
+    width: 44px; height: 44px;
+    margin: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #dee2e6;
+    background: #f8f9fa;
+    transition: border-color .2s;
+}
+.lista-img-wrap.has-imgs { cursor: zoom-in; }
+.lista-img-wrap.has-imgs:hover { border-color: var(--prod-azul); }
+.lista-thumb {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    padding: 3px;
+    display: block;
+}
+.lista-zoom-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,82,118,.65);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity .18s;
+    color: #fff;
+    font-size: .85rem;
+}
+.lista-img-wrap.has-imgs:hover .lista-zoom-overlay { opacity: 1; }
+.lista-img-placeholder {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg,#e8f4fd,#d6eaf8);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    margin: auto;
+    border: 2px solid #dee2e6;
+}
+.lista-img-placeholder i { font-size: .9rem; color: #aed6f1; }
+
+/* Código copiable */
+.codigo-copiable {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 2px 6px;
+    border-radius: 5px;
+    transition: background .15s;
+}
+.codigo-copiable:hover { background: #eaf4fb; }
+.codigo-copiable code {
+    font-size: .8rem;
+    color: #1a5276;
+    background: transparent;
+    padding: 0;
+}
+.codigo-copy-icon {
+    font-size: .68rem;
+    color: #aaa;
+    opacity: 0;
+    transition: opacity .15s, color .15s;
+}
+.codigo-copiable:hover .codigo-copy-icon { opacity: 1; color: var(--prod-azul); }
+.codigo-copiable.copiado code  { color: var(--prod-verde); }
+.codigo-copiable.copiado .codigo-copy-icon { opacity: 1; color: var(--prod-verde); }
+
+/* Fila inactiva — gris suave */
+.table-productos tbody tr.tr-inactivo {
+    background: rgba(108,117,125,.05);
+    color: #888;
+}
+.table-productos tbody tr.tr-inactivo:hover {
+    background: rgba(108,117,125,.12) !important;
+    box-shadow: inset 4px 0 0 #6c757d;
+}
+.table-productos tbody tr.tr-inactivo .badge-categoria {
+    opacity: .7;
+}
+
+/* Tarjeta inactiva en grid — desaturada */
+.producto-card-inactivo {
+    opacity: .82;
+    filter: grayscale(30%);
+}
+.producto-card-inactivo:hover {
+    opacity: 1;
+    filter: grayscale(0%);
+}
+
+/* Badge "Inactivo" sobre la imagen */
+.badge-inactivo-overlay {
+    position: absolute;
+    top: 8px; left: 8px;
+    background: rgba(108,117,125,.88);
+    color: #fff;
+    font-size: .68rem; font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    pointer-events: none;
+    letter-spacing: .3px;
+}
+
+/* Acciones en una sola línea */
+.table-productos td[style*="white-space:nowrap"],
+.table-productos .td-acciones { white-space: nowrap; }
+
+/* Nombre en lista — no romper en múltiples líneas */
+.td-nombre-lista { max-width: 260px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* ── VISTA GRID ── */
 .producto-card {
@@ -54,15 +185,59 @@
     height: 100%;
 }
 .producto-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,.15); }
+
+/* Contenedor de imagen con botones flotantes */
+.card-img-wrap {
+    position: relative;
+    overflow: hidden;
+}
 .producto-card .card-img-top {
     height: 160px; object-fit: contain; background: #f8f9fa;
-    padding: 8px;
+    padding: 8px; display: block; width: 100%;
 }
 .producto-card .img-placeholder {
     height: 160px; background: linear-gradient(135deg,#e8f4fd,#d6eaf8);
     display: flex; align-items: center; justify-content: center;
 }
 .producto-card .img-placeholder i { font-size: 3rem; color: #aed6f1; }
+
+/* Capa de acciones flotantes sobre la imagen */
+.card-img-actions {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    gap: 6px;
+    padding: 8px;
+    background: linear-gradient(180deg, rgba(0,0,0,.32) 0%, transparent 55%);
+    opacity: 0;
+    transition: opacity .22s ease;
+    pointer-events: none;
+}
+.card-img-wrap:hover .card-img-actions { opacity: 1; pointer-events: auto; }
+
+/* Botón base flotante */
+.card-img-btn {
+    width: 32px; height: 32px;
+    border: none; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: .78rem; cursor: pointer;
+    transition: transform .18s, box-shadow .18s, background .18s;
+    box-shadow: 0 2px 8px rgba(0,0,0,.35);
+    flex-shrink: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.card-img-btn:hover { transform: scale(1.15); box-shadow: 0 4px 14px rgba(0,0,0,.45); }
+.card-img-btn:active { transform: scale(.95); }
+
+/* Zoom — azul */
+.btn-grid-zoom {
+    background: rgba(41,128,185,.88);
+    color: #fff;
+}
+.btn-grid-zoom:hover { background: rgba(26,82,118,.98); }
 .producto-card .card-body { padding: 12px; }
 .producto-card .precio-venta { font-size: 1.2rem; font-weight: 700; color: var(--prod-verde); }
 .producto-card .precio-compra { font-size: .78rem; color: #999; }
@@ -70,10 +245,7 @@
     background: #e8f5e9; color: #1a7a4a; border: 1px solid #a5d6a7;
     font-size: .72rem; padding: 2px 8px; border-radius: 20px; font-weight: 600;
 }
-.producto-card .badge-receta {
-    background: #fde8e8; color: #c0392b; border: 1px solid #f5b7b1;
-    font-size: .72rem; padding: 2px 8px; border-radius: 20px; font-weight: 600;
-}
+
 .producto-card .stock-badge {
     font-size: .78rem; padding: 3px 8px; border-radius: 20px; font-weight: 600;
 }
@@ -127,10 +299,6 @@
 }
 
 /* ── MODAL VER PRODUCTO ── */
-.modal-prod-header {
-    background: linear-gradient(135deg, #1a5276, #2980b9);
-    color: #fff; padding: 0;
-}
 .modal-prod-gallery { display: flex; gap: 8px; flex-wrap: wrap; }
 .modal-prod-gallery .thumb {
     width: 60px; height: 60px; border-radius: 6px; overflow: hidden;
@@ -164,7 +332,6 @@
 
 /* ── ITEMS SELECTOR — dentro de modales Bootstrap ── */
 .item-categoria,
-.item-unidad,
 .item-proveedor {
     transition: all .15s ease;
     cursor: pointer;
@@ -175,12 +342,6 @@
     box-shadow: 0 3px 10px rgba(26,122,74,.12);
     border-left-color: #1a7a4a !important;
 }
-.item-unidad:hover {
-    background: #e0f7fa !important;
-    transform: translateX(4px);
-    box-shadow: 0 3px 10px rgba(17,122,139,.12);
-    border-left-color: #117a8b !important;
-}
 .item-proveedor:hover {
     background: #e3f2fd !important;
     transform: translateX(4px);
@@ -188,31 +349,286 @@
     border-left-color: #1a5276 !important;
 }
 
-/* ── CAMPO VERDE PERMANENTE AL SELECCIONAR ── */
-.form-control.campo-ok,
-input.campo-seleccionado {
-    border-color    : #27ae60 !important;
-    background      : #eafaf1 !important;
-    color           : #1a7a4a !important;
-    font-weight     : 700     !important;
-    box-shadow      : 0 0 0 .2rem rgba(39,174,96,.2) !important;
-    transition      : all .3s ease;
-}
-
 /* ── MODALES SELECTORES — tamaño grande y centrado ── */
 #modalSelectorCategoria .modal-dialog,
-#modalSelectorUnidad    .modal-dialog,
 #modalSelectorProveedor .modal-dialog {
     max-width : 600px;
     width     : 95%;
     margin    : 1.75rem auto;
 }
 #modalSelectorCategoria .modal-body,
-#modalSelectorUnidad    .modal-body,
 #modalSelectorProveedor .modal-body {
     padding: 1rem 1.2rem;
     max-height: 70vh;
     overflow-y: auto;
 }
 
+/* ══════════════════════════════════════════════════════════
+   EDITAR — IMÁGENES ACTUALES: DRAG & DROP + ZOOM
+══════════════════════════════════════════════════════════ */
 
+/* Contenedor sortable de imágenes actuales en editar */
+#editar_imagenes_actuales {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    min-height: 90px;
+    padding: 6px;
+    border: 2px dashed transparent;
+    border-radius: 10px;
+    transition: border-color .2s, background .2s;
+}
+#editar_imagenes_actuales.drag-over {
+    border-color: var(--prod-azul);
+    background: #eaf4fb;
+}
+
+/* Cada miniatura en editar — arrastrable */
+#editar_imagenes_actuales .preview-item {
+    cursor: grab;
+    transition: transform .15s, box-shadow .15s, opacity .15s;
+    user-select: none;
+}
+#editar_imagenes_actuales .preview-item:active { cursor: grabbing; }
+#editar_imagenes_actuales .preview-item.dragging {
+    opacity: .45;
+    transform: scale(.92);
+    box-shadow: 0 6px 20px rgba(0,0,0,.25);
+}
+#editar_imagenes_actuales .preview-item.drag-target {
+    border-color: var(--prod-azul) !important;
+    box-shadow: 0 0 0 3px rgba(41,128,185,.35);
+}
+
+/* Ícono de zoom sobre cada miniatura en editar */
+#editar_imagenes_actuales .preview-item .btn-zoom-img {
+    position: absolute;
+    bottom: 2px; left: 2px;
+    background: rgba(26,82,118,.85);
+    color: #fff; border: none;
+    border-radius: 50%; width: 22px; height: 22px;
+    font-size: .62rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; line-height: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,.25);
+    transition: all .2s;
+    opacity: 0;
+}
+#editar_imagenes_actuales .preview-item:hover .btn-zoom-img { opacity: 1; }
+#editar_imagenes_actuales .preview-item .btn-zoom-img:hover {
+    background: rgba(26,82,118,1);
+    transform: scale(1.15);
+}
+
+/* Indicador de orden (número) */
+#editar_imagenes_actuales .preview-item .orden-badge {
+    position: absolute;
+    top: 2px; left: 2px;
+    background: rgba(26,82,118,.85);
+    color: #fff;
+    font-size: .58rem; font-weight: 700;
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    pointer-events: none;
+}
+
+/* ── LIGHTBOX ── */
+#imgLightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,.88);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 14px;
+    animation: lbFadeIn .2s ease;
+}
+#imgLightbox.active { display: flex; }
+
+@keyframes lbFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+#imgLightbox .lb-img-wrap {
+    position: relative;
+    max-width: 90vw;
+    max-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#imgLightbox .lb-img-wrap img {
+    max-width: 88vw;
+    max-height: 78vh;
+    object-fit: contain;
+    border-radius: 10px;
+    box-shadow: 0 10px 50px rgba(0,0,0,.6);
+    background: #fff;
+    padding: 8px;
+    animation: lbZoomIn .2s ease;
+}
+@keyframes lbZoomIn {
+    from { transform: scale(.88); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+
+/* Botón cerrar lightbox */
+#imgLightbox .lb-close {
+    position: fixed;
+    top: 16px; right: 20px;
+    background: rgba(255,255,255,.15);
+    border: none; color: #fff;
+    width: 40px; height: 40px;
+    border-radius: 50%; font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .2s;
+    z-index: 10000;
+}
+#imgLightbox .lb-close:hover { background: rgba(231,76,60,.8); }
+
+/* Botones prev / next */
+#imgLightbox .lb-prev,
+#imgLightbox .lb-next {
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    background: rgba(255,255,255,.15);
+    border: none; color: #fff;
+    width: 44px; height: 44px;
+    border-radius: 50%; font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background .2s;
+    z-index: 10000;
+}
+#imgLightbox .lb-prev { left: 16px; }
+#imgLightbox .lb-next { right: 16px; }
+#imgLightbox .lb-prev:hover,
+#imgLightbox .lb-next:hover { background: rgba(41,128,185,.8); }
+#imgLightbox .lb-prev.hidden,
+#imgLightbox .lb-next.hidden { display: none; }
+
+/* Miniaturas del lightbox */
+#imgLightbox .lb-thumbs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 90vw;
+}
+#imgLightbox .lb-thumbs .lb-thumb {
+    width: 52px; height: 52px;
+    border-radius: 6px; overflow: hidden;
+    border: 2px solid rgba(255,255,255,.3);
+    cursor: pointer; transition: border-color .15s, transform .15s;
+    background: #fff;
+}
+#imgLightbox .lb-thumbs .lb-thumb img {
+    width: 100%; height: 100%;
+    object-fit: contain; padding: 3px;
+}
+#imgLightbox .lb-thumbs .lb-thumb:hover { border-color: rgba(255,255,255,.7); transform: scale(1.08); }
+#imgLightbox .lb-thumbs .lb-thumb.active { border-color: var(--prod-azul); transform: scale(1.1); }
+
+/* Contador lightbox */
+#imgLightbox .lb-counter {
+    color: rgba(255,255,255,.7);
+    font-size: .82rem;
+    letter-spacing: .5px;
+}
+
+
+
+/* ══════════════════════════════════════════════════════════
+   MODAL FILTROS AVANZADOS
+══════════════════════════════════════════════════════════ */
+
+/* Chips de selección de stock */
+.filtro-stock-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid #dee2e6;
+    background: #f8f9fa;
+    color: #6c757d;
+    font-size: .78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .15s;
+    margin: 0;
+    user-select: none;
+}
+.filtro-stock-chip:hover {
+    border-color: #2980b9;
+    color: #2980b9;
+    background: #eaf4fb;
+}
+.filtro-stock-chip.chip-activo {
+    background: linear-gradient(135deg, #1a5276, #2980b9);
+    border-color: #1a5276;
+    color: #fff;
+    box-shadow: 0 2px 8px rgba(26,82,118,.3);
+}
+
+
+/* ══════════════════════════════════════════════════════════
+   BOTONES DE EXPORTACIÓN — CSV / Excel / PDF
+   ══════════════════════════════════════════════════════════ */
+
+.prod-export-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+
+.prod-export-btn {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 13px !important;
+    font-size: .78rem !important;
+    font-weight: 700 !important;
+    border: none !important;
+    outline: none !important;
+    cursor: pointer;
+    transition: filter .18s, transform .15s;
+    white-space: nowrap;
+    letter-spacing: .3px;
+    line-height: 1.4;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+}
+.prod-export-btn:hover  { filter: brightness(1.13); transform: translateY(-1px); }
+.prod-export-btn:active { transform: translateY(0); filter: brightness(.95); }
+.prod-export-btn:focus  { outline: none !important; box-shadow: none !important; }
+.prod-export-btn i { font-size: .85rem; }
+
+.prod-export-csv,
+.prod-export-csv:hover,
+.prod-export-csv:focus   { background: #475569 !important; color: #fff !important; }
+
+.prod-export-excel,
+.prod-export-excel:hover,
+.prod-export-excel:focus { background: #217346 !important; color: #fff !important; }
+
+.prod-export-pdf,
+.prod-export-pdf:hover,
+.prod-export-pdf:focus   { background: #dc2626 !important; color: #fff !important; }
+
+.prod-export-group .prod-export-btn + .prod-export-btn {
+    border-left: 1px solid rgba(255,255,255,.2) !important;
+}
+
+@media (max-width: 480px) {
+    .prod-export-btn span { display: none; }
+    .prod-export-btn { padding: 6px 10px !important; }
+}

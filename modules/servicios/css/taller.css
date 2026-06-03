@@ -1,0 +1,214 @@
+/* ============================================================
+   taller.css — Interfaz del Técnico | SysInversiones CH Computer 2026
+   Solo estilos de la página taller.php (lista de órdenes).
+   El trabajo de la orden vive en orden_trabajo.css
+   ============================================================ */
+
+/* ── CABECERA DE PÁGINA ── */
+.page-header-taller {
+    background: linear-gradient(135deg, #064e3b, #059669);
+    color: #fff;
+    padding: 15px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 3px 12px rgba(5,150,105,.25);
+}
+.page-header-taller h4    { margin: 0; font-weight: 700; font-size: 1.2rem; color: #fff; }
+.page-header-taller small { opacity: .85; font-size: .82rem; color: rgba(255,255,255,.9); }
+
+/* ── STATS ── */
+.taller-stat {
+    border-radius: 10px;
+    padding: 14px 18px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    box-shadow: 0 3px 12px rgba(0,0,0,.12);
+}
+.taller-stat i          { font-size: 1.8rem; opacity: .8; }
+.taller-stat-val        { font-size: 1.4rem; font-weight: 700; line-height: 1; }
+.taller-stat-lbl        { font-size: .78rem; opacity: .9; margin-top: 2px; }
+
+/* ── CARD HEADER VERDE ── */
+.taller-card-header {
+    background: linear-gradient(90deg, #064e3b, #059669);
+    color: #fff;
+    border-radius: 10px 10px 0 0;
+    padding: 12px 18px;
+    border-bottom: none;
+}
+.taller-card-header .nav-link        { color: rgba(255,255,255,.75) !important; border: none !important; }
+.taller-card-header .nav-link.active { color: #fff !important; background: rgba(255,255,255,.2) !important; border-radius: 5px; }
+
+/* ── TARJETAS DE ÓRDENES DISPONIBLES ── */
+.taller-orden-card {
+    border-radius: 14px;
+    border: none;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,.08);
+    transition: transform .2s, box-shadow .2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+}
+.taller-orden-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(0,0,0,.14);
+}
+.taller-card-disponible             { border-top: 4px solid #2563eb; }
+.taller-card-disponible.prio-alta   { border-top-color: #dc2626; }
+.taller-card-disponible.prio-normal { border-top-color: #f59e0b; }
+.taller-card-disponible.prio-baja   { border-top-color: #10b981; }
+
+.taller-orden-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: linear-gradient(90deg, #f8fafc, #f1f5f9);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+/* Badges de número de orden */
+.taller-num-orden {
+    font-family: monospace;
+    font-weight: 700;
+    color: #1e40af;
+    background: #dbeafe;
+    border: 1px solid #93c5fd;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: .82rem;
+    letter-spacing: .5px;
+}
+.taller-num-orden-sm {
+    font-family: monospace;
+    font-weight: 700;
+    color: #1e40af;
+    background: #dbeafe;
+    border: 1px solid #93c5fd;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: .78rem;
+}
+
+.taller-orden-body { padding: 14px 16px; flex: 1; }
+
+.taller-cliente {
+    font-weight: 800;
+    font-size: .92rem;
+    color: #0f172a;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.taller-cliente i { color: #2563eb; font-size: .85rem; }
+
+.taller-equipo {
+    font-size: .83rem;
+    color: #475569;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.taller-equipo i { color: #059669; font-size: .8rem; }
+
+.taller-problema {
+    font-size: .8rem;
+    color: #78350f;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    display: flex;
+    gap: 6px;
+    align-items: flex-start;
+}
+
+.taller-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: .73rem;
+    color: #94a3b8;
+}
+.taller-meta span {
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.taller-orden-footer {
+    padding: 12px 16px;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+}
+
+/* ── BOTÓN TOMAR ORDEN ── */
+.btn-taller-tomar {
+    background: linear-gradient(135deg, #1e40af, #2563eb) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: .83rem;
+    padding: 8px 0;
+    letter-spacing: .3px;
+    transition: all .2s;
+    box-shadow: 0 2px 8px rgba(37,99,235,.3);
+}
+.btn-taller-tomar:hover {
+    background: linear-gradient(135deg, #1e3a8a, #1d4ed8) !important;
+    box-shadow: 0 4px 14px rgba(37,99,235,.4);
+    transform: translateY(-1px);
+}
+
+/* ── BADGES PRIORIDAD ── */
+.badge-prioridad-taller {
+    font-size: .7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 20px;
+    display: inline-block;
+}
+.badge-prio-alta   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+.badge-prio-normal { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+.badge-prio-media  { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+.badge-prio-baja   { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+
+/* ── BADGES ESTADO ── */
+.taller-badge-estado {
+    font-size: .75rem;
+    padding: 3px 9px;
+    border-radius: 20px;
+    font-weight: 700;
+    display: inline-block;
+    white-space: nowrap;
+}
+.taller-estado-recibido    { background: #dbeafe; color: #1e40af; border: 1px solid #93c5fd; }
+.taller-estado-diagnostico { background: #fef9c3; color: #854d0e; border: 1px solid #fde047; }
+.taller-estado-en_proceso  { background: #ffedd5; color: #9a3412; border: 1px solid #fdba74; }
+.taller-estado-listo       { background: #dcfce7; color: #166534; border: 1px solid #86efac; }
+.taller-estado-entregado   { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
+
+/* ── TABLA MIS ÓRDENES ── */
+.table-taller thead th {
+    background: #f8f9fa;
+    color: #495057;
+    font-weight: 700;
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+    border-bottom: 2px solid #059669;
+}
+.table-taller tbody tr:hover { background: #f0fdf4 !important; }
+.table-taller td              { vertical-align: middle; font-size: .88rem; }

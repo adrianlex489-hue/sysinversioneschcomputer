@@ -1,7 +1,7 @@
 <?php
 /**
  * api_ruc.php — Consulta de RUC via miapi.cloud
- * Adaptado para el sistema Botica 2026
+ * Adaptado para el sistema SysInversiones CH Computer
  */
 class APIRuc {
 
@@ -67,7 +67,7 @@ class APIRuc {
     }
 
     /**
-     * Formatea la respuesta de la API al esquema de la tabla `proveedores` de bdbotica.
+     * Formatea la respuesta de la API al esquema de la tabla `proveedores` de bdinversioneschcomputer.
      * Campos: razon_social, ruc, direccion
      *
      * @param  array $api_response  Respuesta cruda de consultar()

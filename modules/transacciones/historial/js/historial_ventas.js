@@ -1,5 +1,5 @@
 ﻿/**
- * historial_ventas.js — Historial de Ventas | Botica 2026
+ * historial_ventas.js — Historial de Ventas | SysInversiones CH Computer 2026
  */
 
 $(function () {
@@ -63,6 +63,39 @@ $(function () {
         });
     });
 
+    // ── VER TICKET PDF ────────────────────────────────────
+    $(document).on("click", ".btn-ver-ticket", function () {
+        var id     = $(this).data("id");
+        var tipo   = $(this).data("tipo") || "ticket";
+        var numero = $(this).data("numero") || ("#" + id);
+
+        // Si es nota → abrir en nueva pestaña con imprimir.php
+        if (tipo !== "ticket") {
+            window.open("../../Comprobantes/imprimir.php?tipo=venta&id=" + id, "_blank");
+            return;
+        }
+
+        // Ticket 80mm → modal con iframe
+        var urlPrev = "../../Comprobantes/comprobante_ticket.php?id_venta=" + id;
+        var urlDesc = "../../Comprobantes/comprobante_ticket.php?id_venta=" + id + "&download=1";
+
+        $("#ticketPdfNumero").text(numero);
+        $("#btnDescargarTicket").attr("href", urlDesc);
+        $("#ticketPdfFrame").attr("src", "").hide();
+        $("#ticketPdfCargando").show();
+        $("#modalTicketPDF").modal("show");
+
+        $("#modalTicketPDF").one("shown.bs.modal", function () {
+            $("#ticketPdfFrame").attr("src", urlPrev);
+        });
+    });
+
+    // Limpiar iframe al cerrar modal PDF
+    $("#modalTicketPDF").on("hidden.bs.modal", function () {
+        $("#ticketPdfFrame").attr("src", "").hide();
+        $("#ticketPdfCargando").show();
+    });
+
     // ── REGISTRAR PAGO ────────────────────────────────────
     $(document).on("click", ".btn-pagar-venta", function () {
         var id      = $(this).data("id");
@@ -73,16 +106,113 @@ $(function () {
         $("#pago_id_venta").val(id);
         $("#pago_saldo_display").text("S/. " + saldo.toFixed(2));
         $("#pago_cliente_label").text(cliente + " — " + numero);
-        $("#monto_pago").val(saldo.toFixed(2)).attr("max", saldo);
+        $("#monto_pago").data("saldo", saldo).removeAttr("readonly");
+        $("#pago_monto_hint").text("Saldo pendiente: S/. " + saldo.toFixed(2));
+        $("#pago_cuotas_lista").html("");
 
+        // Resetear método de pago
         $(".btn-metodo-pago-vta").css({ background: "#fff", color: "#555", borderColor: "#dee2e6" });
         $(".btn-metodo-pago-vta[data-metodo=efectivo]").css({ background: "#1a7a4a", color: "#fff", borderColor: "#1a7a4a" });
         $("#metodo_pago_abono").val("efectivo");
         $("#obs_pago").val("");
 
+        // Cargar cuotas vía AJAX
+        $("#pago_cuotas_loading").show();
+        $.get("historial_ventas.php", { accion: "cuotas_ajax", id_venta: id }, function (data) {
+            $("#pago_cuotas_loading").hide();
+            if (!data.ok || !data.cuotas || data.cuotas.length === 0) {
+                // Sin cuotas: monto libre
+                $("#monto_pago").val(saldo.toFixed(2)).attr("max", saldo).removeAttr("readonly");
+                $("#pago_monto_hint").text("Saldo pendiente: S/. " + saldo.toFixed(2));
+                return;
+            }
+            renderCuotasPago(data.cuotas, saldo);
+        }, "json").fail(function () {
+            $("#pago_cuotas_loading").hide();
+            $("#monto_pago").val(saldo.toFixed(2)).attr("max", saldo);
+        });
+
         $("#modalPagarVenta").modal("show");
-        setTimeout(function () { $("#monto_pago").focus().select(); }, 400);
     });
+
+    // ── Renderizar cuotas en el modal de pago ─────────────
+    function renderCuotasPago(cuotas, saldo) {
+        var activa = null;
+        for (var i = 0; i < cuotas.length; i++) {
+            if (cuotas[i].estado === "pendiente" || cuotas[i].estado === "vencido") {
+                activa = cuotas[i];
+                break;
+            }
+        }
+
+        if (!activa) {
+            $("#pago_cuotas_lista").html(
+                '<div class="alert alert-success border-0 mb-2" style="border-radius:8px;font-size:.85rem;">' +
+                '<i class="fas fa-check-circle mr-2"></i>Todas las cuotas están pagadas.</div>'
+            );
+            $("#monto_pago").val("0.00").attr("readonly", true);
+            return;
+        }
+
+        // Fijar monto al de la cuota activa
+        var montoCuota = parseFloat(activa.monto_cuota);
+        $("#monto_pago").val(montoCuota.toFixed(2)).attr("max", saldo).attr("readonly", true);
+        $("#pago_monto_hint").html(
+            '<i class="fas fa-lock mr-1 text-warning"></i>' +
+            'Monto fijado al valor de la cuota activa. Paga una cuota a la vez.'
+        );
+
+        // Construir lista visual
+        var html = '<div style="margin-bottom:10px;">';
+        html += '<div style="font-size:.78rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">' +
+                '<i class="fas fa-calendar-alt mr-1"></i>Cronograma de cuotas</div>';
+
+        cuotas.forEach(function (c) {
+            var esPagada   = c.estado === "pagado";
+            var esActiva   = c.id_cuota === activa.id_cuota;
+            var esVencida  = c.estado === "vencido";
+            var esBloqueada = !esPagada && !esActiva;
+
+            var venc = "—";
+            if (c.fecha_vencimiento) {
+                var d = new Date(c.fecha_vencimiento + "T00:00:00");
+                venc = d.toLocaleDateString("es-PE", { day: "2-digit", month: "2-digit", year: "numeric" });
+            }
+
+            var rowStyle, iconHtml, badgeHtml, opacityStyle = "";
+
+            if (esPagada) {
+                rowStyle  = "background:#f0fdf4;border:1px solid #bbf7d0;";
+                iconHtml  = '<i class="fas fa-check-circle" style="color:#22c55e;font-size:1.1rem;"></i>';
+                badgeHtml = '<span style="background:#dcfce7;color:#166534;font-size:.72rem;padding:2px 8px;border-radius:20px;font-weight:600;">PAGADA</span>';
+            } else if (esActiva) {
+                rowStyle  = "background:#eff6ff;border:2px solid #1a5276;box-shadow:0 2px 8px rgba(26,82,118,.15);";
+                iconHtml  = '<i class="fas fa-arrow-right" style="color:#1a5276;font-size:1.1rem;"></i>';
+                badgeHtml = '<span style="background:#dbeafe;color:#1a5276;font-size:.72rem;padding:2px 8px;border-radius:20px;font-weight:700;">' +
+                            (esVencida ? "⚠ VENCIDA — PAGAR AHORA" : "← PAGAR AHORA") + "</span>";
+            } else {
+                rowStyle     = "background:#f8fafc;border:1px solid #e2e8f0;";
+                opacityStyle = "opacity:.45;";
+                iconHtml     = '<i class="fas fa-lock" style="color:#94a3b8;font-size:1rem;"></i>';
+                badgeHtml    = '<span style="background:#f1f5f9;color:#94a3b8;font-size:.72rem;padding:2px 8px;border-radius:20px;">BLOQUEADA</span>';
+            }
+
+            html += '<div style="' + rowStyle + opacityStyle + 'border-radius:8px;padding:10px 14px;margin-bottom:6px;display:flex;align-items:center;gap:12px;">' +
+                '<div style="flex-shrink:0;">' + iconHtml + '</div>' +
+                '<div style="flex:1;min-width:0;">' +
+                    '<div style="font-weight:700;font-size:.88rem;color:#1e293b;">Cuota ' + c.numero_cuota + ' de ' + cuotas.length +
+                        ' <span style="margin-left:6px;">' + badgeHtml + '</span></div>' +
+                    '<div style="font-size:.78rem;color:#64748b;margin-top:2px;"><i class="fas fa-calendar mr-1"></i>Vence: ' + venc + '</div>' +
+                '</div>' +
+                '<div style="font-weight:700;font-size:1rem;color:' + (esPagada ? "#22c55e" : esActiva ? "#1a5276" : "#94a3b8") + ';white-space:nowrap;">' +
+                    'S/. ' + parseFloat(c.monto_cuota).toFixed(2) +
+                '</div>' +
+            '</div>';
+        });
+
+        html += "</div>";
+        $("#pago_cuotas_lista").html(html);
+    }
 
     $(document).on("click", ".btn-metodo-pago-vta", function () {
         $(".btn-metodo-pago-vta").css({ background: "#fff", color: "#555", borderColor: "#dee2e6" });
@@ -116,6 +246,45 @@ $(function () {
             if (r.isConfirmed) document.getElementById("formRegistrarPagoVta").submit();
         });
     });
+
+    // ── EXPORTAR HISTORIAL VENTAS ─────────────────────────
+    $("#btnExportarHVta").on("click", function () {
+        $("#modalExportarHVta").modal("show");
+    });
+
+    function hvtaGetParams() {
+        return {
+            estado:      $("#hvta_exp_estado").val()  || "all",
+            tipo_pago:   $("#hvta_exp_pago").val()    || "all",
+            fecha_desde: $("#hvta_exp_desde").val()   || "",
+            fecha_hasta: $("#hvta_exp_hasta").val()   || "",
+        };
+    }
+
+    function hvtaExportar(formato) {
+        var p = hvtaGetParams();
+        var url = "ajax_historial_ventas_export.php?exportar=" + formato
+            + "&estado="      + encodeURIComponent(p.estado)
+            + "&tipo_pago="   + encodeURIComponent(p.tipo_pago)
+            + "&fecha_desde=" + encodeURIComponent(p.fecha_desde)
+            + "&fecha_hasta=" + encodeURIComponent(p.fecha_hasta);
+        window.location.href = url;
+        $("#modalExportarHVta").modal("hide");
+    }
+
+    function hvtaExportarPDF() {
+        var p = hvtaGetParams();
+        var url = "historial_ventas_pdf.php?estado=" + encodeURIComponent(p.estado)
+            + "&tipo_pago="   + encodeURIComponent(p.tipo_pago)
+            + "&fecha_desde=" + encodeURIComponent(p.fecha_desde)
+            + "&fecha_hasta=" + encodeURIComponent(p.fecha_hasta);
+        window.open(url, "_blank");
+        $("#modalExportarHVta").modal("hide");
+    }
+
+    $("#hvta_btn_csv").on("click",   function () { hvtaExportar("csv"); });
+    $("#hvta_btn_excel").on("click", function () { hvtaExportar("excel"); });
+    $("#hvta_btn_pdf").on("click",   function () { hvtaExportarPDF(); });
 
     // ── ANULAR VENTA ──────────────────────────────────────
     $(document).on("click", ".btn-anular-venta", function () {
